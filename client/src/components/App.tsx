@@ -1,14 +1,7 @@
-// import { useEffect, useState } from "react";
-// import CountUp from "react-countup";
-// import { faStar } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
-import { useQuery } from "@tanstack/react-query";
-import request from "../utils/api";
-import type { IUser } from "../interfaces/IUser";
-
+import StartScreen from "./StartScreen";
 import { init, viewport, themeParams, initData } from "@telegram-apps/sdk";
 
 init();
@@ -21,13 +14,8 @@ themeParams.mount();
 viewport.expand();
 
 const App = () => {
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      return (await request("users/get")).data;
-    },
-    select: (data) => data.user as IUser,
-  });
+  // STATES
+  const [gameStarted, setGameStarted] = useState(false);
 
   // PARTICLES
   const particlesInit = useCallback(async (engine: any) => {
@@ -54,16 +42,7 @@ const App = () => {
             },
           }}
         />
-        {isLoading ? (
-          <div className="animate-pulse">Loading...</div>
-        ) : (
-          <div className="flex justify-center items-center h-screen flex-col">
-            <h1 className="text-white text-center text-2xl mb-5 font-bold">
-              {user?.name}, <br />
-              Welcome to Flags Guess!
-            </h1>
-          </div>
-        )}
+        <StartScreen />
       </div>
     </div>
   );

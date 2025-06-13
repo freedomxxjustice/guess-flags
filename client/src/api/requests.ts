@@ -1,4 +1,4 @@
-const DEFAULT_URL = "https://c3de53e5b21c9ef4d87cbfe0bc75720c.serveo.net";
+const DEFAULT_URL = "https://59afd09c7d68a7283512112416a4b339.serveo.net";
 
 import { retrieveLaunchParams } from "@telegram-apps/sdk";
 const { initDataRaw } = retrieveLaunchParams();

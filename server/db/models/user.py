@@ -7,6 +7,7 @@ class User(Model):
     id = fields.BigIntField(pk=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     name = fields.CharField(64)
+    score = fields.IntField(default=0)
 
     class Meta:
         table = "users"

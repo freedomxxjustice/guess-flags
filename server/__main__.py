@@ -9,12 +9,7 @@ from aiogram.types import (
 )
 
 import logging
-from aiogram import Router
-from aiogram.types import Message
-from aiogram.filters import CommandStart
-
 from bot.keyboards import main_markup
-from db import User
 
 from api import setup_routers as setup_api_routers
 from bot.handlers import setup_routers as setup_bot_routers

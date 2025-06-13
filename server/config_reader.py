@@ -17,10 +17,10 @@ class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str = "https://72dfc45500114fcbc9a1e8e0ea085b10.serveo.net"
+    WEBHOOK_URL: str = "https://59afd09c7d68a7283512112416a4b339.serveo.net"
     WEBHOOK_PATH: str = "/webhook"
     # frontend
-    WEBAPP_URL: str = "https://b73f28571bf65f00d73a491a516cfa64.serveo.net"
+    WEBAPP_URL: str = "https://2c3b779cfed3b80555c4a161552b2c07.serveo.net"
 
     APP_HOST: str = "localhost"
     APP_PORT: int = 8000
@@ -55,7 +55,7 @@ TORTOISE_ORM = {
     "connections": {"default": config.DB_URL.get_secret_value()},
     "apps": {
         "models": {
-            "models": ["db.models.user", "aerich.models"],
+            "models": ["db.models.user", "db.models.flag", "aerich.models"],
             "default_connection": "default",
         },
     },
