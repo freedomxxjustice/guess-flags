@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
 import StartScreen from "./StartScreen";
@@ -15,7 +15,6 @@ viewport.expand();
 
 const App = () => {
   // STATES
-  const [gameStarted, setGameStarted] = useState(false);
 
   // PARTICLES
   const particlesInit = useCallback(async (engine: any) => {

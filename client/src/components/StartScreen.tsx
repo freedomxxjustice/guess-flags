@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type { IUser } from "../interfaces/IUser";
-import type { Game, Question } from "../interfaces/IGame";
+import type { Game } from "../interfaces/IGame";
 
 const StartScreen = () => {
   // STATES
@@ -22,7 +22,7 @@ const StartScreen = () => {
   // START GAME
   const {
     data: game,
-    isFetching: gameLoading,
+    // isFetching: gameLoading,
     refetch,
   } = useQuery<Game>({
     queryKey: ["game"],
@@ -49,7 +49,7 @@ const StartScreen = () => {
     const correct = opt === game?.questions[currentQuestionIndex].answer;
     setSelectedOption(opt);
     setIsCorrect(correct);
-    if (correct) setScore((prev) => prev + 1);
+    if (isCorrect) setScore((prev) => prev + 1);
 
     setTimeout(() => {
       setSelectedOption(null);
