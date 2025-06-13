@@ -17,10 +17,10 @@ class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str = "https://59afd09c7d68a7283512112416a4b339.serveo.net"
+    WEBHOOK_URL: str = "https://975bf2470a584dc31fe62122b1d78288.serveo.net"
     WEBHOOK_PATH: str = "/webhook"
     # frontend
-    WEBAPP_URL: str = "https://2c3b779cfed3b80555c4a161552b2c07.serveo.net"
+    WEBAPP_URL: str = "https://30c0c4b27942055fcf6002a57f3bdacb.serveo.net"
 
     APP_HOST: str = "localhost"
     APP_PORT: int = 8000

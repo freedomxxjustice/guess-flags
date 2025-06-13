@@ -49,7 +49,7 @@ const StartScreen = () => {
     const correct = opt === game?.questions[currentQuestionIndex].answer;
     setSelectedOption(opt);
     setIsCorrect(correct);
-    if (isCorrect) setScore((prev) => prev + 1);
+    if (correct) setScore((prev) => prev + 1);
 
     setTimeout(() => {
       setSelectedOption(null);
