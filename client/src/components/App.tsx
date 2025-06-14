@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
-import StartScreen from "./StartScreen";
+import MainWrapper from "./MainWrapper";
 import { init, viewport, themeParams, initData } from "@telegram-apps/sdk";
 
 init();
@@ -14,8 +14,6 @@ themeParams.mount();
 viewport.expand();
 
 const App = () => {
-  // STATES
-
   // PARTICLES
   const particlesInit = useCallback(async (engine: any) => {
     await loadStarsPreset(engine);
@@ -41,7 +39,7 @@ const App = () => {
             },
           }}
         />
-        <StartScreen />
+        <MainWrapper />
       </div>
     </div>
   );

@@ -18,8 +18,7 @@ async def submit_answer(
 ):
     user = await check_user(auth_data.user.id)
 
-
-    user.score += data.score
+    user.casual_score += data.score
     await user.save()
 
-    return {"message": "Score updated", "total_score": user.score}
+    return {"message": "Score updated", "total_score": user.casual_score}

@@ -1,9 +1,9 @@
-export interface Question {
+export interface IQuestion {
   image: string;
   options: string[];
   answer: string;
 }
 
-export interface Game {
-  questions: Question[];
+export interface IGame {
+  questions: IQuestion[];
 }
