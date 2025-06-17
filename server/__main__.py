@@ -8,6 +8,7 @@ from aiogram.types import (
     LabeledPrice,
 )
 
+
 import logging
 from bot.keyboards import main_markup
 
@@ -52,6 +53,9 @@ async def webhook(request: Request) -> None:
     await dp.feed_update(bot, update)
 
 
+
+
 if __name__ == "__main__":
+    # session_close()
     logging.basicConfig(level=logging.INFO)
     uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT)

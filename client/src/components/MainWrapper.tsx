@@ -7,6 +7,9 @@ import BottomMenu from "./BottomMenu";
 
 const MainWrapper = () => {
   // STATES
+  const [showModal, setShowModal] = useState<
+    false | "error" | "notEnoughTries"
+  >(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -15,8 +18,20 @@ const MainWrapper = () => {
   const [page, setPage] = useState<"home" | "profile" | "settings" | "game">(
     "home"
   );
+
+  // CONSTANTS
+
+  const btnClickAnimation = "transform active:scale-75 transition-transform";
+  const btnDisabled = "text-background bg-gradient-to-r bg-darkest";
+  const btnRegular =
+    "text-light bg-deep-blue focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
+
   // GET USER INFO
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    refetch: refetchUser,
+  } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       const response = await request("users/get");
@@ -28,17 +43,30 @@ const MainWrapper = () => {
   // START GAME
   const {
     data: game,
-    // isFetching: gameLoading,
-    // refetch,
+    isLoading: isGameLoading,
+    isFetching: isGameFetching,
+    error: gameError,
   } = useQuery<IGame>({
     queryKey: ["game"],
     queryFn: async () => (await request("games/create")).data.game,
-    enabled: gameStarted, // don't fetch on mount
+    enabled: gameStarted,
+    retry: false,
   });
 
   // EFFECTS
   const submittedRef = useRef(false);
+  useEffect(() => {
+    if (gameError) {
+      const status = (gameError as any)?.response?.status;
 
+      if (status === 403) {
+        setShowModal("notEnoughTries");
+      } else {
+        setShowModal("error");
+      }
+      setGameStarted(false); // prevent UI from progressing if error occurs
+    }
+  }, [gameError]);
   useEffect(() => {
     if (
       gameStarted &&
@@ -50,14 +78,24 @@ const MainWrapper = () => {
       request("games/submit-score", "POST", { score }).catch(console.error);
     }
   }, [gameStarted, currentQuestionIndex, game, score]);
+
   const handleStartGame = () => {
+    if (user?.tries_left <= 0) {
+      setShowModal("notEnoughTries");
+      return;
+    }
+    submittedRef.current = false;
     setGameStarted(true);
     setCurrentQuestionIndex(0);
     setScore(0);
-    // refetch();
+  };
+
+  const openCommunity = () => {
+    window.open("https://t.me/guessflags", "_blank");
   };
 
   const handleAnswer = (opt: string) => {
+    if (selectedOption) return;
     const correct = opt === game?.questions[currentQuestionIndex].answer;
     setSelectedOption(opt);
     setIsCorrect(correct);
@@ -84,18 +122,100 @@ const MainWrapper = () => {
   };
 
   const renderHomeScreen = () => (
-    <div>
-      <h1 className="text-white text-center text-2xl mb-5 font-bold">
-        {user?.name}, <br />
-        Welcome to Flags Guess!
-      </h1>
-      <button
-        type="button"
-        className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        onClick={handleStartGame}
-      >
-        Play Casual
-      </button>
+    <div className="flex justify-center flex-col">
+      <div id="upperPanel" className="top-0 pt-12">
+        <div
+          className={`rounded-xl py-0.5 px-1 w-32 text-center ${
+            user?.tries_left == 0 ? "bg-warning" : "bg-darker"
+          }`}
+        >
+          <h2 className="rounded-md">Tries left: {user?.tries_left}</h2>
+        </div>
+      </div>
+      <div className="flex justify-center items-center h-screen flex-col gap-8 p-6">
+        <div>
+          <h1 className="text-primary text-center text-2xl mb-5 font-bold text-shadow-background text-shadow-md">
+            {user?.name}, <br />
+            Welcome to Flags Guess!
+          </h1>
+        </div>
+        <div className="flex justify-center flex-col items-center">
+          <button
+            type="button"
+            className={`${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClickAnimation}`}
+            onClick={handleStartGame}
+          >
+            Play Casual
+          </button>
+          <button
+            onClick={() => setShowModal("error")}
+            type="button"
+            className={`text-background bg-gradient-to-r bg-darkest focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnDisabled}`}
+          >
+            Play Rating
+          </button>
+          <button
+            type="button"
+            className={`${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClickAnimation}`}
+            onClick={openCommunity}
+          >
+            Community
+          </button>
+        </div>
+        <div>
+          <p className="text-accent text-shadow-2xs text-xs">Early Access</p>
+        </div>
+        {/* 404 Modal */}
+        {showModal == "error" && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
+              <h2 className="text-xl font-bold mb-4">A like 404</h2>
+              <p className="mb-6">
+                Unfortunately this feature isn't available yet!
+              </p>
+              <button
+                onClick={() => setShowModal(false)}
+                className="py-2 px-4 rounded-xl font-semibold transition-all"
+                style={{
+                  backgroundColor: "var(--color-warning)",
+                  color: "white",
+                }}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Buy Tries Modal */}
+        {showModal == "notEnoughTries" && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
+              <h2 className="text-xl font-bold mb-4">Not enough tries!</h2>
+              <p className="mb-6">
+                Unfortunately you have run out of tries. Still, you can buy them
+                using Telegram Stars or simply wait 24 hours!
+              </p>
+              <div className="flex flex-col gap-4">
+                <button
+                  className={`${btnRegular} py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
+                >
+                  Buy tries!
+                </button>
+                <button
+                  onClick={() => setShowModal(false)}
+                  className={`py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
+                  style={{
+                    backgroundColor: "var(--color-warning)",
+                    color: "white",
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 
@@ -103,12 +223,12 @@ const MainWrapper = () => {
   const renderStartScreen = () => (
     <div className="flex justify-center items-center h-screen flex-col">
       <BottomMenu />
-      {renderHomeScreen()}
+      {renderPage()}
     </div>
   );
 
   // RENDER: Game Screen
-  const renderGameScreen = () => {
+  const renderCasualGameScreen = () => {
     const question = game?.questions[currentQuestionIndex];
 
     return (
@@ -144,7 +264,7 @@ const MainWrapper = () => {
                 key={idx}
                 disabled={!!selectedOption}
                 onClick={() => handleAnswer(opt)}
-                className={`px-4 py-2 rounded transition-colors duration-300 ${btnClass}`}
+                className={`${btnClickAnimation} ${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClass}`}
               >
                 {opt}
               </button>
@@ -163,7 +283,10 @@ const MainWrapper = () => {
         Your score: {score} / {game?.questions.length}
       </p>
       <button
-        onClick={() => setGameStarted(false)}
+        onClick={() => {
+          setGameStarted(false);
+          refetchUser();
+        }}
         className="mt-4 bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
       >
         Home Page
@@ -172,7 +295,15 @@ const MainWrapper = () => {
   );
 
   // RETURN LOGIC
-  if (isLoading) {
+  if (isUserLoading) {
+    return (
+      <div className="animate-pulse text-white text-center mt-10">
+        Loading...
+      </div>
+    );
+  }
+
+  if (isGameLoading || isGameFetching) {
     return (
       <div className="animate-pulse text-white text-center mt-10">
         Loading...
@@ -185,7 +316,7 @@ const MainWrapper = () => {
   }
 
   if (gameStarted && game) {
-    return renderGameScreen();
+    return renderCasualGameScreen();
   }
 
   return renderStartScreen();

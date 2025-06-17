@@ -4,7 +4,7 @@ from tortoise import BaseDBAsyncClient
 async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
         CREATE TABLE IF NOT EXISTS "users" (
-    "id" SERIAL NOT NULL PRIMARY KEY,
+    "id" BIGSERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
     "rating" INT NOT NULL DEFAULT 1200,
     "games_played" INT NOT NULL DEFAULT 0,
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS "matches" (
     "flags" JSONB NOT NULL,
     "is_finished" BOOL NOT NULL DEFAULT False,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "player_1_id" INT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE,
-    "player_2_id" INT REFERENCES "users" ("id") ON DELETE CASCADE
+    "player_1_id" BIGINT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE,
+    "player_2_id" BIGINT REFERENCES "users" ("id") ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,

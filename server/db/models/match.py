@@ -17,4 +17,5 @@ class Match(Model):
 
     def __str__(self):
         return f"Match({self.id})"
+    
 MatchSchema = pydantic_model_creator(Match)

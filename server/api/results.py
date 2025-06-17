@@ -19,6 +19,8 @@ async def submit_answer(
     user = await check_user(auth_data.user.id)
 
     user.casual_score += data.score
+    if data.score < 10:
+        user.tries_left -= 1
     await user.save()
 
     return {"message": "Score updated", "total_score": user.casual_score}

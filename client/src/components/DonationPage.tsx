@@ -11,7 +11,7 @@ import {
   hapticFeedback,
   invoice,
 } from "@telegram-apps/sdk";
-import request from "../api/requests";
+import request from "../utils/api";
 
 init();
 

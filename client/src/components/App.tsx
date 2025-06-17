@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
 import MainWrapper from "./MainWrapper";
@@ -15,6 +15,7 @@ viewport.expand();
 
 const App = () => {
   // PARTICLES
+
   const particlesInit = useCallback(async (engine: any) => {
     await loadStarsPreset(engine);
   }, []);
@@ -34,12 +35,19 @@ const App = () => {
             preset: "stars",
             background: {
               color: {
-                value: "#0d47a1",
+                value: "#293241",
+              },
+            },
+            particles: {
+              color: {
+                value: "#98c1d9",
               },
             },
           }}
         />
-        <MainWrapper />
+        <div className="relative z-0">
+          <MainWrapper />
+        </div>
       </div>
     </div>
   );

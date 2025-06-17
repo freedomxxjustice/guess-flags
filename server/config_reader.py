@@ -12,15 +12,19 @@ ROOT_DIR = Path(__file__).parent.parent
 
 logging.basicConfig(level=logging.INFO)
 
+# from aiohttp import ClientSession
+
+# session = ClientSession()
+
 
 class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str = "https://a5b7c2f9d0d15ad58a49625303b4361b.serveo.net"
+    WEBHOOK_URL: str = "https://api.guessflags.space"
     WEBHOOK_PATH: str = "/webhook"
     # frontend
-    WEBAPP_URL: str = "https://4f1eeb5e57736178a12fe636d5bcde5e.serveo.net"
+    WEBAPP_URL: str = "https://app.guessflags.space"
 
     APP_HOST: str = "localhost"
     APP_PORT: int = 8000
@@ -36,6 +40,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         allowed_updates=dp.resolve_used_update_types(),
         drop_pending_updates=True,
     )
+
+    # await session.close()
 
     await Tortoise.init(TORTOISE_ORM)
 
@@ -55,7 +61,12 @@ TORTOISE_ORM = {
     "connections": {"default": config.DB_URL.get_secret_value()},
     "apps": {
         "models": {
-            "models": ["db.models.user", "db.models.flag", "db.models.match", "aerich.models"],
+            "models": [
+                "db.models.user",
+                "db.models.flag",
+                "db.models.match",
+                "aerich.models",
+            ],
             "default_connection": "default",
         },
     },

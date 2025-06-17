@@ -5,19 +5,31 @@
   src: url(./assets/GeistMono-VariableFont_wght.ttf);
 }
 
+@theme {
+  --color-lightest: #EAF6FF;
+  --color-lighter: #CDEEFF;
+  --color-deep-blue: #289EFF;
+  --color-bold-blue: #007FFF;
+  --color-darker: #005FCC;
+  --color-darkest: #003E99;
+  --color-primary: #e0fbfc;   /* Deep blue */
+  --color-accent: #98c1d9;    /* Light blue */
+  --color-light: #e0fbfc;/* Soft cyan background */
+  --color-warning: #ee6c4d;   /* Coral/orange for alerts or highlights */
+  --color-background: #293241;      /* Dark navy, good for text or headers */
+}	
+
 body {
   height: 100vh;
   overflow: hidden;
-  background: var(--tg-theme-bg-color);
+  background: var(--tg-bg-color);
 }
 
-* {
-  z-index: 1;
-}
 
-#tsparticles {
+
+/* #tsparticles {
   z-index: 0;
-}
+} */
 
 #mainBackground {
   background-color: rgb(255, 255, 255);

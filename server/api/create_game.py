@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
@@ -13,6 +13,9 @@ async def send_game(
     request: Request,
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
+    user = check_user(auth_data.user.id)
+    if user.tries_left <= 0:
+        raise HTTPException(status_code=403, detail="No tries left")
     filter = dict(request.query_params)
     question_list = await create_questions(filter)
     return JSONResponse(content={"game": {"questions": question_list}})
@@ -58,5 +61,4 @@ async def create_questions(filter) -> JSONResponse:
         shuffle(options)
 
         questions.append({"image": image, "options": options, "answer": correct_name})
-    print(questions)
     return questions

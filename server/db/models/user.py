@@ -4,7 +4,7 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 class User(Model):
-    id = fields.IntField(pk=True, unique=True)
+    id = fields.BigIntField(pk=True, unique=True)
     name = fields.CharField(max_length=255)
     rating = fields.IntField(default=1200)  # Starting Elo-like rating
     games_played = fields.IntField(default=0)
