@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
 from pydantic import BaseModel
+from datetime import date
 
 
 class ScoreUpdate(BaseModel):
@@ -21,6 +22,8 @@ async def submit_answer(
     user.casual_score += data.score
     if data.score < 10:
         user.tries_left -= 1
+        if user.tries_left <= 0:
+            user.last_reset_date = date.today()
     await user.save()
 
     return {"message": "Score updated", "total_score": user.casual_score}

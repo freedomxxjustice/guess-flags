@@ -1,9 +1,9 @@
+from random import randint
+from db import Flag, FlagSchema
 from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
-from db import Flag, FlagSchema
-from random import randint
 
 router = APIRouter(prefix="/api/games", dependencies=[Depends(auth)])
 
@@ -13,7 +13,7 @@ async def send_game(
     request: Request,
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
-    user = check_user(auth_data.user.id)
+    user = await check_user(auth_data.user.id)
     if user.tries_left <= 0:
         raise HTTPException(status_code=403, detail="No tries left")
     filter = dict(request.query_params)

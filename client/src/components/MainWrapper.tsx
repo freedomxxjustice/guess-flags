@@ -4,6 +4,7 @@ import request from "../utils/api";
 import type { IUser } from "../interfaces/IUser";
 import type { IGame } from "../interfaces/IGame";
 import BottomMenu from "./BottomMenu";
+import BuyTries from "./BuyTries";
 
 const MainWrapper = () => {
   // STATES
@@ -15,13 +16,14 @@ const MainWrapper = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
+  const [showBuyTries, setShowBuyTries] = useState(false);
   const [page, setPage] = useState<"home" | "profile" | "settings" | "game">(
     "home"
   );
 
   // CONSTANTS
 
-  const btnClickAnimation = "transform active:scale-75 transition-transform";
+  const btnClickAnimation = "transform active:scale-95 transition-transform";
   const btnDisabled = "text-background bg-gradient-to-r bg-darkest";
   const btnRegular =
     "text-light bg-deep-blue focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
@@ -55,6 +57,7 @@ const MainWrapper = () => {
 
   // EFFECTS
   const submittedRef = useRef(false);
+
   useEffect(() => {
     if (gameError) {
       const status = (gameError as any)?.response?.status;
@@ -67,6 +70,7 @@ const MainWrapper = () => {
       setGameStarted(false); // prevent UI from progressing if error occurs
     }
   }, [gameError]);
+
   useEffect(() => {
     if (
       gameStarted &&
@@ -122,14 +126,19 @@ const MainWrapper = () => {
   };
 
   const renderHomeScreen = () => (
-    <div className="flex justify-center flex-col">
-      <div id="upperPanel" className="top-0 pt-12">
+    <div className="">
+      <div
+        id="upperPanel"
+        className="absolute top-4 w-full flex justify-center z-10"
+      >
         <div
-          className={`rounded-xl py-0.5 px-1 w-32 text-center ${
-            user?.tries_left == 0 ? "bg-warning" : "bg-darker"
+          className={`rounded-xl py-1 px-3 text-center shadow-md ${
+            user?.tries_left === 0 ? "bg-warning" : "bg-darker"
           }`}
         >
-          <h2 className="rounded-md">Tries left: {user?.tries_left}</h2>
+          <h2 className="text-sm font-semibold">
+            Tries left: {user?.tries_left}
+          </h2>
         </div>
       </div>
       <div className="flex justify-center items-center h-screen flex-col gap-8 p-6">
@@ -138,6 +147,11 @@ const MainWrapper = () => {
             {user?.name}, <br />
             Welcome to Flags Guess!
           </h1>
+          {user?.tries_left === 0 && (
+            <h2 className="text-center text-warning text-sm px-4">
+              Come back tomorrow or buy more tries using stars!
+            </h2>
+          )}
         </div>
         <div className="flex justify-center flex-col items-center">
           <button
@@ -198,6 +212,7 @@ const MainWrapper = () => {
               <div className="flex flex-col gap-4">
                 <button
                   className={`${btnRegular} py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
+                  onClick={() => setShowBuyTries(true)}
                 >
                   Buy tries!
                 </button>
@@ -307,6 +322,14 @@ const MainWrapper = () => {
     return (
       <div className="animate-pulse text-white text-center mt-10">
         Loading...
+      </div>
+    );
+  }
+
+  if (showBuyTries) {
+    return (
+      <div>
+        <BuyTries onBack={() => setShowBuyTries(false)} />;
       </div>
     );
   }

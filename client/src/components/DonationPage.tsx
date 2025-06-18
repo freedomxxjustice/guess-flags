@@ -4,19 +4,13 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
-  init,
   viewport,
-  themeParams,
   mainButton,
   hapticFeedback,
   invoice,
 } from "@telegram-apps/sdk";
 import request from "../utils/api";
 
-init();
-
-viewport.mount();
-themeParams.mount();
 mainButton.mount();
 
 viewport.expand();
@@ -38,8 +32,8 @@ const DonationPage = () => {
       if (hapticFeedback.isSupported()) {
         hapticFeedback.impactOccurred("soft");
       }
-      const response = await request("donate", "post", { amount: 4 });
-      invoice.open(response.invoice_link.replace("https://t.me/$", ""));
+      const response = await request("payment", "post", { amount: 4 });
+      invoice.open(response.data.invoice_link.replace("https://t.me/$", ""));
     };
 
     mainButton.onClick(handleClick);
@@ -63,7 +57,6 @@ const DonationPage = () => {
   };
 
   return (
-    <>
       <div className="flex justify-center items-center h-screen flex-col">
         <h1 className="text-blue-500 text-4xl mb-5 font-semibold">
           <CountUp end={stars} />{" "}
@@ -85,7 +78,6 @@ const DonationPage = () => {
           }}
         />
       </div>
-    </>
   );
 };
 
