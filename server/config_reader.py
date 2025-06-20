@@ -21,10 +21,10 @@ class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str = "https://api.guessflags.space"
+    WEBHOOK_URL: str = "https://guess-flags.onrender.com"
     WEBHOOK_PATH: str = "/webhook"
     # frontend
-    WEBAPP_URL: str = "https://app.guessflags.space"
+    WEBAPP_URL: str = "https://flags-guess.onrender.com"
 
     APP_HOST: str = "localhost"
     APP_PORT: int = 8000
