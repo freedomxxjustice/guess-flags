@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
 type User = {
-  id: string;
+  id: number;
+  created_at: DataTransfer;
   name: string;
+  tries_left: number;
   rating: number;
   games_played: number;
   games_won: number;

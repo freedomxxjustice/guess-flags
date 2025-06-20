@@ -1,6 +1,25 @@
 import { useState, useEffect, useRef } from "react";
-
-export default function Leaderboard({ leaders, user }) {
+type LeaderboardProps = {
+  leaders: {
+    [id: string]: {
+      name: string;
+      casual_score: number;
+    };
+  };
+  user: {
+    id: number;
+    created_at: DataTransfer;
+    name: string;
+    tries_left: number;
+    rating: number;
+    games_played: number;
+    games_won: number;
+    total_score: number;
+    best_score: number;
+    casual_score: number;
+  };
+};
+export default function Leaderboard({ leaders, user }: LeaderboardProps) {
   const listRef = useRef(null);
   const [isUserVisible, setIsUserVisible] = useState(true);
 
@@ -33,7 +52,7 @@ export default function Leaderboard({ leaders, user }) {
       <div className="w-full max-w-2xl h-[70vh] relative">
         <div className="overflow-y-auto space-y-4 pb-4 pr-2 h-full">
           {entries.map(([id, data], index) => {
-            const isCurrentUser = id == user.id;
+            const isCurrentUser = id == user.id.toString();
             return (
               <div
                 key={id}

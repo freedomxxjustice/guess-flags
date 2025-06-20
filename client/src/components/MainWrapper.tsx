@@ -16,7 +16,7 @@ const MainWrapper = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [_, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [showBuyTries, setShowBuyTries] = useState(false);
   const [page, setPage] = useState<"home" | "profile" | "leaderboard" | "game">(
@@ -45,11 +45,7 @@ const MainWrapper = () => {
   });
 
   // GET LEADERS
-  const {
-    data: leaders,
-    isLoading: isLeadersLoading,
-    refetch: refetchLeaders,
-  } = useQuery({
+  const { data: leaders, isLoading: isLeadersLoading } = useQuery({
     queryKey: ["leaders"],
     queryFn: async () => {
       const response = await request("users/get-leaders");
@@ -99,7 +95,7 @@ const MainWrapper = () => {
   }, [gameStarted, currentQuestionIndex, game, score]);
 
   const handleStartGame = () => {
-    if (user?.tries_left <= 0) {
+    if (!user || user.tries_left <= 0) {
       setShowModal("notEnoughTries");
       return;
     }
@@ -249,6 +245,7 @@ const MainWrapper = () => {
       </div>
     </div>
   );
+  if (!user) return null;
 
   const renderProfileScreen = () => {
     return <Profile user={user} />;
@@ -269,7 +266,7 @@ const MainWrapper = () => {
   // RENDER: Game Screen
   const renderCasualGameScreen = () => {
     const question = game?.questions[currentQuestionIndex];
-
+    if (!question) return null;
     return (
       <div className="flex flex-col items-center justify-center h-screen text-white px-4">
         <h2 className="text-2xl font-bold mb-4">
@@ -334,7 +331,7 @@ const MainWrapper = () => {
   );
 
   // RETURN LOGIC
-  if (isUserLoading) {
+  if (isUserLoading || isLeadersLoading) {
     return (
       <div className="animate-pulse text-white text-center mt-10">
         Loading...
@@ -359,7 +356,6 @@ const MainWrapper = () => {
             refetchUser();
           }}
         />
-        ;
       </div>
     );
   }

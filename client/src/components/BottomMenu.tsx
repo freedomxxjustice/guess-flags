@@ -1,8 +1,6 @@
-import React from "react";
 import { FaHome } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
-import { IconContext } from "react-icons/lib";
 
 type BottomMenuProps = {
   onNavigate: (page: "home" | "leaderboard" | "profile") => void;
