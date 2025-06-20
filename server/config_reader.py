@@ -26,8 +26,8 @@ class Config(BaseSettings):
     # frontend
     WEBAPP_URL: str = "https://flags-guess.onrender.com"
 
-    APP_HOST: str = "localhost"
-    APP_PORT: int = 8000
+    APP_HOST: str = "0.0.0.0"
+    APP_PORT: int = 10000
 
     model_config = SettingsConfigDict(
         env_file=ROOT_DIR / "server" / ".env", env_file_encoding="utf-8"
