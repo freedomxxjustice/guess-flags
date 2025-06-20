@@ -17,7 +17,7 @@ mainButton.mount();
 viewport.expand();
 
 mainButton.setParams({
-  text: "SPEND",
+  text: "CHECKOUT",
   isEnabled: true,
   isVisible: false,
   hasShineEffect: true,
@@ -68,7 +68,10 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
   return (
     <div className="flex justify-center items-center h-screen flex-col gap-8 text-white">
       <button
-        onClick={onBack}
+        onClick={() => {
+          onBack();
+          mainButton.setParams({ ...mainButton.state(), isVisible: false });
+        }}
         className="absolute top-6 left-6 bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg flex items-center gap-2"
       >
         <FontAwesomeIcon icon={faArrowLeft} />

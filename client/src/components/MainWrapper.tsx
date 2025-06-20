@@ -5,6 +5,8 @@ import type { IUser } from "../interfaces/IUser";
 import type { IGame } from "../interfaces/IGame";
 import BottomMenu from "./BottomMenu";
 import BuyTries from "./BuyTries";
+import Leaderboard from "./Leaderboard";
+import Profile from "./Profile";
 
 const MainWrapper = () => {
   // STATES
@@ -17,7 +19,7 @@ const MainWrapper = () => {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [showBuyTries, setShowBuyTries] = useState(false);
-  const [page, setPage] = useState<"home" | "profile" | "settings" | "game">(
+  const [page, setPage] = useState<"home" | "profile" | "leaderboard" | "game">(
     "home"
   );
 
@@ -26,7 +28,7 @@ const MainWrapper = () => {
   const btnClickAnimation = "transform active:scale-95 transition-transform";
   const btnDisabled = "text-background bg-gradient-to-r bg-darkest";
   const btnRegular =
-    "text-light bg-deep-blue focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
+    "text-white bg-deep-blue focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
 
   // GET USER INFO
   const {
@@ -42,6 +44,19 @@ const MainWrapper = () => {
     select: (data) => data.user as IUser,
   });
 
+  // GET LEADERS
+  const {
+    data: leaders,
+    isLoading: isLeadersLoading,
+    refetch: refetchLeaders,
+  } = useQuery({
+    queryKey: ["leaders"],
+    queryFn: async () => {
+      const response = await request("users/get-leaders");
+      return response.data;
+    },
+    select: (data) => data.leaders,
+  });
   // START GAME
   const {
     data: game,
@@ -116,22 +131,23 @@ const MainWrapper = () => {
     switch (page) {
       case "home":
         return renderHomeScreen();
-      // case "profile":
-      //   return <ProfileScreen />;
-      // case "leaderboard":
-      //   return <LeaderboardScreen />;
+      case "profile":
+        return renderProfileScreen();
+      case "leaderboard":
+        return renderLeaderboardScreen();
       default:
         return renderHomeScreen();
     }
   };
 
   const renderHomeScreen = () => (
-    <div className="">
+    <div>
       <div
         id="upperPanel"
         className="absolute top-4 w-full flex justify-center z-10"
       >
         <div
+          onClick={() => setShowBuyTries(true)}
           className={`rounded-xl py-1 px-3 text-center shadow-md ${
             user?.tries_left === 0 ? "bg-warning" : "bg-darker"
           }`}
@@ -143,7 +159,7 @@ const MainWrapper = () => {
       </div>
       <div className="flex justify-center items-center h-screen flex-col gap-8 p-6">
         <div>
-          <h1 className="text-primary text-center text-2xl mb-5 font-bold text-shadow-background text-shadow-md">
+          <h1 className="text-white text-center text-2xl mb-5 font-bold text-shadow-background text-shadow-md">
             {user?.name}, <br />
             Welcome to Flags Guess!
           </h1>
@@ -234,10 +250,18 @@ const MainWrapper = () => {
     </div>
   );
 
+  const renderProfileScreen = () => {
+    return <Profile user={user} />;
+  };
+
+  const renderLeaderboardScreen = () => {
+    return <Leaderboard leaders={leaders} user={user} />;
+  };
+
   // RENDER: Start Screen
   const renderStartScreen = () => (
     <div className="flex justify-center items-center h-screen flex-col">
-      <BottomMenu />
+      <BottomMenu onNavigate={setPage} />
       {renderPage()}
     </div>
   );
@@ -329,7 +353,13 @@ const MainWrapper = () => {
   if (showBuyTries) {
     return (
       <div>
-        <BuyTries onBack={() => setShowBuyTries(false)} />;
+        <BuyTries
+          onBack={() => {
+            setShowBuyTries(false);
+            refetchUser();
+          }}
+        />
+        ;
       </div>
     );
   }

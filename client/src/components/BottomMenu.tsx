@@ -3,13 +3,19 @@ import { FaHome } from "react-icons/fa";
 import { MdLeaderboard } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { IconContext } from "react-icons/lib";
-export default function BottomMenu() {
+
+type BottomMenuProps = {
+  onNavigate: (page: "home" | "leaderboard" | "profile") => void;
+};
+
+export default function BottomMenu({ onNavigate }: BottomMenuProps) {
   return (
     <div className="pb-2 fixed bottom-0 left-0 z-50 w-full h-20 bg-white border-t border-gray-200 dark:bg-gray-700 dark:border-gray-600">
       <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
         <button
           type="button"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
+          onClick={() => onNavigate("leaderboard")}
         >
           <MdLeaderboard />
           <span className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
@@ -19,6 +25,7 @@ export default function BottomMenu() {
         <button
           type="button"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
+          onClick={() => onNavigate("home")}
         >
           <FaHome />
           <span className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
@@ -29,6 +36,7 @@ export default function BottomMenu() {
         <button
           type="button"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
+          onClick={() => onNavigate("profile")}
         >
           <CgProfile />
           <span className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">

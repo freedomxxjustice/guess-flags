@@ -41,12 +41,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
         drop_pending_updates=True,
     )
 
-    # await session.close()
-
     await Tortoise.init(TORTOISE_ORM)
 
     yield
     await Tortoise.close_connections()
+    # await session.close()
     await bot.session.close()
 
 
