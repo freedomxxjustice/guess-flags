@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type { IUser } from "../interfaces/IUser";
 import type { IGame } from "../interfaces/IGame";
