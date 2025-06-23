@@ -21,13 +21,20 @@ class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
+<<<<<<< HEAD
     WEBHOOK_URL: str
     WEBHOOK_PATH: str = "/webhook"
     # frontend
     WEBAPP_URL: str
+=======
+    WEBHOOK_URL: str = "https://guess-flags.onrender.com"
+    WEBHOOK_PATH: str = "/webhook"
+    # frontend
+    WEBAPP_URL: str = "https://flags-guess.onrender.com"
+>>>>>>> 626bdfb3afcf89896509aa2608bace00b2408b79
 
-    APP_HOST: str = "localhost"
-    APP_PORT: int = 8000
+    APP_HOST: str = "0.0.0.0"
+    APP_PORT: int = 10000
 
     model_config = SettingsConfigDict(
         env_file=ROOT_DIR / "server" / ".env", env_file_encoding="utf-8"
