@@ -39,10 +39,10 @@ export default function Profile({ user }: ProfileProps) {
 
   return (
     <div className="w-full max-w-xl h-full mt-4 overflow-y-auto p-6">
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mt-8 text-center">
+      <h1 className="text-4xl font-extrabold text-white mt-8 text-center">
         Profile
       </h1>
-      <div className="max-w-xl mx-auto mt-12 p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-lg text-center">
+      <div className="max-w-xl mx-auto mt-12 p-6 bg-background rounded-3xl shadow-lg text-center">
         <div className="flex justify-center mb-6">
           {profilePhoto ? (
             <img
@@ -51,16 +51,16 @@ export default function Profile({ user }: ProfileProps) {
               className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-md"
             />
           ) : (
-            <div className="w-32 h-32 rounded-full bg-blue-400 flex items-center justify-center text-white text-5xl font-bold shadow-md border-4 border-blue-500">
+            <div className="w-32 h-32 rounded-full bg-grey flex items-center justify-center text-white text-5xl font-bold shadow-md border-4 border-primary">
               {user.name.charAt(0).toUpperCase()}
             </div>
           )}
         </div>
-        <h2 className="text-3xl font-semibold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-3xl font-semibold text-white mb-2">
           {user.name}
         </h2>
         <h3>
-          <div className="text-bold-blue">
+          <div className="text-primary">
             <h3 className="text-xl font-semibold">
               Rating — <span>{user.rating}</span>
             </h3>
@@ -70,7 +70,7 @@ export default function Profile({ user }: ProfileProps) {
         <div className="flex flex-col gap-6 mt-6">
           <div>
             <h2>Rating Statistics</h2>
-            <div className="grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300">
+            <div className="grid grid-cols-2 gap-4 text-gray-300">
               <div>
                 <h3 className="text-xl font-semibold">Games Played</h3>
                 <p>{user.games_played}</p>
@@ -83,7 +83,7 @@ export default function Profile({ user }: ProfileProps) {
           </div>
           <div>
             <h2>Casual Statistics</h2>
-            <div className="grid grid-cols-3 gap-4 text-gray-700 dark:text-gray-300">
+            <div className="grid grid-cols-3 gap-4 text-gray-300">
               <div></div>
               <div>
                 <h3 className="text-xl font-semibold">Casual Score</h3>

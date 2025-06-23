@@ -26,26 +26,27 @@ const App = () => {
 
   return (
     <div className="h-screen flex justify-center items-center text-white">
-      <div id="mainBackground">
+      <div id="mainBackground" className="relative overflow-hidden">
         <Particles
           id="tsparticles"
+          className="absolute inset-0 z-0"
           init={particlesInit}
           loaded={particlesLoaded}
           options={{
             preset: "stars",
             background: {
               color: {
-                value: "#293241",
+                value: "#131416",
               },
             },
             particles: {
               color: {
-                value: "#98c1d9",
+                value: "#f4f3f2",
               },
             },
           }}
         />
-        <div className="relative z-0">
+        <div className="relative z-10flex justify-center items-center text-white">
           <MainWrapper />
         </div>
       </div>

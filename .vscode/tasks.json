@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Run Cloudflare Tunnel",
+        "type": "shell",
+        "command": "cloudflared tunnel run",
+        "problemMatcher": [],
+        "group": "build",
+        "isBackground": true
+      },
+      {
+        "label": "Run Backend (Poetry)",
+        "type": "shell",
+        "command": "poetry run python __main__.py",
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/server"
+        },
+        "isBackground": true
+      },
+      {
+        "label": "Run Frontend (npm)",
+        "type": "shell",
+        "command": "npm run dev",
+        "problemMatcher": [],
+        "options": {
+          "cwd": "${workspaceFolder}/client"
+        },
+        "isBackground": true
+      },
+      {
+        "label": "Start All Services",
+        "dependsOn": [
+          "Run Cloudflare Tunnel",
+          "Run Backend (Poetry)",
+          "Run Frontend (npm)"
+        ],
+        "dependsOrder": "sequence"
+      }
+    ]
+  }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type { IUser } from "../interfaces/IUser";
 import type { IGame } from "../interfaces/IGame";
@@ -7,6 +7,7 @@ import BottomMenu from "./BottomMenu";
 import BuyTries from "./BuyTries";
 import Leaderboard from "./Leaderboard";
 import Profile from "./Profile";
+import PreCasualGame from "./PreCasualGame";
 
 const MainWrapper = () => {
   // STATES
@@ -19,16 +20,15 @@ const MainWrapper = () => {
   const [_, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [showBuyTries, setShowBuyTries] = useState(false);
-  const [page, setPage] = useState<"home" | "profile" | "leaderboard" | "game">(
-    "home"
-  );
-
+  const [showFilter, setShowFilter] = useState(false);
+  const [page, setPage] = useState<"home" | "profile" | "leaderboard">("home");
+  const [numQuestions, setNumQuestions] = useState<number | null>(null);
   // CONSTANTS
 
   const btnClickAnimation = "transform active:scale-95 transition-transform";
-  const btnDisabled = "text-background bg-gradient-to-r bg-darkest";
+  const btnDisabled = "text-background bg-grey";
   const btnRegular =
-    "text-white bg-deep-blue focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
+    "text-white bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
 
   // GET USER INFO
   const {
@@ -45,7 +45,11 @@ const MainWrapper = () => {
   });
 
   // GET LEADERS
-  const { data: leaders, isLoading: isLeadersLoading } = useQuery({
+  const {
+    data: leaders,
+    isLoading: isLeadersLoading,
+    refetch: refetchLeaders,
+  } = useQuery({
     queryKey: ["leaders"],
     queryFn: async () => {
       const response = await request("users/get-leaders");
@@ -61,7 +65,9 @@ const MainWrapper = () => {
     error: gameError,
   } = useQuery<IGame>({
     queryKey: ["game"],
-    queryFn: async () => (await request("games/create")).data.game,
+    queryFn: async () =>
+      (await request(`games/casual/create?num_questions=${numQuestions}`)).data
+        .game,
     enabled: gameStarted,
     retry: false,
   });
@@ -90,15 +96,22 @@ const MainWrapper = () => {
       !submittedRef.current
     ) {
       submittedRef.current = true;
-      request("games/submit-score", "POST", { score }).catch(console.error);
+      console.log(typeof numQuestions);
+      request("games/casual/submit-score", "POST", {
+        score,
+        numQuestions,
+      }).catch(console.error);
     }
   }, [gameStarted, currentQuestionIndex, game, score]);
 
-  const handleStartGame = () => {
+  const handleStartGame = (selected: number) => {
     if (!user || user.tries_left <= 0) {
+      setShowFilter(false);
       setShowModal("notEnoughTries");
       return;
     }
+    setNumQuestions(selected);
+    setShowFilter(false);
     submittedRef.current = false;
     setGameStarted(true);
     setCurrentQuestionIndex(0);
@@ -145,7 +158,7 @@ const MainWrapper = () => {
         <div
           onClick={() => setShowBuyTries(true)}
           className={`rounded-xl py-1 px-3 text-center shadow-md ${
-            user?.tries_left === 0 ? "bg-warning" : "bg-darker"
+            user?.tries_left === 0 ? "bg-warning" : "bg-primary"
           }`}
         >
           <h2 className="text-sm font-semibold">
@@ -169,12 +182,13 @@ const MainWrapper = () => {
           <button
             type="button"
             className={`${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClickAnimation}`}
-            onClick={handleStartGame}
+            onClick={() => setShowFilter(true)}
           >
             Play Casual
           </button>
           <button
             onClick={() => setShowModal("error")}
+            // onClick={() => joinMultiplayer()}
             type="button"
             className={`text-background bg-gradient-to-r bg-darkest focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnDisabled}`}
           >
@@ -258,7 +272,11 @@ const MainWrapper = () => {
   // RENDER: Start Screen
   const renderStartScreen = () => (
     <div className="flex justify-center items-center h-screen flex-col">
-      <BottomMenu onNavigate={setPage} />
+      <BottomMenu
+        onNavigate={setPage}
+        page={page}
+        refetchLeaders={refetchLeaders}
+      />
       {renderPage()}
     </div>
   );
@@ -276,7 +294,7 @@ const MainWrapper = () => {
           <img
             src={question.image}
             alt="Flag"
-            className="w-40 h-auto mb-4 border rounded"
+            className="w-full h-full object-contain mb-4"
           />
         </div>
         <div className="flex flex-col gap-2 w-full max-w-xs">
@@ -291,7 +309,7 @@ const MainWrapper = () => {
               } else if (isSelected) {
                 btnClass = "bg-red-600";
               } else {
-                btnClass = "bg-gray-600"; // dim unselected incorrect ones
+                btnClass = "bg-grey"; // dim unselected incorrect ones
               }
             }
 
@@ -300,7 +318,7 @@ const MainWrapper = () => {
                 key={idx}
                 disabled={!!selectedOption}
                 onClick={() => handleAnswer(opt)}
-                className={`${btnClickAnimation} ${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClass}`}
+                className={`${btnClickAnimation} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClass}`}
               >
                 {opt}
               </button>
@@ -357,6 +375,18 @@ const MainWrapper = () => {
           }}
         />
       </div>
+    );
+  }
+
+  if (showFilter) {
+    return (
+      <PreCasualGame
+        onStart={handleStartGame}
+        onBack={() => {
+          setShowFilter(false);
+          refetchUser();
+        }}
+      />
     );
   }
 

@@ -28,14 +28,6 @@ CREATE TABLE IF NOT EXISTS "flags" (
     "total_shown" INT NOT NULL DEFAULT 0,
     "total_correct" INT NOT NULL DEFAULT 0
 );
-CREATE TABLE IF NOT EXISTS "matches" (
-    "id" UUID NOT NULL PRIMARY KEY,
-    "flags" JSONB NOT NULL,
-    "is_finished" BOOL NOT NULL DEFAULT False,
-    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "player_1_id" BIGINT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE,
-    "player_2_id" BIGINT REFERENCES "users" ("id") ON DELETE CASCADE
-);
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "version" VARCHAR(255) NOT NULL,

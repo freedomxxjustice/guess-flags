@@ -14,7 +14,7 @@ async def get_user(
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
     today = date.today()
-    if user.last_reset_date != today and user.tries_left <= 0:
+    if user.last_reset_date != today:
         user.tries_left += 3
         user.last_reset_date = today
         await user.save()

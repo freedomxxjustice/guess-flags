@@ -12,11 +12,14 @@
   --color-bold-blue: #007FFF;
   --color-darker: #005FCC;
   --color-darkest: #003E99;
-  --color-primary: #e0fbfc;   /* Deep blue */
+  --color-primary: #3069ff; 
+  --color-white: #f4f3f2;  
+  --color-grey: #555a63;
+  --color-grey-2: #1e1e21;
   --color-accent: #98c1d9;    /* Light blue */
   --color-light: #e0fbfc;/* Soft cyan background */
   --color-warning: #ee6c4d;   /* Coral/orange for alerts or highlights */
-  --color-background: #293241;      /* Dark navy, good for text or headers */
+  --color-background: #131416;      /* Dark navy, good for text or headers */
 }	
 
 body {

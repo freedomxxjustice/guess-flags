@@ -21,10 +21,10 @@ class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str = "https://api.guessflags.space"
+    WEBHOOK_URL: str
     WEBHOOK_PATH: str = "/webhook"
     # frontend
-    WEBAPP_URL: str = "https://app.guessflags.space"
+    WEBAPP_URL: str
 
     APP_HOST: str = "localhost"
     APP_PORT: int = 8000
@@ -63,7 +63,6 @@ TORTOISE_ORM = {
             "models": [
                 "db.models.user",
                 "db.models.flag",
-                "db.models.match",
                 "aerich.models",
             ],
             "default_connection": "default",
