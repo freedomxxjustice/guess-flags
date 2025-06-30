@@ -13,7 +13,7 @@ A fun and educational **flag guessing game** built for Telegram, where you can t
   - Out of tries? Wait until tomorrow or **buy more with Telegram Stars**.
 - **Leaderboard:** Compete for the highest scores.
 - **Profile:** Track your performance and stats.
-- **Telegram Integration:** Seamlessly works inside Telegram using [telegram-sdk](https://github.com/telegram-mini-apps/sdk).
+- **Telegram Integration:** Seamlessly works inside Telegram using [telegram-sdk](https://github.com/telegram-mini-apps).
 
 ---
 
