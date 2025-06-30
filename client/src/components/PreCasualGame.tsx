@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { backButton } from "@telegram-apps/sdk";
 
 type GameFilterProps = {
   onStart: (numQuestions: number) => void;
   onBack: () => void;
 };
+
 function PreCasualGame({ onBack, onStart }: GameFilterProps) {
   const [selected, setSelected] = useState<number | null>(null);
-
+  backButton.onClick(onBack);
   const btnClickAnimation = "transform active:scale-95 transition-transform";
   const btnBase = "font-medium rounded-lg text-sm px-20 py-3 text-center mb-2";
   const btnPrimary =
@@ -41,13 +43,6 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
         }`}
       >
         Start Game
-      </button>
-
-      <button
-        onClick={onBack}
-        className={`mt-4 ${btnBase} bg-warning text-white ${btnClickAnimation}`}
-      >
-        Back
       </button>
     </div>
   );

@@ -1,29 +1,17 @@
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import { faArrowLeft, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
-  init,
-  viewport,
   mainButton,
   hapticFeedback,
   invoice,
+  backButton,
 } from "@telegram-apps/sdk";
+
 import request from "../utils/api";
-init();
-mainButton.mount();
 
-viewport.expand();
-
-mainButton.setParams({
-  text: "CHECKOUT",
-  isEnabled: true,
-  isVisible: false,
-  hasShineEffect: true,
-  isLoaderVisible: false,
-  textColor: "#FFFFFF",
-});
 const triesOptions = [
   { tries: 1, stars: 10 },
   { tries: 3, stars: 25 },
@@ -35,6 +23,8 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
     tries: number;
     stars: number;
   } | null>(null);
+
+  backButton.onClick(onBack);
 
   useEffect(() => {
     const handleClick = async () => {
@@ -66,18 +56,7 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen flex-col gap-8 text-white">
-      <button
-        onClick={() => {
-          onBack();
-          mainButton.setParams({ ...mainButton.state(), isVisible: false });
-        }}
-        className="absolute top-6 left-6 bg-gray-800 hover:bg-gray-700 text-white px-3 py-2 rounded-lg flex items-center gap-2"
-      >
-        <FontAwesomeIcon icon={faArrowLeft} />
-        Back
-      </button>
-
+    <div className="flex justify-center items-center h-screen flex-col gap-8 mt-14 text-white">
       <h1 className="text-blue-500 text-4xl font-semibold">
         <CountUp end={selected?.stars || 0} />{" "}
         <FontAwesomeIcon icon={faStar} className="text-yellow-400" />

@@ -1,19 +1,53 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
 import MainWrapper from "./MainWrapper";
-import { init, viewport, themeParams, initData } from "@telegram-apps/sdk";
+import {
+  init,
+  viewport,
+  themeParams,
+  initData,
+  backButton,
+  mainButton,
+} from "@telegram-apps/sdk";
 
 init();
-
 initData.restore();
-
-viewport.mount();
+if (viewport.bindCssVars.isAvailable()) {
+  viewport.bindCssVars();
+  // Creates CSS variables like:
+  // --tg-viewport-height: 675px
+  // --tg-viewport-width: 320px
+  // --tg-viewport-stable-height: 675px
+}
+if (viewport.mount.isAvailable()) {
+  viewport.mount();
+}
 themeParams.mount();
 
-viewport.expand();
+mainButton.mount();
+
+backButton.mount();
+
+mainButton.setParams({
+  text: "CHECKOUT",
+  isEnabled: true,
+  isVisible: false,
+  hasShineEffect: true,
+  isLoaderVisible: false,
+  textColor: "#FFFFFF",
+});
+if (viewport.expand.isAvailable()) {
+  viewport.expand();
+}
 
 const App = () => {
+  useEffect(() => {
+    if (viewport.requestFullscreen.isAvailable()) {
+      viewport.requestFullscreen();
+    }
+  }, []);
+
   // PARTICLES
 
   const particlesInit = useCallback(async (engine: any) => {

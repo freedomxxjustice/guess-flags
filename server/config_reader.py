@@ -1,3 +1,4 @@
+from contextlib import AsyncExitStack, asynccontextmanager
 from pathlib import Path
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -11,21 +12,13 @@ from tortoise import Tortoise
 ROOT_DIR = Path(__file__).parent.parent
 
 logging.basicConfig(level=logging.INFO)
-
-# from aiohttp import ClientSession
-
-# session = ClientSession()
+logger = logging.getLogger(__name__)
 
 
 class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str
-    WEBHOOK_PATH: str = "/webhook"
-    # frontend
-    WEBAPP_URL: str
-
     WEBHOOK_URL: str = "https://api.guessflags.space"
     WEBHOOK_PATH: str = "/webhook"
     # frontend
@@ -39,18 +32,30 @@ class Config(BaseSettings):
     )
 
 
-async def lifespan(app: FastAPI) -> AsyncGenerator:
-    await bot.set_webhook(
-        url=f"{config.WEBHOOK_URL}/webhook",
-        allowed_updates=dp.resolve_used_update_types(),
-        drop_pending_updates=True,
-    )
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    logger.info("Starting application lifespan...")
+    async with AsyncExitStack() as stack:
+        try:
+            await bot.set_webhook(
+                url=f"{config.WEBHOOK_URL.rstrip('/')}/webhook",
+                allowed_updates=dp.resolve_used_update_types(),
+                drop_pending_updates=True,
+            )
+            logger.info("Webhook set successfully.")
+        except Exception as e:
+            logger.exception(e, "Failed to set webhook!")
+            raise
 
-    await Tortoise.init(TORTOISE_ORM)
-    yield
-    await Tortoise.close_connections()
-    # await session.close()
-    await bot.session.close()
+        await Tortoise.init(TORTOISE_ORM)
+        stack.push_async_callback(Tortoise.close_connections)
+        logger.info("Tortoise ORM initialized.")
+
+        stack.push_async_callback(bot.session.close)
+        logger.info("Bot session cleanup registered.")
+
+        yield
+    logger.info("Application lifespan finished.")
 
 
 config = Config()

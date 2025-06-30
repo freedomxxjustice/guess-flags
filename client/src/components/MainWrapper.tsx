@@ -8,6 +8,7 @@ import BuyTries from "./BuyTries";
 import Leaderboard from "./Leaderboard";
 import Profile from "./Profile";
 import PreCasualGame from "./PreCasualGame";
+import { backButton } from "@telegram-apps/sdk";
 
 const MainWrapper = () => {
   // STATES
@@ -153,7 +154,7 @@ const MainWrapper = () => {
     <div>
       <div
         id="upperPanel"
-        className="absolute top-4 w-full flex justify-center z-10"
+        className="absolute top-14 w-full flex justify-center z-10"
       >
         <div
           onClick={() => setShowBuyTries(true)}
@@ -190,7 +191,7 @@ const MainWrapper = () => {
             onClick={() => setShowModal("error")}
             // onClick={() => joinMultiplayer()}
             type="button"
-            className={`text-background bg-gradient-to-r bg-darkest focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnDisabled}`}
+            className={`text-background bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnDisabled}`}
           >
             Play Rating
           </button>
@@ -366,12 +367,15 @@ const MainWrapper = () => {
   }
 
   if (showBuyTries) {
+    backButton.show();
+
     return (
       <div>
         <BuyTries
           onBack={() => {
             setShowBuyTries(false);
             refetchUser();
+            backButton.hide();
           }}
         />
       </div>
@@ -379,12 +383,15 @@ const MainWrapper = () => {
   }
 
   if (showFilter) {
+    backButton.show();
+
     return (
       <PreCasualGame
         onStart={handleStartGame}
         onBack={() => {
           setShowFilter(false);
           refetchUser();
+          backButton.hide();
         }}
       />
     );
