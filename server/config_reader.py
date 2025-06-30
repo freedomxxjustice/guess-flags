@@ -19,13 +19,13 @@ class Config(BaseSettings):
     BOT_TOKEN: SecretStr
     DB_URL: SecretStr
     # backend
-    WEBHOOK_URL: str = "https://api.guessflags.space"
-    WEBHOOK_PATH: str = "/webhook"
+    WEBHOOK_URL: str
+    WEBHOOK_PATH: str
     # frontend
-    WEBAPP_URL: str = "https://app.guessflags.space"
+    WEBAPP_URL: str
 
-    APP_HOST: str = "127.0.0.1"
-    APP_PORT: int = 8000
+    APP_HOST: str
+    APP_PORT: int
 
     model_config = SettingsConfigDict(
         env_file=ROOT_DIR / "server" / ".env", env_file_encoding="utf-8"
