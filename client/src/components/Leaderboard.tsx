@@ -43,15 +43,20 @@ export default function Leaderboard({ leaders, user }: LeaderboardProps) {
   );
 
   return (
-    <div className="w-full flex flex-col items-center px-4">
-      <h1 className="text-4xl font-extrabold text-white mt-8 mb-2">
-        Leaderboard
-      </h1>
-      <p className="text-gray-300 mb-6 max-w-2xl text-center">
-        It's never late to improve yourself!
-      </p>
+    <div className="">
+      <div
+        id="upperPanel"
+        className="fixed top-28 left-1/2 -translate-x-1/2 w-max z-50 flex justify-center flex-col"
+      >
+        <h1 className="text-4xl font-extrabold text-white text-center">
+          Leaderboard
+        </h1>
+        <p className="text-gray-300 mb-6 max-w-2xl text-center">
+          It's never late to improve yourself!
+        </p>
+      </div>
 
-      <div className="w-full max-w-2xl h-[70vh] relative">
+      <div className="w-full max-w-2xl h-[50vh] relative">
         <div className="overflow-y-auto space-y-4 pb-4 pr-2 h-full">
           {entries.map(([id, data], index) => {
             const isCurrentUser = id == user.id.toString();
@@ -61,7 +66,7 @@ export default function Leaderboard({ leaders, user }: LeaderboardProps) {
                 id={`leader-${id}`}
                 className={`w-full flex justify-between items-center rounded-2xl px-6 py-4 border shadow-md transition-colors duration-300 ${
                   isCurrentUser
-                    ? "bg-primary border-grey"
+                    ? "bg-primary border-grey text-white"
                     : "bg-grey-2 border-grey"
                 }`}
               >
@@ -71,7 +76,11 @@ export default function Leaderboard({ leaders, user }: LeaderboardProps) {
                     ? data.name.slice(0, 15) + "…"
                     : data.name}
                 </span>
-                <span className="text-blue-400 font-bold text-md">
+                <span
+                  className={`font-bold text-md ${
+                    isCurrentUser ? "text-white" : "text-primary"
+                  }`}
+                >
                   {data.casual_score} pts
                 </span>
               </div>

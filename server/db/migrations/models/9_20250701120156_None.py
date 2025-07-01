@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS "flags" (
     "emoji" VARCHAR(10),
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "total_shown" INT NOT NULL DEFAULT 0,
-    "total_correct" INT NOT NULL DEFAULT 0
+    "total_correct" INT NOT NULL DEFAULT 0,
+    "category" VARCHAR(128) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,

@@ -13,6 +13,7 @@ class Flag(Model):
     created_at = fields.DatetimeField(auto_now_add=True)
     total_shown = fields.IntField(default=0)
     total_correct = fields.IntField(default=0)
+    category = fields.CharField(128, null=False)
 
     class Meta:
         table = "flags"

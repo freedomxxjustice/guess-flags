@@ -11,6 +11,7 @@ import {
   mainButton,
 } from "@telegram-apps/sdk";
 
+// TELEGRAM INITIATION
 init();
 initData.restore();
 if (viewport.bindCssVars.isAvailable()) {
@@ -23,12 +24,9 @@ if (viewport.bindCssVars.isAvailable()) {
 if (viewport.mount.isAvailable()) {
   viewport.mount();
 }
-themeParams.mount();
-
+themeParams.mountSync();
 mainButton.mount();
-
 backButton.mount();
-
 mainButton.setParams({
   text: "CHECKOUT",
   isEnabled: true,
@@ -80,7 +78,7 @@ const App = () => {
             },
           }}
         />
-        <div className="relative z-10flex justify-center items-center text-white">
+        <div className="relative flex justify-center items-center text-white">
           <MainWrapper />
         </div>
       </div>

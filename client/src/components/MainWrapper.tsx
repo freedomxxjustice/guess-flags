@@ -18,18 +18,20 @@ const MainWrapper = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [typedAnswer, setTypedAnswer] = useState<string>("");
   const [_, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [showBuyTries, setShowBuyTries] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [page, setPage] = useState<"home" | "profile" | "leaderboard">("home");
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedGamemode, setSelectedGamemode] = useState<string | null>(null);
   // CONSTANTS
 
   const btnClickAnimation = "transform active:scale-95 transition-transform";
   const btnDisabled = "text-background bg-grey";
-  const btnRegular =
-    "text-white bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
+  const btnRegular = "text-white bg-primary";
 
   // GET USER INFO
   const {
@@ -65,16 +67,22 @@ const MainWrapper = () => {
     isFetching: isGameFetching,
     error: gameError,
   } = useQuery<IGame>({
-    queryKey: ["game"],
+    queryKey: ["game", numQuestions, selectedCategory, selectedGamemode], // include in key for caching
     queryFn: async () =>
-      (await request(`games/casual/create?num_questions=${numQuestions}`)).data
-        .game,
+      (
+        await request(
+          `games/casual/create?num_questions=${numQuestions}&category=${selectedCategory}&gamemode=${selectedGamemode}`
+        )
+      ).data.game,
     enabled: gameStarted,
     retry: false,
   });
 
   // EFFECTS
+
   const submittedRef = useRef(false);
+  // TIMER
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (gameError) {
@@ -105,13 +113,19 @@ const MainWrapper = () => {
     }
   }, [gameStarted, currentQuestionIndex, game, score]);
 
-  const handleStartGame = (selected: number) => {
+  const handleStartGame = (
+    numQuestions: number,
+    category: string,
+    gamemode: string
+  ) => {
     if (!user || user.tries_left <= 0) {
       setShowFilter(false);
       setShowModal("notEnoughTries");
       return;
     }
-    setNumQuestions(selected);
+    setNumQuestions(numQuestions);
+    setSelectedCategory(category);
+    setSelectedGamemode(gamemode);
     setShowFilter(false);
     submittedRef.current = false;
     setGameStarted(true);
@@ -133,6 +147,7 @@ const MainWrapper = () => {
     setTimeout(() => {
       setSelectedOption(null);
       setIsCorrect(null);
+      setTypedAnswer("");
       setCurrentQuestionIndex((prev) => prev + 1);
     }, 1000);
   };
@@ -154,11 +169,11 @@ const MainWrapper = () => {
     <div>
       <div
         id="upperPanel"
-        className="absolute top-14 w-full flex justify-center z-10"
+        className="fixed top-14 left-1/2 -translate-x-1/2 w-max z-50 flex justify-center"
       >
         <div
           onClick={() => setShowBuyTries(true)}
-          className={`rounded-xl py-1 px-3 text-center shadow-md ${
+          className={`rounded-xl py-1 px-3 text-center shadow-md cursor-pointer ${
             user?.tries_left === 0 ? "bg-warning" : "bg-primary"
           }`}
         >
@@ -298,34 +313,82 @@ const MainWrapper = () => {
             className="w-full h-full object-contain mb-4"
           />
         </div>
-        <div className="flex flex-col gap-2 w-full max-w-xs">
-          {question.options.map((opt: string, idx: number) => {
-            const isCorrectAnswer = opt === question.answer;
-            const isSelected = selectedOption === opt;
+        {selectedGamemode === "choose" ? (
+          // buttons
+          <div className="flex flex-col gap-2 w-full max-w-xs">
+            {question.options.map((opt: string, idx: number) => {
+              const isCorrectAnswer = opt === question.answer;
+              const isSelected = selectedOption === opt;
 
-            let btnClass = "bg-blue-600 hover:bg-blue-700";
-            if (selectedOption) {
-              if (isCorrectAnswer) {
-                btnClass = "bg-green-600";
-              } else if (isSelected) {
-                btnClass = "bg-red-600";
-              } else {
-                btnClass = "bg-grey"; // dim unselected incorrect ones
+              let btnClass = "bg-primary hover:bg-blue-700";
+              if (selectedOption) {
+                if (isCorrectAnswer) {
+                  btnClass = "bg-green-600";
+                } else if (isSelected) {
+                  btnClass = "bg-red-600";
+                } else {
+                  btnClass = "bg-grey"; // dim unselected incorrect ones
+                }
               }
-            }
 
-            return (
-              <button
-                key={idx}
-                disabled={!!selectedOption}
-                onClick={() => handleAnswer(opt)}
-                className={`${btnClickAnimation} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClass}`}
-              >
-                {opt}
-              </button>
-            );
-          })}
-        </div>
+              return (
+                <button
+                  key={idx}
+                  disabled={!!selectedOption}
+                  onClick={() => handleAnswer(opt)}
+                  className={`${btnClickAnimation} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClass}`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          // input
+          <div className="flex flex-col gap-4 w-full max-w-xs">
+            <input
+              type="text"
+              value={typedAnswer}
+              onChange={(e) => setTypedAnswer(e.target.value)}
+              disabled={!!selectedOption}
+              className={`
+      px-4 py-3 rounded-lg w-full border-2 transition-all
+      focus:outline-none focus:ring-2 focus:ring-primary
+      ${
+        selectedOption
+          ? selectedOption === game?.questions[currentQuestionIndex].answer
+            ? "border-green-500 bg-green-100 text-black"
+            : "border-red-500 bg-red-100 text-black"
+          : "border-gray-300"
+      }
+    `}
+              placeholder="Type your answer..."
+            />
+
+            <button
+              onClick={() => handleAnswer(typedAnswer.trim())}
+              disabled={!!selectedOption || !typedAnswer.trim()}
+              className={`
+      font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
+      ${
+        selectedOption
+          ? selectedOption === game?.questions[currentQuestionIndex].answer
+            ? "bg-green-600 hover:bg-green-700"
+            : "bg-red-600 hover:bg-red-700"
+          : "bg-primary hover:bg-blue-700"
+      }
+      ${btnClickAnimation}
+    `}
+            >
+              {selectedOption
+                ? selectedOption ===
+                  game?.questions[currentQuestionIndex].answer
+                  ? "✅ Correct!"
+                  : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
+                : "Submit"}
+            </button>
+          </div>
+        )}
       </div>
     );
   };
@@ -342,7 +405,7 @@ const MainWrapper = () => {
           setGameStarted(false);
           refetchUser();
         }}
-        className="mt-4 bg-blue-600 px-4 py-2 rounded hover:bg-blue-700"
+        className="mt-4 bg-primary px-4 py-2 rounded hover:bg-blue-700"
       >
         Home Page
       </button>
