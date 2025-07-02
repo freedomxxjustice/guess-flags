@@ -22,12 +22,6 @@ body {
   background: var(--tg-bg-color);
 }
 
-
-
-/* #tsparticles {
-  z-index: 0;
-} */
-
 #mainBackground {
   background-color: rgb(255, 255, 255);
 }

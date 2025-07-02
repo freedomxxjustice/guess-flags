@@ -1,7 +1,8 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadStarsPreset } from "tsparticles-preset-stars";
 import MainWrapper from "./MainWrapper";
+import IntroScreen from "./IntroScreen";
 import {
   init,
   viewport,
@@ -16,10 +17,6 @@ init();
 initData.restore();
 if (viewport.bindCssVars.isAvailable()) {
   viewport.bindCssVars();
-  // Creates CSS variables like:
-  // --tg-viewport-height: 675px
-  // --tg-viewport-width: 320px
-  // --tg-viewport-stable-height: 675px
 }
 if (viewport.mount.isAvailable()) {
   viewport.mount();
@@ -40,13 +37,21 @@ if (viewport.expand.isAvailable()) {
 }
 
 const App = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
+  useEffect(() => {
+    // For example, hide after 3 seconds
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   useEffect(() => {
     if (viewport.requestFullscreen.isAvailable()) {
       viewport.requestFullscreen();
     }
   }, []);
-
-  // PARTICLES
 
   const particlesInit = useCallback(async (engine: any) => {
     await loadStarsPreset(engine);
@@ -56,8 +61,15 @@ const App = () => {
     await console.log(container);
   }, []);
 
+  const renderIntroScreen = () => {
+    if (showIntro) {
+      return <IntroScreen />;
+    }
+  };
+
   return (
     <div className="h-screen flex justify-center items-center text-white">
+      {renderIntroScreen()}
       <div id="mainBackground" className="relative overflow-hidden">
         <Particles
           id="tsparticles"

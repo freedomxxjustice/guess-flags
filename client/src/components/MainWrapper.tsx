@@ -9,6 +9,7 @@ import Leaderboard from "./Leaderboard";
 import Profile from "./Profile";
 import PreCasualGame from "./PreCasualGame";
 import { backButton } from "@telegram-apps/sdk";
+import LoadingSpinner from "./LoadingSpinner";
 
 const MainWrapper = () => {
   // STATES
@@ -27,6 +28,8 @@ const MainWrapper = () => {
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedGamemode, setSelectedGamemode] = useState<string | null>(null);
+  const [minDelayDone, setMinDelayDone] = useState(false);
+
   // CONSTANTS
 
   const btnClickAnimation = "transform active:scale-95 transition-transform";
@@ -96,6 +99,10 @@ const MainWrapper = () => {
       setGameStarted(false); // prevent UI from progressing if error occurs
     }
   }, [gameError]);
+  useEffect(() => {
+    const timeout = setTimeout(() => setMinDelayDone(true), 1500);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     if (
@@ -132,7 +139,7 @@ const MainWrapper = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
   };
-
+  const isLoading = isUserLoading || !minDelayDone;
   const openCommunity = () => {
     window.open("https://t.me/guessflags", "_blank");
   };
@@ -186,7 +193,7 @@ const MainWrapper = () => {
         <div>
           <h1 className="text-white text-center text-2xl mb-5 font-bold text-shadow-background text-shadow-md">
             {user?.name}, <br />
-            Welcome to Flags Guess!
+            Welcome to Guess Flags!
           </h1>
           {user?.tries_left === 0 && (
             <h2 className="text-center text-warning text-sm px-4">
@@ -414,19 +421,11 @@ const MainWrapper = () => {
 
   // RETURN LOGIC
   if (isUserLoading || isLeadersLoading) {
-    return (
-      <div className="animate-pulse text-white text-center mt-10">
-        Loading...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (isGameLoading || isGameFetching) {
-    return (
-      <div className="animate-pulse text-white text-center mt-10">
-        Loading...
-      </div>
-    );
+    return <LoadingSpinner />;
   }
 
   if (showBuyTries) {
