@@ -10,6 +10,7 @@ import Profile from "./Profile";
 import PreCasualGame from "./PreCasualGame";
 import { backButton } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
+import * as fuzzball from "fuzzball";
 
 const MainWrapper = () => {
   // STATES
@@ -20,7 +21,7 @@ const MainWrapper = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [typedAnswer, setTypedAnswer] = useState<string>("");
-  const [_, setIsCorrect] = useState<boolean | null>(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [showBuyTries, setShowBuyTries] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -146,7 +147,21 @@ const MainWrapper = () => {
 
   const handleAnswer = (opt: string) => {
     if (selectedOption) return;
-    const correct = opt === game?.questions[currentQuestionIndex].answer;
+
+    const answer = game?.questions[currentQuestionIndex].answer ?? "";
+
+    // Normalize
+    const normalizedOpt = opt.trim().toLowerCase();
+    const normalizedAnswer = answer.trim().toLowerCase();
+
+    // Compute similarity ratio (0 to 100)
+    const similarity = fuzzball.ratio(normalizedOpt, normalizedAnswer);
+
+    console.log("Similarity:", similarity);
+
+    // Example threshold: 70% similarity (adjust as needed)
+    const correct = similarity >= 70;
+
     setSelectedOption(opt);
     setIsCorrect(correct);
     if (correct) setScore((prev) => prev + 1);
@@ -250,6 +265,7 @@ const MainWrapper = () => {
           </div>
         )}
         {/* Buy Tries Modal */}
+
         {showModal == "notEnoughTries" && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
@@ -363,7 +379,7 @@ const MainWrapper = () => {
       focus:outline-none focus:ring-2 focus:ring-primary
       ${
         selectedOption
-          ? selectedOption === game?.questions[currentQuestionIndex].answer
+          ? isCorrect
             ? "border-green-500 bg-green-100 text-black"
             : "border-red-500 bg-red-100 text-black"
           : "border-gray-300"
@@ -379,7 +395,7 @@ const MainWrapper = () => {
       font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
       ${
         selectedOption
-          ? selectedOption === game?.questions[currentQuestionIndex].answer
+          ? isCorrect
             ? "bg-green-600 hover:bg-green-700"
             : "bg-red-600 hover:bg-red-700"
           : "bg-primary hover:bg-blue-700"
@@ -388,8 +404,7 @@ const MainWrapper = () => {
     `}
             >
               {selectedOption
-                ? selectedOption ===
-                  game?.questions[currentQuestionIndex].answer
+                ? isCorrect
                   ? "✅ Correct!"
                   : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
                 : "Submit"}
@@ -440,6 +455,29 @@ const MainWrapper = () => {
             backButton.hide();
           }}
         />
+      </div>
+    );
+  }
+
+  if (gameError) {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
+          <h2 className="text-xl font-bold mb-4">A like 404</h2>
+          <p className="mb-6">
+            {gameError instanceof Error ? gameError.message : "Unknown error"}
+          </p>
+          <button
+            onClick={() => setShowModal(false)}
+            className="py-2 px-4 rounded-xl font-semibold transition-all"
+            style={{
+              backgroundColor: "var(--color-warning)",
+              color: "white",
+            }}
+          >
+            Close
+          </button>
+        </div>
       </div>
     );
   }

@@ -40,10 +40,9 @@ const App = () => {
   const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
-    // For example, hide after 3 seconds
     const timer = setTimeout(() => {
       setShowIntro(false);
-    }, 5000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
