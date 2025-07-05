@@ -1,5 +1,5 @@
 from datetime import date
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, Query
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from db import UserSchema, User
@@ -24,10 +24,14 @@ async def get_user(
 
 
 @router.get("/get-leaders")
-async def get_leaders(request: Request) -> JSONResponse:
-    leaders = await User.all().order_by("-casual_score")
+async def get_leaders(
+    user_id: int = Query(..., description="ID of the current user")
+) -> JSONResponse:
+    # Fetch top 50 users by casual_score descending
+    top_50 = await User.all().order_by("-casual_score").limit(50)
+
     leaders_dict = {}
-    for leader in leaders:
+    for leader in top_50:
         leader_obj = (await UserSchema.from_tortoise_orm(leader)).model_dump(
             mode="json"
         )
@@ -35,4 +39,12 @@ async def get_leaders(request: Request) -> JSONResponse:
             "name": leader_obj["name"],
             "casual_score": leader_obj["casual_score"],
         }
-    return JSONResponse({"leaders": leaders_dict})
+
+    # Get the current user
+    user = await User.get(id=user_id)
+    user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
+
+    # Compute user's global rank (1-based)
+    user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
+
+    return JSONResponse({"leaders": leaders_dict, "user_rank": user_rank})

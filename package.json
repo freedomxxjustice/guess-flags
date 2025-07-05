@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@material-tailwind/react": "^2.1.10"
+  }
+}

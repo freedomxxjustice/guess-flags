@@ -11,6 +11,10 @@ import PreCasualGame from "./PreCasualGame";
 import { backButton } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
+import { AnimatePresence, motion } from "framer-motion";
+import EventCarousel from "./Carousel";
+
+const TRANSITION_DURATION = 0.2;
 
 const MainWrapper = () => {
   // STATES
@@ -34,8 +38,10 @@ const MainWrapper = () => {
   // CONSTANTS
 
   const btnClickAnimation = "transform active:scale-95 transition-transform";
-  const btnDisabled = "text-background bg-grey";
-  const btnRegular = "text-white bg-primary";
+  const btnDisabled = "text-grey backdrop-blur bg-grey/10 text-xl";
+  const btnRegular =
+    "text-white bg-primary backdrop-blur rounded-3xl text-xl shadow-xl";
+  const btnBig = "py-4 w-75";
 
   // GET USER INFO
   const {
@@ -52,18 +58,25 @@ const MainWrapper = () => {
   });
 
   // GET LEADERS
+
   const {
-    data: leaders,
+    data,
     isLoading: isLeadersLoading,
     refetch: refetchLeaders,
   } = useQuery({
     queryKey: ["leaders"],
     queryFn: async () => {
-      const response = await request("users/get-leaders");
-      return response.data;
+      if (user) {
+        const response = await request(`users/get-leaders?user_id=${user?.id}`);
+        return response.data;
+      }
     },
-    select: (data) => data.leaders,
+    select: (data) => ({
+      leaders: data.leaders,
+      userRank: data.user_rank, // keep the rank as well
+    }),
   });
+
   // START GAME
   const {
     data: game,
@@ -205,8 +218,8 @@ const MainWrapper = () => {
         </div>
       </div>
       <div className="flex justify-center items-center h-screen flex-col gap-8 p-6">
-        <div>
-          <h1 className="text-white text-center text-2xl mb-5 font-bold text-shadow-background text-shadow-md">
+        <div className="bg-grey-2/10 backdrop-blur py-4 px-5 shadow-2xl">
+          <h1 className="text-white text-center text-2xl font-bold text-shadow-background text-shadow-md">
             {user?.name}, <br />
             Welcome to Guess Flags!
           </h1>
@@ -216,10 +229,12 @@ const MainWrapper = () => {
             </h2>
           )}
         </div>
-        <div className="flex justify-center flex-col items-center">
+        <img className="rounded-xl object-cover w-75" src="/....png" />
+
+        <div className="flex justify-center flex-col items-center gap-2">
           <button
             type="button"
-            className={`${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClickAnimation}`}
+            className={`${btnRegular} ${btnBig} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnClickAnimation}`}
             onClick={() => setShowFilter(true)}
           >
             Play Casual
@@ -228,20 +243,22 @@ const MainWrapper = () => {
             onClick={() => setShowModal("error")}
             // onClick={() => joinMultiplayer()}
             type="button"
-            className={`text-background bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnDisabled}`}
+            className={`text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnDisabled}`}
           >
             Play Rating
           </button>
           <button
             type="button"
-            className={`${btnRegular} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClickAnimation}`}
+            className={`${btnRegular} ${btnBig} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnClickAnimation}`}
             onClick={openCommunity}
           >
             Community
           </button>
-        </div>
-        <div>
-          <p className="text-accent text-shadow-2xs text-xs">Early Access</p>
+          <div>
+            <p className="text-accent text-shadow-2xs text-xs mt-8">
+              Early Access
+            </p>
+          </div>
         </div>
         {/* 404 Modal */}
         {showModal == "error" && (
@@ -305,7 +322,13 @@ const MainWrapper = () => {
   };
 
   const renderLeaderboardScreen = () => {
-    return <Leaderboard leaders={leaders} user={user} />;
+    return (
+      <Leaderboard
+        leaders={data?.leaders}
+        user={user}
+        userRank={data?.userRank}
+      />
+    );
   };
 
   // RENDER: Start Screen
@@ -316,7 +339,18 @@ const MainWrapper = () => {
         page={page}
         refetchLeaders={refetchLeaders}
       />
-      {renderPage()}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={page} // IMPORTANT: triggers animation on `page` change
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 0 }}
+          transition={{ duration: TRANSITION_DURATION }}
+          className="w-full"
+        >
+          {renderPage()}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 
@@ -343,14 +377,14 @@ const MainWrapper = () => {
               const isCorrectAnswer = opt === question.answer;
               const isSelected = selectedOption === opt;
 
-              let btnClass = "bg-primary hover:bg-blue-700";
+              let btnClass = `${btnBig} bg-primary/10`;
               if (selectedOption) {
                 if (isCorrectAnswer) {
                   btnClass = "bg-green-600";
                 } else if (isSelected) {
                   btnClass = "bg-red-600";
                 } else {
-                  btnClass = "bg-grey"; // dim unselected incorrect ones
+                  btnClass = "bg-primary/10"; // dim unselected incorrect ones
                 }
               }
 
@@ -359,7 +393,7 @@ const MainWrapper = () => {
                   key={idx}
                   disabled={!!selectedOption}
                   onClick={() => handleAnswer(opt)}
-                  className={`${btnClickAnimation} font-medium rounded-lg text-sm px-20 py-3 text-center me-2 mb-2 ${btnClass}`}
+                  className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
                 >
                   {opt}
                 </button>
@@ -427,10 +461,20 @@ const MainWrapper = () => {
           setGameStarted(false);
           refetchUser();
         }}
-        className="mt-4 bg-primary px-4 py-2 rounded hover:bg-blue-700"
+        className="mt-4 bg-primary/10 backdrop-blur-2xl px-4 py-2 rounded hover:bg-blue-700"
       >
         Home Page
       </button>
+      <div
+        id="note"
+        className="py-3 px-4 w-75 mt-6 bg-grey-2/10 backdrop-blur-md"
+      >
+        <h1 className="text-grey text-left text-xs">Note</h1>
+        <p className="text-white text-xs text-justify">
+          Playing in this mode only have affected casual score. Anyway rating is
+          in development, so stay tuned.
+        </p>
+      </div>
     </div>
   );
 
@@ -447,15 +491,26 @@ const MainWrapper = () => {
     backButton.show();
 
     return (
-      <div>
-        <BuyTries
-          onBack={() => {
-            setShowBuyTries(false);
-            refetchUser();
-            backButton.hide();
-          }}
-        />
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="buyTries"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 0 }}
+          transition={{ duration: TRANSITION_DURATION }}
+          className="w-full h-full"
+        >
+          <div>
+            <BuyTries
+              onBack={() => {
+                setShowBuyTries(false);
+                refetchUser();
+                backButton.hide();
+              }}
+            />
+          </div>
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
@@ -463,7 +518,7 @@ const MainWrapper = () => {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
-          <h2 className="text-xl font-bold mb-4">A like 404</h2>
+          <h2 className="text-xl font-bold mb-4">Error!</h2>
           <p className="mb-6">
             {gameError instanceof Error ? gameError.message : "Unknown error"}
           </p>
@@ -486,14 +541,25 @@ const MainWrapper = () => {
     backButton.show();
 
     return (
-      <PreCasualGame
-        onStart={handleStartGame}
-        onBack={() => {
-          setShowFilter(false);
-          refetchUser();
-          backButton.hide();
-        }}
-      />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="filter"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 0 }}
+          transition={{ duration: TRANSITION_DURATION }}
+          className="w-full h-full"
+        >
+          <PreCasualGame
+            onStart={handleStartGame}
+            onBack={() => {
+              setShowFilter(false);
+              refetchUser();
+              backButton.hide();
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
     );
   }
 

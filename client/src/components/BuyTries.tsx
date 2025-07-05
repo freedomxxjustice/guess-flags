@@ -24,7 +24,10 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
     stars: number;
   } | null>(null);
 
-  backButton.onClick(onBack);
+  backButton.onClick(() => {
+    onBack();
+    mainButton.setParams({ isVisible: false });
+  });
 
   useEffect(() => {
     const handleClick = async () => {

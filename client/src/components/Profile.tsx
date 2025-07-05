@@ -38,10 +38,10 @@ export default function Profile({ user }: ProfileProps) {
   }, []);
 
   return (
-    <div className="">
+    <div className="flex flex-col items-center">
       <div
         id="upperPanel"
-        className="fixed top-28 left-1/2 -translate-x-1/2 w-max z-50 flex flex-col justify-center"
+        className="w-max z-50 flex flex-col justify-center"
       >
         <h1 className="text-4xl font-extrabold text-white text-center">
           Profile
@@ -50,7 +50,7 @@ export default function Profile({ user }: ProfileProps) {
           Take a look at your stats!
         </p>
       </div>
-      <div className="max-w-xl mx-auto mt-12 p-6 bg-background rounded-3xl shadow-lg text-center">
+      <div className="w-75 mx-auto mt-12 p-6 bg-white/10 backdrop-blur rounded-3xl shadow-lg text-center">
         <div className="flex justify-center mb-6">
           {profilePhoto ? (
             <img

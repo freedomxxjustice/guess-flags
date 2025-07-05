@@ -11,6 +11,7 @@ from tortoise import Tortoise
 
 ROOT_DIR = Path(__file__).parent.parent
 
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 

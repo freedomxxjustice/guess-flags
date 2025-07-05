@@ -24,8 +24,9 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
   backButton.onClick(onBack);
   const btnClickAnimation = "transform active:scale-95 transition-transform";
   const btnBase = "font-medium rounded-lg text-sm px-20 py-3 text-center mb-2";
+  const btnBig = "py-4 w-75";
   const btnPrimary =
-    "text-white bg-primary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800";
+    "text-white bg-gradient-to-t from-primary to-primary/50 backdrop-blur rounded-3xl shadow-xl";
   const btnDisabled = "text-background bg-grey";
 
   return (
@@ -33,7 +34,7 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
       <h1 className="text-4xl font-bold text-center">
         Customize your gameplay
       </h1>
-      <div className="flex justify-center items-center flex-col gap-8 p-6 text-white">
+      <div className="flex justify-center items-center flex-col gap-6 p-6 text-white">
         <h1 className="text-2xl font-bold text-center">
           Choose Number of Questions
         </h1>
@@ -44,9 +45,7 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
               key={num}
               onClick={() => setSelectedNumQuestions(num)}
               className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                selectedNumQuestions === num
-                  ? "bg-primary text-white"
-                  : "bg-grey text-white"
+                selectedNumQuestions === num ? btnPrimary : btnDisabled
               } ${btnClickAnimation}`}
             >
               {num}
@@ -62,9 +61,7 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
               key={category}
               onClick={() => setSelectedCategory(category)}
               className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                selectedCategory === category
-                  ? "bg-primary text-white"
-                  : "bg-grey text-white"
+                selectedCategory === category ? btnPrimary : btnDisabled
               } ${btnClickAnimation}`}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -80,9 +77,7 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
               key={mode}
               onClick={() => setSelectedGamemode(mode)}
               className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                selectedGamemode === mode
-                  ? "bg-primary text-white"
-                  : "bg-grey text-white"
+                selectedGamemode === mode ? btnPrimary : btnDisabled
               } ${btnClickAnimation}`}
             >
               {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -96,12 +91,22 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
             onStart(selectedNumQuestions, selectedCategory, selectedGamemode)
           }
           disabled={!selectedNumQuestions}
-          className={`${btnBase} ${btnClickAnimation} ${
-            selectedNumQuestions && selectedCategory ? btnPrimary : btnDisabled
+          className={` ${btnBase} ${btnBig} ${btnClickAnimation} ${
+            selectedNumQuestions && selectedCategory
+              ? "bg-gradient-to-t from-primary to-primary/80"
+              : btnDisabled
           }`}
         >
           Start Game
         </button>
+        <div id="note" className="py-3 px-4 bg-grey-2/10 backdrop-blur-md">
+          <h1 className="text-grey text-left text-xs">Note</h1>
+          <p className="text-white text-xs text-justify">
+            Playing in this mode will only affect casual score, thus to
+            participate in casual tournaments, competitions or events you should
+            go on. Anyway rating is in development, so stay tuned.
+          </p>
+        </div>
       </div>
     </div>
   );

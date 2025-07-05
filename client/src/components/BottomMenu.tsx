@@ -14,12 +14,12 @@ export default function BottomMenu({
   page,
 }: BottomMenuProps) {
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-full h-20 bg-grey-2 border-grey">
+    <div className="fixed bottom-0 left-0 z-51 w-full h-25 bg-white/10 backdrop-blur-md">
       <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
         <button
           type="button"
           className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
-            page == "leaderboard" ? "bg-primary" : "bg-grey-2"
+            page == "leaderboard" ? "text-primary" : ""
           } group`}
           onClick={() => {
             onNavigate("leaderboard");
@@ -27,19 +27,27 @@ export default function BottomMenu({
           }}
         >
           <MdLeaderboard />
-          <span className="text-sm text-white group-hover:text-blue-600 dark:group-hover:text-blue-500">
+          <span
+            className={`text-sm ${
+              page == "leaderboard" ? "text-primary" : ""
+            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+          >
             Leaderboard
           </span>
         </button>
         <button
           type="button"
           className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
-            page == "home" ? "bg-primary" : "bg-grey-2"
+            page == "home" ? "text-primary" : ""
           } group`}
           onClick={() => onNavigate("home")}
         >
           <FaHome />
-          <span className="text-sm text-white group-hover:text-blue-600 dark:group-hover:text-blue-500">
+          <span
+            className={`text-sm ${
+              page == "home" ? "text-primary" : ""
+            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+          >
             Home
           </span>
         </button>
@@ -47,12 +55,16 @@ export default function BottomMenu({
         <button
           type="button"
           className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
-            page == "profile" ? "bg-primary" : "bg-grey-2"
+            page == "profile" ? "text-primary" : ""
           } group`}
           onClick={() => onNavigate("profile")}
         >
           <CgProfile />
-          <span className="text-sm text-white  group-hover:text-blue-600 dark:group-hover:text-blue-500">
+          <span
+            className={`text-sm ${
+              page == "profile" ? "text-primary" : ""
+            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+          >
             Profile
           </span>
         </button>
