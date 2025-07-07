@@ -23,8 +23,8 @@ async def get_user(
     return JSONResponse({"user": user_obj})
 
 
-@router.get("/get-leaders")
-async def get_leaders(
+@router.get("/get-casual-leaders")
+async def get_casual_leaders(
     user_id: int = Query(..., description="ID of the current user")
 ) -> JSONResponse:
     # Fetch top 50 users by casual_score descending
@@ -38,6 +38,33 @@ async def get_leaders(
         leaders_dict[int(leader_obj["id"])] = {
             "name": leader_obj["name"],
             "casual_score": leader_obj["casual_score"],
+        }
+
+    # Get the current user
+    user = await User.get(id=user_id)
+    user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
+
+    # Compute user's global rank (1-based)
+    user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
+
+    return JSONResponse({"leaders": leaders_dict, "user_rank": user_rank})
+
+
+@router.get("/get-training-leaders")
+async def get_training_leaders(
+    user_id: int = Query(..., description="ID of the current user")
+) -> JSONResponse:
+    # Fetch top 50 users by casual_score descending
+    top_50 = await User.all().order_by("-training_score").limit(50)
+
+    leaders_dict = {}
+    for leader in top_50:
+        leader_obj = (await UserSchema.from_tortoise_orm(leader)).model_dump(
+            mode="json"
+        )
+        leaders_dict[int(leader_obj["id"])] = {
+            "name": leader_obj["name"],
+            "training_score": leader_obj["training_score"],
         }
 
     # Get the current user
