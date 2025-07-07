@@ -21,6 +21,7 @@ async def submit_answer(
     user = await check_user(auth_data.user.id)
 
     user.casual_score += data.score
+    user.casual_game = None
     if data.score < (int(data.numQuestions) / 1.5):
         user.tries_left -= 1
         if user.tries_left == 0:

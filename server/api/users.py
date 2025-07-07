@@ -48,3 +48,12 @@ async def get_leaders(
     user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
 
     return JSONResponse({"leaders": leaders_dict, "user_rank": user_rank})
+
+
+@router.get("/active")
+async def has_active(
+    auth_data: WebAppInitData = Depends(auth),
+) -> JSONResponse:
+    user = await check_user(auth_data.user.id)
+    user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
+    return JSONResponse({"casual_game": user_obj["casual_game"]})

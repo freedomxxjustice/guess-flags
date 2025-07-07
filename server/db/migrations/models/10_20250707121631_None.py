@@ -15,7 +15,8 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "last_active" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "tries_left" INT NOT NULL DEFAULT 3,
-    "last_reset_date" DATE
+    "last_reset_date" DATE,
+    "casual_game" JSONB
 );
 CREATE TABLE IF NOT EXISTS "flags" (
     "id" SERIAL NOT NULL PRIMARY KEY,

@@ -16,6 +16,7 @@ class User(Model):
     created_at = fields.DatetimeField(auto_now_add=True)
     tries_left = fields.IntField(default=3)
     last_reset_date = fields.DateField(null=True)
+    casual_game = fields.JSONField(null=True)
 
     class Meta:
         table = "users"

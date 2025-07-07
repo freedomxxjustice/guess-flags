@@ -22,6 +22,8 @@ async def send_game(
     category = query_params.get("category")
     gamemode = query_params.get("gamemode")
     question_list = await create_questions(num_questions, category, gamemode)
+    user.casual_game = {"game": {"questions": question_list}}
+    await user.save()
     return JSONResponse(content={"game": {"questions": question_list}})
 
 
