@@ -12,7 +12,6 @@ import { backButton } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
 import { AnimatePresence, motion } from "framer-motion";
-import EventCarousel from "./Carousel";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -33,14 +32,13 @@ const MainWrapper = () => {
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedGamemode, setSelectedGamemode] = useState<string | null>(null);
-  const [minDelayDone, setMinDelayDone] = useState(false);
 
   // CONSTANTS
 
   const btnClickAnimation = "transform active:scale-95 transition-transform";
   const btnDisabled = "text-grey backdrop-blur bg-grey/10 text-xl";
   const btnRegular =
-    "text-white bg-primary backdrop-blur rounded-3xl text-xl shadow-xl";
+    "text-white bg-gradient-to-b from-primary to-primary/70 backdrop-blur rounded-3xl text-xl shadow-xl";
   const btnBig = "py-4 w-75";
 
   // GET USER INFO
@@ -84,22 +82,21 @@ const MainWrapper = () => {
     isFetching: isGameFetching,
     error: gameError,
   } = useQuery<IGame>({
-    queryKey: ["game", numQuestions, selectedCategory, selectedGamemode], // include in key for caching
-    queryFn: async () =>
-      (
+    queryKey: ["game", numQuestions, selectedCategory, selectedGamemode],
+    queryFn: async () => {
+      return (
         await request(
           `games/casual/create?num_questions=${numQuestions}&category=${selectedCategory}&gamemode=${selectedGamemode}`
         )
-      ).data.game,
+      ).data.game;
+    },
     enabled: gameStarted,
     retry: false,
   });
 
   // EFFECTS
-
   const submittedRef = useRef(false);
   // TIMER
-  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
     if (gameError) {
@@ -113,10 +110,6 @@ const MainWrapper = () => {
       setGameStarted(false); // prevent UI from progressing if error occurs
     }
   }, [gameError]);
-  useEffect(() => {
-    const timeout = setTimeout(() => setMinDelayDone(true), 1500);
-    return () => clearTimeout(timeout);
-  }, []);
 
   useEffect(() => {
     if (
@@ -153,7 +146,6 @@ const MainWrapper = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
   };
-  const isLoading = isUserLoading || !minDelayDone;
   const openCommunity = () => {
     window.open("https://t.me/guessflags", "_blank");
   };
@@ -190,6 +182,9 @@ const MainWrapper = () => {
   const renderPage = () => {
     switch (page) {
       case "home":
+        // if (hasActiveGameData) {
+        //   setGameStarted(true);
+        // }
         return renderHomeScreen();
       case "profile":
         return renderProfileScreen();
@@ -409,8 +404,7 @@ const MainWrapper = () => {
               onChange={(e) => setTypedAnswer(e.target.value)}
               disabled={!!selectedOption}
               className={`
-      px-4 py-3 rounded-lg w-full border-2 transition-all
-      focus:outline-none focus:ring-2 focus:ring-primary
+      px-4 py-3 rounded-lg w-full transition-all bg-primary/10
       ${
         selectedOption
           ? isCorrect
@@ -471,7 +465,7 @@ const MainWrapper = () => {
       >
         <h1 className="text-grey text-left text-xs">Note</h1>
         <p className="text-white text-xs text-justify">
-          Playing in this mode only have affected casual score. Anyway rating is
+          Playing in this mode have only affected casual score. Anyway rating is
           in development, so stay tuned.
         </p>
       </div>
