@@ -31,6 +31,25 @@ CREATE TABLE IF NOT EXISTS "flags" (
     "total_correct" INT NOT NULL DEFAULT 0,
     "category" VARCHAR(128) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS "casualmatch" (
+    "id" UUID NOT NULL PRIMARY KEY,
+    "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "completed_at" TIMESTAMPTZ,
+    "score" INT NOT NULL DEFAULT 0,
+    "num_questions" INT NOT NULL,
+    "current_question_idx" INT NOT NULL DEFAULT 0,
+    "questions" JSONB NOT NULL,
+    "user_id" BIGINT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "casualanswer" (
+    "id" UUID NOT NULL PRIMARY KEY,
+    "question_idx" INT NOT NULL,
+    "flag_id" INT NOT NULL,
+    "user_answer" TEXT NOT NULL,
+    "is_correct" BOOL NOT NULL,
+    "answered_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "match_id" UUID NOT NULL REFERENCES "casualmatch" ("id") ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "version" VARCHAR(255) NOT NULL,

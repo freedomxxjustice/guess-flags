@@ -57,7 +57,7 @@ const App = () => {
   }, []);
 
   const particlesLoaded = useCallback(async (container: any) => {
-    await console.log(container);
+    return container;
   }, []);
 
   const renderIntroScreen = () => {

@@ -15,8 +15,7 @@ async def send_game(
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
-    if user.tries_left <= 0:
-        raise HTTPException(status_code=403, detail="No tries left")
+    
     query_params = dict(request.query_params)
     num_questions = query_params.get("num_questions")
     category = query_params.get("category")

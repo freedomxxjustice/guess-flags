@@ -158,12 +158,11 @@ const MainWrapper = () => {
     setCasualGameLoading(true);
     setCasualGameError(null);
     try {
-      const res = await request("games/start", "POST", {
-        // Pass any needed params here
-        num_questions: 10,
-        category: "all",
-        gamemode: "choose",
-      });
+      const res = await request(
+        `games/casual/start?num_questions=5&category=country&gamemode=choose`,
+        "POST"
+      );
+      console.log(res);
       setCasualGame(res.data.game);
     } catch (err: any) {
       setCasualGameError(err?.response?.data?.message || "Unknown error");
@@ -171,10 +170,11 @@ const MainWrapper = () => {
       setCasualGameLoading(false);
     }
   };
+  
   const handleCasualAnswer = async (answer: string) => {
     if (!casualGame) return;
     try {
-      const res = await request("games/answer", "POST", {
+      const res = await request("casual/answer", "POST", {
         game_id: casualGame.id,
         answer,
       });
@@ -192,7 +192,7 @@ const MainWrapper = () => {
     window.open("https://t.me/guessflags", "_blank");
   };
 
-  const handleAnswer = (opt: string) => {
+  const handleTrainingAnswer = (opt: string) => {
     if (selectedOption) return;
 
     const answer = game?.questions[currentQuestionIndex].answer ?? "";
@@ -204,10 +204,7 @@ const MainWrapper = () => {
     // Compute similarity ratio (0 to 100)
     const similarity = fuzzball.ratio(normalizedOpt, normalizedAnswer);
 
-    console.log("Similarity:", similarity);
-
-    // Example threshold: 70% similarity (adjust as needed)
-    const correct = similarity >= 70;
+    const correct = similarity > 75;
 
     setSelectedOption(opt);
     setIsCorrect(correct);
@@ -218,7 +215,7 @@ const MainWrapper = () => {
       setIsCorrect(null);
       setTypedAnswer("");
       setCurrentQuestionIndex((prev) => prev + 1);
-    }, 1000);
+    }, 2000);
   };
 
   const renderPage = () => {
@@ -269,7 +266,7 @@ const MainWrapper = () => {
           <button
             type="button"
             className={`text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnDisabled}`}
-            onClick={() => setShowModal("error")}
+            onClick={() => setShowCasualFilter(true)}
           >
             Casual
           </button>
@@ -433,7 +430,7 @@ const MainWrapper = () => {
                 <button
                   key={idx}
                   disabled={!!selectedOption}
-                  onClick={() => handleAnswer(opt)}
+                  onClick={() => handleTrainingAnswer(opt)}
                   className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
                 >
                   {opt}
@@ -463,7 +460,7 @@ const MainWrapper = () => {
             />
 
             <button
-              onClick={() => handleAnswer(typedAnswer.trim())}
+              onClick={() => handleTrainingAnswer(typedAnswer.trim())}
               disabled={!!selectedOption || !typedAnswer.trim()}
               className={`
       font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
@@ -526,7 +523,7 @@ const MainWrapper = () => {
                 <button
                   key={idx}
                   disabled={!!selectedOption}
-                  onClick={() => handleAnswer(opt)}
+                  onClick={() => handleTrainingAnswer(opt)}
                   className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
                 >
                   {opt}
@@ -556,7 +553,7 @@ const MainWrapper = () => {
             />
 
             <button
-              onClick={() => handleAnswer(typedAnswer.trim())}
+              onClick={() => handleTrainingAnswer(typedAnswer.trim())}
               disabled={!!selectedOption || !typedAnswer.trim()}
               className={`
       font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
@@ -712,8 +709,8 @@ const MainWrapper = () => {
           transition={{ duration: TRANSITION_DURATION }}
           className="w-full h-full"
         >
-          <PreCasualGame
-            onStart={handleStartTrainingGame}
+          <PreGame
+            onStart={handleStartCasualGame}
             onBack={() => {
               setShowCasualFilter(false);
               refetchUser();

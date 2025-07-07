@@ -73,6 +73,7 @@ TORTOISE_ORM = {
             "models": [
                 "db.models.user",
                 "db.models.flag",
+                "db.models.casual",
                 "aerich.models",
             ],
             "default_connection": "default",
