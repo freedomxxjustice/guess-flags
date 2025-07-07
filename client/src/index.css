@@ -20,6 +20,13 @@ body {
   height: 100vh;
   overflow: hidden;
   background: var(--tg-bg-color);
+  overflow-x: hidden;
+  touch-action: pan-y;
+}
+
+html {
+  overflow-x: hidden;
+  touch-action: pan-y; 
 }
 
 #mainBackground {

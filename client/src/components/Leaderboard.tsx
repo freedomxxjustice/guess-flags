@@ -63,10 +63,10 @@ export default function Leaderboard({
       <ToggleSwitch value={ratingType} onChange={setRatingType} />
       {ratingType === "global" && (
         <div>
-          <div className="w-full max-w-4xl h-[60vh] relative mx-auto">
+          <div className="w-full max-w-4xl max-w-full overflow-x-hidden h-[60vh] relative mx-auto">
             <div
               ref={listRef}
-              className="overflow-y-auto h-full space-y-2 px-4 hide-scrollbar"
+              className="overflow-y-auto overflow-x-hidden h-full space-y-2 px-4 hide-scrollbar"
             >
               {entries.map(([id, data], index) => {
                 const isCurrentUser = id === user.id.toString();

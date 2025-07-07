@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type { IUser } from "../interfaces/IUser";
-import type { IGame } from "../interfaces/IGame";
+import type { ITrainingGame } from "../interfaces/ITrainingGame";
+import type { ICasualGame } from "../interfaces/ICasualGame";
 import BottomMenu from "./BottomMenu";
 import BuyTries from "./BuyTries";
 import Leaderboard from "./Leaderboard";
 import Profile from "./Profile";
-import PreCasualGame from "./PreCasualGame";
+import PreGame from "./PreGame";
 import { backButton } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
@@ -27,11 +28,16 @@ const MainWrapper = () => {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [showBuyTries, setShowBuyTries] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
+  const [showTrainingFilter, setShowTrainingFilter] = useState(false);
+  const [showCasualFilter, setShowCasualFilter] = useState(false);
   const [page, setPage] = useState<"home" | "profile" | "leaderboard">("home");
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedGamemode, setSelectedGamemode] = useState<string | null>(null);
+  const [trainingGameStarted, setTrainingGameStarted] = useState(false);
+  const [casualGame, setCasualGame] = useState<ICasualGame | null>(null);
+  const [casualGameLoading, setCasualGameLoading] = useState(false);
+  const [casualGameError, setCasualGameError] = useState<string | null>(null);
 
   // CONSTANTS
 
@@ -81,16 +87,16 @@ const MainWrapper = () => {
     isLoading: isGameLoading,
     isFetching: isGameFetching,
     error: gameError,
-  } = useQuery<IGame>({
+  } = useQuery<ITrainingGame>({
     queryKey: ["game", numQuestions, selectedCategory, selectedGamemode],
     queryFn: async () => {
       return (
         await request(
-          `games/casual/create?num_questions=${numQuestions}&category=${selectedCategory}&gamemode=${selectedGamemode}`
+          `games/training/create?num_questions=${numQuestions}&category=${selectedCategory}&gamemode=${selectedGamemode}`
         )
       ).data.game;
     },
-    enabled: gameStarted,
+    enabled: trainingGameStarted,
     retry: false,
   });
 
@@ -113,38 +119,72 @@ const MainWrapper = () => {
 
   useEffect(() => {
     if (
-      gameStarted &&
+      trainingGameStarted &&
       game &&
       currentQuestionIndex >= game.questions.length &&
       !submittedRef.current
     ) {
       submittedRef.current = true;
       console.log(typeof numQuestions);
-      request("games/casual/submit-score", "POST", {
+      request("games/training/submit-score", "POST", {
         score,
         numQuestions,
       }).catch(console.error);
     }
-  }, [gameStarted, currentQuestionIndex, game, score]);
+  }, [trainingGameStarted, currentQuestionIndex, game, score]);
 
-  const handleStartGame = (
+  const handleStartTrainingGame = (
     numQuestions: number,
     category: string,
     gamemode: string
   ) => {
-    if (!user || user.tries_left <= 0) {
-      setShowFilter(false);
-      setShowModal("notEnoughTries");
-      return;
-    }
     setNumQuestions(numQuestions);
     setSelectedCategory(category);
     setSelectedGamemode(gamemode);
-    setShowFilter(false);
+    setShowTrainingFilter(false);
     submittedRef.current = false;
-    setGameStarted(true);
+    setTrainingGameStarted(true);
     setCurrentQuestionIndex(0);
     setScore(0);
+  };
+
+  const handleStartCasualGame = async () => {
+    if (!user || user.tries_left <= 0) {
+      setShowModal("notEnoughTries");
+      return;
+    }
+    setCasualGameLoading(true);
+    setCasualGameError(null);
+    try {
+      const res = await request("games/start", "POST", {
+        // Pass any needed params here
+        num_questions: 10,
+        category: "all",
+        gamemode: "choose",
+      });
+      setCasualGame(res.data.game);
+    } catch (err: any) {
+      setCasualGameError(err?.response?.data?.message || "Unknown error");
+    } finally {
+      setCasualGameLoading(false);
+    }
+  };
+  const handleCasualAnswer = async (answer: string) => {
+    if (!casualGame) return;
+    try {
+      const res = await request("games/answer", "POST", {
+        game_id: casualGame.id,
+        answer,
+      });
+      if (res.data.finished) {
+        setCasualGame(null);
+        refetchUser();
+      } else {
+        setCasualGame(res.data.game);
+      }
+    } catch (err) {
+      console.error("Answer error", err);
+    }
   };
   const openCommunity = () => {
     window.open("https://t.me/guessflags", "_blank");
@@ -182,9 +222,6 @@ const MainWrapper = () => {
   const renderPage = () => {
     switch (page) {
       case "home":
-        // if (hasActiveGameData) {
-        //   setGameStarted(true);
-        // }
         return renderHomeScreen();
       case "profile":
         return renderProfileScreen();
@@ -229,10 +266,17 @@ const MainWrapper = () => {
         <div className="flex justify-center flex-col items-center gap-2">
           <button
             type="button"
-            className={`${btnRegular} ${btnBig} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnClickAnimation}`}
-            onClick={() => setShowFilter(true)}
+            className={`text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnDisabled}`}
+            onClick={() => setShowModal("error")}
           >
-            Play Casual
+            Casual
+          </button>
+          <button
+            type="button"
+            className={`${btnRegular} ${btnBig} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnClickAnimation}`}
+            onClick={() => setShowTrainingFilter(true)}
+          >
+            Training
           </button>
           <button
             onClick={() => setShowModal("error")}
@@ -240,7 +284,7 @@ const MainWrapper = () => {
             type="button"
             className={`text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnDisabled}`}
           >
-            Play Rating
+            Rating
           </button>
           <button
             type="button"
@@ -258,14 +302,14 @@ const MainWrapper = () => {
         {/* 404 Modal */}
         {showModal == "error" && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
-              <h2 className="text-xl font-bold mb-4">A like 404</h2>
+            <div className="bg-grey-2/60 backdrop-blur-xl p-6 max-w-sm w-full text-center">
+              <h2 className="text-xl font-bold mb-4">Error 404</h2>
               <p className="mb-6">
                 Unfortunately this feature isn't available yet!
               </p>
               <button
                 onClick={() => setShowModal(false)}
-                className="py-2 px-4 rounded-xl font-semibold transition-all"
+                className={`py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
                 style={{
                   backgroundColor: "var(--color-warning)",
                   color: "white",
@@ -349,7 +393,100 @@ const MainWrapper = () => {
     </div>
   );
 
-  // RENDER: Game Screen
+  // RENDER: Game Screenr
+  const renderTrainingGameScreen = () => {
+    const question = game?.questions[currentQuestionIndex];
+    if (!question) return null;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-white px-4">
+        <h2 className="text-2xl font-bold mb-4">
+          Question {currentQuestionIndex + 1}
+        </h2>
+        <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
+          <img
+            src={question.image}
+            alt="Flag"
+            className="w-full h-full object-contain mb-4"
+          />
+        </div>
+        {selectedGamemode === "choose" ? (
+          // buttons
+          <div className="flex flex-col gap-2 w-full max-w-xs">
+            {question.options.map((opt: string, idx: number) => {
+              const isCorrectAnswer = opt === question.answer;
+              const isSelected = selectedOption === opt;
+
+              let btnClass = `${btnBig} bg-primary/10`;
+              if (selectedOption) {
+                if (isCorrectAnswer) {
+                  btnClass = "bg-green-600";
+                } else if (isSelected) {
+                  btnClass = "bg-red-600";
+                } else {
+                  btnClass = "bg-primary/10"; // dim unselected incorrect ones
+                }
+              }
+
+              return (
+                <button
+                  key={idx}
+                  disabled={!!selectedOption}
+                  onClick={() => handleAnswer(opt)}
+                  className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          // input
+          <div className="flex flex-col gap-4 w-full max-w-xs">
+            <input
+              type="text"
+              value={typedAnswer}
+              onChange={(e) => setTypedAnswer(e.target.value)}
+              disabled={!!selectedOption}
+              className={`
+      px-4 py-3 rounded-lg w-full transition-all bg-primary/10
+      ${
+        selectedOption
+          ? isCorrect
+            ? "border-green-500 bg-green-100 text-black"
+            : "border-red-500 bg-red-100 text-black"
+          : "border-gray-300"
+      }
+    `}
+              placeholder="Type your answer..."
+            />
+
+            <button
+              onClick={() => handleAnswer(typedAnswer.trim())}
+              disabled={!!selectedOption || !typedAnswer.trim()}
+              className={`
+      font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
+      ${
+        selectedOption
+          ? isCorrect
+            ? "bg-green-600 hover:bg-green-700"
+            : "bg-red-600 hover:bg-red-700"
+          : "bg-primary hover:bg-blue-700"
+      }
+      ${btnClickAnimation}
+    `}
+            >
+              {selectedOption
+                ? isCorrect
+                  ? "✅ Correct!"
+                  : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
+                : "Submit"}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const renderCasualGameScreen = () => {
     const question = game?.questions[currentQuestionIndex];
     if (!question) return null;
@@ -444,7 +581,7 @@ const MainWrapper = () => {
   };
 
   // RENDER: Game Over Screen
-  const renderGameOverScreen = () => (
+  const renderTrainingGameOverScreen = () => (
     <div className="flex flex-col items-center justify-center h-screen text-white">
       <h2 className="text-2xl font-bold mb-4">Game Over!</h2>
       <p className="text-lg">
@@ -452,7 +589,10 @@ const MainWrapper = () => {
       </p>
       <button
         onClick={() => {
-          setGameStarted(false);
+          if (trainingGameStarted) {
+            setTrainingGameStarted(false);
+          }
+
           refetchUser();
         }}
         className="mt-4 bg-primary/10 backdrop-blur-2xl px-4 py-2 rounded hover:bg-blue-700"
@@ -531,7 +671,33 @@ const MainWrapper = () => {
     );
   }
 
-  if (showFilter) {
+  if (showTrainingFilter) {
+    backButton.show();
+
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="filter"
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 0 }}
+          transition={{ duration: TRANSITION_DURATION }}
+          className="w-full h-full"
+        >
+          <PreGame
+            onStart={handleStartTrainingGame}
+            onBack={() => {
+              setShowTrainingFilter(false);
+              refetchUser();
+              backButton.hide();
+            }}
+          />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
+
+  if (showCasualFilter) {
     backButton.show();
 
     return (
@@ -545,9 +711,9 @@ const MainWrapper = () => {
           className="w-full h-full"
         >
           <PreCasualGame
-            onStart={handleStartGame}
+            onStart={handleStartTrainingGame}
             onBack={() => {
-              setShowFilter(false);
+              setShowCasualFilter(false);
               refetchUser();
               backButton.hide();
             }}
@@ -557,12 +723,16 @@ const MainWrapper = () => {
     );
   }
 
-  if (gameStarted && game && currentQuestionIndex >= game.questions.length) {
-    return renderGameOverScreen();
+  if (
+    trainingGameStarted &&
+    game &&
+    currentQuestionIndex >= game.questions.length
+  ) {
+    return renderTrainingGameOverScreen();
   }
 
-  if (gameStarted && game) {
-    return renderCasualGameScreen();
+  if (trainingGameStarted && game) {
+    return renderTrainingGameScreen();
   }
 
   return renderStartScreen();

@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
 
-router = APIRouter(prefix="/api/games/casual", dependencies=[Depends(auth)])
+router = APIRouter(prefix="/api/games/training", dependencies=[Depends(auth)])
 
 
 @router.get("/create")

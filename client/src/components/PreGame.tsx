@@ -10,7 +10,7 @@ const possibleNumQuestions = [5, 10, 15];
 const possibleCategories = ["country", "frenzy"];
 const possibleGamemodes = ["choose", "enter"];
 
-function PreCasualGame({ onBack, onStart }: GameFilterProps) {
+function PreGame({ onBack, onStart }: GameFilterProps) {
   const [selectedNumQuestions, setSelectedNumQuestions] = useState<
     number | null
   >(possibleNumQuestions[0]);
@@ -112,4 +112,4 @@ function PreCasualGame({ onBack, onStart }: GameFilterProps) {
   );
 }
 
-export default PreCasualGame;
+export default PreGame;

@@ -17,6 +17,7 @@ class User(Model):
     tries_left = fields.IntField(default=3)
     last_reset_date = fields.DateField(null=True)
     casual_game = fields.JSONField(null=True)
+    training_score = fields.IntField(default=0)
 
     class Meta:
         table = "users"
