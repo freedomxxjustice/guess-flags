@@ -71,7 +71,9 @@ const MainWrapper = () => {
     queryKey: ["leaders"],
     queryFn: async () => {
       if (user) {
-        const response = await request(`users/get-leaders?user_id=${user?.id}`);
+        const response = await request(
+          `users/get-casual-leaders?user_id=${user?.id}`
+        );
         return response.data;
       }
     },

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import ToggleSwitch from "./ToggleSwitch";
+import ToggleSlider from "./ToggleSlider";
 type LeaderboardProps = {
   leaders: {
     [id: string]: {
@@ -28,7 +28,7 @@ export default function Leaderboard({
 }: LeaderboardProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const [isUserVisible, setIsUserVisible] = useState(true);
-  const [ratingType, setRatingType] = useState<"global" | "daily">("global");
+  const [period, setPeriod] = useState<"Today" | "All Time">("All Time");
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -54,16 +54,22 @@ export default function Leaderboard({
 
   return (
     <div className="flex flex-col items-center">
-      <div id="upperPanel" className="w-max z-50 mb-6 mx-auto text-center">
+      <div id="upperPanel" className="w-max z-50 mb-4 mx-auto text-center">
         <h1 className="text-4xl font-extrabold text-white">Leaderboard</h1>
         <p className="text-gray-300 max-w-xl mx-auto">
           It's never late to improve yourself!
         </p>
+        <div className="mt-3">
+          <ToggleSlider
+            options={["Today", "All Time"]}
+            value={period}
+            onChange={setPeriod}
+          />
+        </div>
       </div>
-      <ToggleSwitch value={ratingType} onChange={setRatingType} />
-      {ratingType === "global" && (
+      {period === "All Time" && (
         <div>
-          <div className="w-full max-w-4xl max-w-full overflow-x-hidden h-[60vh] relative mx-auto">
+          <div className="w-full max-w-4xl overflow-x-hidden h-[60vh] relative mx-auto">
             <div
               ref={listRef}
               className="overflow-y-auto overflow-x-hidden h-full space-y-2 px-4 hide-scrollbar"
