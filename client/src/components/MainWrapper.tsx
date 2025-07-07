@@ -235,10 +235,10 @@ const MainWrapper = () => {
   };
 
   const renderHomeScreen = () => (
-    <div>
+    <div className="h-screen">
       <div
         id="upperPanel"
-        className="fixed top-14 left-1/2 -translate-x-1/2 w-max z-50 flex justify-center"
+        className="flex justify-center mx-auto mt-27 items-center w-max z-50"
       >
         <div
           onClick={() => setShowBuyTries(true)}
@@ -251,7 +251,7 @@ const MainWrapper = () => {
           </h2>
         </div>
       </div>
-      <div className="flex justify-center items-center h-screen flex-col gap-8 p-6">
+      <div className="flex justify-center items-center flex-col gap-8 mt-12">
         <div className="bg-grey-2/10 backdrop-blur py-4 px-5 shadow-2xl">
           <h1 className="text-white text-center text-2xl font-bold text-shadow-background text-shadow-md">
             {user?.name}, <br />
@@ -296,7 +296,7 @@ const MainWrapper = () => {
             Community
           </button>
           <div>
-            <p className="text-accent text-shadow-2xs text-xs mt-8">
+            <p className="text-accent text-shadow-2xs text-xs mt-4">
               Early Access
             </p>
           </div>
