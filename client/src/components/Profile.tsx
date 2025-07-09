@@ -1,21 +1,9 @@
 import { useEffect, useState } from "react";
 
-type User = {
-  id: number;
-  created_at: DataTransfer;
-  name: string;
-  tries_left: number;
-  rating: number;
-  games_played: number;
-  games_won: number;
-  total_score: number;
-  best_score: number;
-  casual_score: number;
-  // you can add more fields if you want
-};
+import type { IUser } from "../interfaces/IUser";
 
 type ProfileProps = {
-  user: User;
+  user: IUser;
 };
 
 export default function Profile({ user }: ProfileProps) {
@@ -39,18 +27,15 @@ export default function Profile({ user }: ProfileProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <div
-        id="upperPanel"
-        className="w-max z-50 flex flex-col justify-center"
-      >
+      <div id="upperPanel" className="w-max z-50 flex flex-col justify-center">
         <h1 className="text-4xl font-extrabold text-white text-center">
           Profile
         </h1>
-        <p className="text-gray-300 mb-6 max-w-2xl text-center">
+        <p className="text-gray-300 max-w-2xl text-center">
           Take a look at your stats!
         </p>
       </div>
-      <div className="w-75 mx-auto mt-12 p-6 bg-white/10 backdrop-blur rounded-3xl shadow-lg text-center">
+      <div className="w-85 mx-auto mt-6 p-6 bg-white/10 backdrop-blur rounded-3xl shadow-lg text-center">
         <div className="flex justify-center mb-6">
           {profilePhoto ? (
             <img
@@ -79,23 +64,35 @@ export default function Profile({ user }: ProfileProps) {
             <div className="grid grid-cols-2 gap-4 text-gray-300">
               <div>
                 <h3 className="text-xl font-semibold">Games Played</h3>
-                <p>{user.games_played}</p>
+                <p>{user.rating_games_played}</p>
               </div>
               <div>
                 <h3 className="text-xl font-semibold">Games Won</h3>
-                <p>{user.games_won}</p>
+                <p>{user.rating_games_won}</p>
               </div>
             </div>
           </div>
           <div>
             <h2>Casual Statistics</h2>
-            <div className="grid grid-cols-3 gap-4 text-gray-300">
-              <div></div>
+            <div className="grid grid-cols-2 gap-4 text-gray-300">
               <div>
-                <h3 className="text-xl font-semibold">Casual Score</h3>
+                <h3 className="text-xl font-semibold">Games Played</h3>
+                <p>{user.casual_games_played}</p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold">Score</h3>
                 <p>{user.casual_score}</p>
               </div>
-              <div></div>
+            </div>
+          </div>
+          <div>
+            <h2>Training Statistics</h2>
+            <div className="grid grid-cols-1 gap-4 text-gray-300">
+              <div>
+                <h3 className="text-xl font-semibold">Score</h3>
+                <p>{user.training_score}</p>
+              </div>
             </div>
           </div>
         </div>

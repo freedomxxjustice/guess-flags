@@ -1,11 +1,11 @@
 export interface ICasualQuestion {
+  index: number;
   id: number;
   image: string;
   options: string[];
-  answer: string;
 }
 
 export interface ICasualGame {
   id: number;
-  questions: ICasualQuestion[];
+  current_question: ICasualQuestion;
 }

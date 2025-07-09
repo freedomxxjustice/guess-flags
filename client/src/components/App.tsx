@@ -10,6 +10,7 @@ import {
   initData,
   backButton,
   mainButton,
+  hapticFeedback,
 } from "@telegram-apps/sdk";
 
 // TELEGRAM INITIATION
@@ -38,6 +39,20 @@ if (viewport.expand.isAvailable()) {
 
 const App = () => {
   const [showIntro, setShowIntro] = useState(true);
+
+  useEffect(() => {
+    function handleClick(e: any) {
+      if (e.target.tagName === "BUTTON") {
+        hapticFeedback.impactOccurred("medium");
+      }
+    }
+
+    document.addEventListener("click", handleClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleClick, true);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {

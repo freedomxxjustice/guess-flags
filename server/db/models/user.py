@@ -7,8 +7,8 @@ class User(Model):
     id = fields.BigIntField(pk=True, unique=True)
     name = fields.CharField(max_length=255)
     rating = fields.IntField(default=1200)  # Starting Elo-like rating
-    games_played = fields.IntField(default=0)
-    games_won = fields.IntField(default=0)
+    rating_games_played = fields.IntField(default=0)
+    rating_games_won = fields.IntField(default=0)
     total_score = fields.IntField(default=0)  # Sum of all scores
     best_score = fields.IntField(default=0)
     casual_score = fields.IntField(default=0)
@@ -18,6 +18,8 @@ class User(Model):
     last_reset_date = fields.DateField(null=True)
     casual_game = fields.JSONField(null=True)
     training_score = fields.IntField(default=0)
+    casual_games_played = fields.IntField(default=0)
+    today_casual_score = fields.IntField(default=0)
 
     class Meta:
         table = "users"

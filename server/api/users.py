@@ -29,6 +29,7 @@ async def get_casual_leaders(
 ) -> JSONResponse:
     # Fetch top 50 users by casual_score descending
     top_50 = await User.all().order_by("-casual_score").limit(50)
+    top_today_50 = await User.all().order_by("-today_casual_score").limit(50)
 
     leaders_dict = {}
     for leader in top_50:
@@ -39,6 +40,15 @@ async def get_casual_leaders(
             "name": leader_obj["name"],
             "casual_score": leader_obj["casual_score"],
         }
+    today_leaders_dict = {}
+    for today_leader in top_today_50:
+        leader_obj = (await UserSchema.from_tortoise_orm(today_leader)).model_dump(
+            mode="json"
+        )
+        today_leaders_dict[int(leader_obj["id"])] = {
+            "name": leader_obj["name"],
+            "today_casual_score": leader_obj["today_casual_score"],
+        }
 
     # Get the current user
     user = await User.get(id=user_id)
@@ -46,8 +56,17 @@ async def get_casual_leaders(
 
     # Compute user's global rank (1-based)
     user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
-
-    return JSONResponse({"leaders": leaders_dict, "user_rank": user_rank})
+    user_today_rank = (
+        await User.filter(today_casual_score__gt=user.today_casual_score).count() + 1
+    )
+    return JSONResponse(
+        {
+            "leaders": leaders_dict,
+            "today_leaders": today_leaders_dict,
+            "user_rank": user_rank,
+            "user_today_rank": user_today_rank,
+        }
+    )
 
 
 @router.get("/get-training-leaders")

@@ -7,8 +7,8 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "id" BIGSERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
     "rating" INT NOT NULL DEFAULT 1200,
-    "games_played" INT NOT NULL DEFAULT 0,
-    "games_won" INT NOT NULL DEFAULT 0,
+    "rating_games_played" INT NOT NULL DEFAULT 0,
+    "rating_games_won" INT NOT NULL DEFAULT 0,
     "total_score" INT NOT NULL DEFAULT 0,
     "best_score" INT NOT NULL DEFAULT 0,
     "casual_score" INT NOT NULL DEFAULT 0,
@@ -17,7 +17,9 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "tries_left" INT NOT NULL DEFAULT 3,
     "last_reset_date" DATE,
     "casual_game" JSONB,
-    "training_score" INT NOT NULL DEFAULT 0
+    "training_score" INT NOT NULL DEFAULT 0,
+    "casual_games_played" INT NOT NULL DEFAULT 0,
+    "today_casual_score" INT NOT NULL DEFAULT 0
 );
 CREATE TABLE IF NOT EXISTS "flags" (
     "id" SERIAL NOT NULL PRIMARY KEY,

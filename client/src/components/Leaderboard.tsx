@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import ToggleSlider from "./ToggleSlider";
+import type { IUser } from "../interfaces/IUser";
+
 type LeaderboardProps = {
   leaders: {
     [id: string]: {
@@ -7,28 +9,29 @@ type LeaderboardProps = {
       casual_score: number;
     };
   };
-  user: {
-    id: number;
-    created_at: DataTransfer;
-    name: string;
-    tries_left: number;
-    rating: number;
-    games_played: number;
-    games_won: number;
-    total_score: number;
-    best_score: number;
-    casual_score: number;
+  today_leaders: {
+    [id: string]: {
+      name: string;
+      today_casual_score: number;
+    };
   };
+  user: IUser;
   userRank: number;
+  userTodayRank: number;
 };
+
 export default function Leaderboard({
   leaders,
+  today_leaders,
   user,
   userRank,
+  userTodayRank,
 }: LeaderboardProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const [isUserVisible, setIsUserVisible] = useState(true);
   const [period, setPeriod] = useState<"Today" | "All Time">("All Time");
+
+  console.log(userTodayRank);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -49,9 +52,12 @@ export default function Leaderboard({
     (a, b) => b[1].casual_score - a[1].casual_score
   );
   const userIdStr = user.id.toString();
-  const isUserInLeaders = entries.some(([id]) => id === userIdStr);
-  console.log(leaders);
 
+  const todayEntries = Object.entries(today_leaders).sort(
+    (a, b) => b[1].today_casual_score - a[1].today_casual_score
+  );
+  const isUserInAllTime = entries.some(([id]) => id === userIdStr);
+  const isUserInToday = todayEntries.some(([id]) => id === userIdStr);
   return (
     <div className="flex flex-col items-center">
       <div id="upperPanel" className="w-max z-50 mb-4 mx-auto text-center">
@@ -102,13 +108,13 @@ export default function Leaderboard({
                   </div>
                 );
               })}
-              {!isUserInLeaders && (
+              {!isUserInAllTime && (
                 <div className="text-white text-xl mb-18 text-center">…</div>
               )}
             </div>
 
             {/* Sticky user row (shows if user row not visible) */}
-            {(!isUserInLeaders || !isUserVisible) && (
+            {(!isUserInAllTime || !isUserVisible) && (
               <div className="absolute bottom-0 left-0 right-0 bg-grey-2 shadow-inner rounded-xl border border-grey px-6 py-3 flex flex-col items-center mx-auto max-w-4xl">
                 <div className="w-full flex justify-between items-center">
                   <p className="text-base font-semibold text-warning truncate max-w-[75%]">
@@ -122,6 +128,68 @@ export default function Leaderboard({
                   </span>
                   <span className="text-warning font-bold text-base">
                     {user.casual_score} pts
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      {period === "Today" && (
+        <div>
+          <div className="w-full max-w-4xl overflow-x-hidden h-[60vh] relative mx-auto">
+            <div
+              ref={listRef}
+              className="overflow-y-auto overflow-x-hidden h-full space-y-2 px-4 hide-scrollbar"
+            >
+              {todayEntries.map(([id, data], index) => {
+                const isCurrentUser = id === user.id.toString();
+                return (
+                  <div
+                    key={id}
+                    id={`leader-${id}`}
+                    className={`w-full flex bg-grey/10 backdrop-blur justify-between gap-14 items-center rounded-xl px-5 py-2 border transition-colors duration-300 cursor-pointer ${
+                      isCurrentUser
+                        ? "bg-primary border-primary text-white shadow-lg"
+                        : "bg-grey-2 border-grey hover:bg-gray-700 hover:border-gray-500"
+                    }`}
+                  >
+                    <span className="text-base font-semibold truncate max-w-[75%]">
+                      #{index + 1}{" "}
+                      {data.name.length > 20
+                        ? data.name.slice(0, 20) + "…"
+                        : data.name}
+                    </span>
+                    <span
+                      className={`font-bold text-base ${
+                        isCurrentUser ? "text-white" : "text-primary"
+                      }`}
+                    >
+                      {data.today_casual_score} pts
+                    </span>
+                  </div>
+                );
+              })}
+              {!isUserInToday && (
+                <div className="text-white text-xl mb-18 text-center">…</div>
+              )}
+            </div>
+
+            {/* Sticky user row (shows if user row not visible) */}
+            {(!isUserInToday || !isUserVisible) && (
+              <div className="absolute bottom-0 left-0 right-0 bg-grey-2 shadow-inner rounded-xl border border-grey px-6 py-3 flex flex-col items-center mx-auto max-w-4xl">
+                <div className="w-full flex justify-between items-center">
+                  <p className="text-base font-semibold text-warning truncate max-w-[75%]">
+                    #{userTodayRank}
+                  </p>
+                  <span className="text-base font-semibold text-warning truncate max-w-[75%]">
+                    You
+                    {user.name.length > 20
+                      ? ` (${user.name.slice(0, 20)}…)`
+                      : ` (${user.name})`}
+                  </span>
+                  <span className="text-warning font-bold text-base">
+                    {user.today_casual_score} pts
                   </span>
                 </div>
               </div>

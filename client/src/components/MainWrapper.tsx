@@ -17,24 +17,27 @@ import { AnimatePresence, motion } from "framer-motion";
 const TRANSITION_DURATION = 0.2;
 
 const MainWrapper = () => {
-  // STATES
+  // PAGE STATES
   const [showModal, setShowModal] = useState<
     false | "error" | "notEnoughTries"
   >(false);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [showBuyTries, setShowBuyTries] = useState(false);
+  const [showTrainingFilter, setShowTrainingFilter] = useState(false);
+  const [showCasualFilter, setShowCasualFilter] = useState(false);
+  const [page, setPage] = useState<"home" | "profile" | "leaderboard">("home");
+  // TRAINING GAME STATES
+  const [trainingGameStarted, setTrainingGameStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [typedAnswer, setTypedAnswer] = useState<string>("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
-  const [showBuyTries, setShowBuyTries] = useState(false);
-  const [showTrainingFilter, setShowTrainingFilter] = useState(false);
-  const [showCasualFilter, setShowCasualFilter] = useState(false);
-  const [page, setPage] = useState<"home" | "profile" | "leaderboard">("home");
+  // FILTER STATES
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedGamemode, setSelectedGamemode] = useState<string | null>(null);
-  const [trainingGameStarted, setTrainingGameStarted] = useState(false);
+  // CASUAL GAME STATES
+  const [casualGameStarted, setCasualGameStarted] = useState(false);
   const [casualGame, setCasualGame] = useState<ICasualGame | null>(null);
   const [casualGameLoading, setCasualGameLoading] = useState(false);
   const [casualGameError, setCasualGameError] = useState<string | null>(null);
@@ -61,8 +64,36 @@ const MainWrapper = () => {
     select: (data) => data.user as IUser,
   });
 
-  // GET LEADERS
+  // CHECK ACTIVE MATCH
+  const {
+    data: activeCasualMatch,
+    isLoading: isActiveCasualLoading,
+    error: activeCasualError,
+  } = useQuery<ICasualGame | null>({
+    queryKey: ["casual", "active-match"],
+    queryFn: async () => {
+      try {
+        const res = await request("games/casual/match/active");
+        return res.data;
+      } catch (error: any) {
+        if (error?.response?.status === 404) {
+          return null;
+        }
+        throw error;
+      }
+    },
+  });
 
+  useEffect(() => {
+    if (activeCasualMatch) {
+      setCasualGame(activeCasualMatch);
+      setCasualGameStarted(true);
+    } else {
+      setCasualGame(null);
+    }
+  }, [activeCasualMatch]);
+
+  // GET LEADERS
   const {
     data,
     isLoading: isLeadersLoading,
@@ -79,11 +110,13 @@ const MainWrapper = () => {
     },
     select: (data) => ({
       leaders: data.leaders,
-      userRank: data.user_rank, // keep the rank as well
+      today_leaders: data.today_leaders,
+      userRank: data.user_rank,
+      userTodayRank: data.user_today_rank,
     }),
   });
 
-  // START GAME
+  // TRAINING GAME
   const {
     data: game,
     isLoading: isGameLoading,
@@ -102,23 +135,7 @@ const MainWrapper = () => {
     retry: false,
   });
 
-  // EFFECTS
   const submittedRef = useRef(false);
-  // TIMER
-
-  useEffect(() => {
-    if (gameError) {
-      const status = (gameError as any)?.response?.status;
-
-      if (status === 403) {
-        setShowModal("notEnoughTries");
-      } else {
-        setShowModal("error");
-      }
-      setGameStarted(false); // prevent UI from progressing if error occurs
-    }
-  }, [gameError]);
-
   useEffect(() => {
     if (
       trainingGameStarted &&
@@ -127,7 +144,6 @@ const MainWrapper = () => {
       !submittedRef.current
     ) {
       submittedRef.current = true;
-      console.log(typeof numQuestions);
       request("games/training/submit-score", "POST", {
         score,
         numQuestions,
@@ -148,48 +164,6 @@ const MainWrapper = () => {
     setTrainingGameStarted(true);
     setCurrentQuestionIndex(0);
     setScore(0);
-  };
-
-  const handleStartCasualGame = async () => {
-    if (!user || user.tries_left <= 0) {
-      setShowModal("notEnoughTries");
-      return;
-    }
-    setCasualGameLoading(true);
-    setCasualGameError(null);
-    try {
-      const res = await request(
-        `games/casual/start?num_questions=5&category=country&gamemode=choose`,
-        "POST"
-      );
-      console.log(res);
-      setCasualGame(res.data.game);
-    } catch (err: any) {
-      setCasualGameError(err?.response?.data?.message || "Unknown error");
-    } finally {
-      setCasualGameLoading(false);
-    }
-  };
-  
-  const handleCasualAnswer = async (answer: string) => {
-    if (!casualGame) return;
-    try {
-      const res = await request("casual/answer", "POST", {
-        game_id: casualGame.id,
-        answer,
-      });
-      if (res.data.finished) {
-        setCasualGame(null);
-        refetchUser();
-      } else {
-        setCasualGame(res.data.game);
-      }
-    } catch (err) {
-      console.error("Answer error", err);
-    }
-  };
-  const openCommunity = () => {
-    window.open("https://t.me/guessflags", "_blank");
   };
 
   const handleTrainingAnswer = (opt: string) => {
@@ -218,6 +192,79 @@ const MainWrapper = () => {
     }, 2000);
   };
 
+  useEffect(() => {
+    if (trainingGameStarted) {
+      backButton.onClick(() => {
+        setTrainingGameStarted(false);
+      });
+    }
+  }, [trainingGameStarted]);
+
+  // ERROR HANDLING
+  useEffect(() => {
+    if (gameError) {
+      const status = (gameError as any)?.response?.status;
+
+      if (status === 403) {
+        setShowModal("notEnoughTries");
+      } else {
+        setShowModal("error");
+      }
+      setTrainingGameStarted(false); // prevent UI from progressing if error occurs
+    }
+  }, [gameError]);
+
+  // CASUAL GAME
+
+  const handleStartCasualGame = async () => {
+    if (!user || user.tries_left <= 0) {
+      setShowModal("notEnoughTries");
+      return;
+    }
+    setCasualGameLoading(true);
+    setCasualGameError(null);
+    try {
+      const res = await request(
+        `games/casual/start?num_questions=5&category=country&gamemode=choose`,
+        "POST"
+      );
+      setCasualGame({
+        id: res.data.match_id,
+        current_question: res.data.current_question,
+      });
+      setCasualGameStarted(true);
+      setShowCasualFilter(false);
+    } catch (err: any) {
+      setCasualGameError(err?.response?.data?.message || "Unknown error");
+    } finally {
+      setCasualGameLoading(false);
+    }
+  };
+
+  const handleCasualAnswer = async (answer: string) => {
+    if (!casualGame) return;
+    try {
+      const res = await request("casual/answer", "POST", {
+        game_id: casualGame.id,
+        answer,
+      });
+      if (res.data.finished) {
+        setCasualGame(null);
+        refetchUser();
+      } else {
+        setCasualGame(res.data.game);
+      }
+    } catch (err) {
+      console.error("Answer error", err);
+    }
+  };
+
+  const openCommunity = () => {
+    window.open("https://t.me/guessflags", "_blank");
+  };
+
+  // RENDER (PAGINATION)
+
   const renderPage = () => {
     switch (page) {
       case "home":
@@ -230,7 +277,6 @@ const MainWrapper = () => {
         return renderHomeScreen();
     }
   };
-
   const renderHomeScreen = () => (
     <div className="h-screen">
       <div
@@ -265,7 +311,10 @@ const MainWrapper = () => {
         <div className="flex justify-center flex-col items-center gap-2">
           <button
             type="button"
-            className={`text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnDisabled}`}
+            disabled={!!casualGame}
+            className={`${btnBig} ${btnClickAnimation} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${
+              !casualGame ? btnRegular : btnDisabled
+            }`}
             onClick={() => setShowCasualFilter(true)}
           >
             Casual
@@ -363,8 +412,10 @@ const MainWrapper = () => {
     return (
       <Leaderboard
         leaders={data?.leaders}
+        today_leaders={data?.today_leaders}
         user={user}
         userRank={data?.userRank}
+        userTodayRank={data?.userTodayRank}
       />
     );
   };
@@ -487,13 +538,17 @@ const MainWrapper = () => {
   };
 
   const renderCasualGameScreen = () => {
-    const question = game?.questions[currentQuestionIndex];
+    if (!casualGame) return null;
+
+    const question = casualGame.current_question;
     if (!question) return null;
+
     return (
       <div className="flex flex-col items-center justify-center h-screen text-white px-4">
         <h2 className="text-2xl font-bold mb-4">
-          Question {currentQuestionIndex + 1}
+          Question {question.index + 1}
         </h2>
+
         <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
           <img
             src={question.image}
@@ -501,80 +556,29 @@ const MainWrapper = () => {
             className="w-full h-full object-contain mb-4"
           />
         </div>
-        {selectedGamemode === "choose" ? (
-          // buttons
-          <div className="flex flex-col gap-2 w-full max-w-xs">
-            {question.options.map((opt: string, idx: number) => {
-              const isCorrectAnswer = opt === question.answer;
-              const isSelected = selectedOption === opt;
 
-              let btnClass = `${btnBig} bg-primary/10`;
-              if (selectedOption) {
-                if (isCorrectAnswer) {
-                  btnClass = "bg-green-600";
-                } else if (isSelected) {
-                  btnClass = "bg-red-600";
-                } else {
-                  btnClass = "bg-primary/10"; // dim unselected incorrect ones
-                }
-              }
+        <div className="flex flex-col gap-2 w-full max-w-xs">
+          {question.options.map((opt, idx) => {
+            const isSelected = selectedOption === opt;
 
-              return (
-                <button
-                  key={idx}
-                  disabled={!!selectedOption}
-                  onClick={() => handleTrainingAnswer(opt)}
-                  className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
-                >
-                  {opt}
-                </button>
-              );
-            })}
-          </div>
-        ) : (
-          // input
-          <div className="flex flex-col gap-4 w-full max-w-xs">
-            <input
-              type="text"
-              value={typedAnswer}
-              onChange={(e) => setTypedAnswer(e.target.value)}
-              disabled={!!selectedOption}
-              className={`
-      px-4 py-3 rounded-lg w-full transition-all bg-primary/10
-      ${
-        selectedOption
-          ? isCorrect
-            ? "border-green-500 bg-green-100 text-black"
-            : "border-red-500 bg-red-100 text-black"
-          : "border-gray-300"
-      }
-    `}
-              placeholder="Type your answer..."
-            />
+            let btnClass = `${btnBig} bg-primary/10`;
+            if (selectedOption) {
+              btnClass = isSelected ? "bg-red-600" : "bg-primary/10";
+              if (isCorrect && isSelected) btnClass = "bg-green-600";
+            }
 
-            <button
-              onClick={() => handleTrainingAnswer(typedAnswer.trim())}
-              disabled={!!selectedOption || !typedAnswer.trim()}
-              className={`
-      font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
-      ${
-        selectedOption
-          ? isCorrect
-            ? "bg-green-600 hover:bg-green-700"
-            : "bg-red-600 hover:bg-red-700"
-          : "bg-primary hover:bg-blue-700"
-      }
-      ${btnClickAnimation}
-    `}
-            >
-              {selectedOption
-                ? isCorrect
-                  ? "✅ Correct!"
-                  : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
-                : "Submit"}
-            </button>
-          </div>
-        )}
+            return (
+              <button
+                key={idx}
+                disabled={!!selectedOption}
+                onClick={() => handleCasualAnswer(opt)}
+                className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
       </div>
     );
   };
@@ -616,7 +620,7 @@ const MainWrapper = () => {
     return <LoadingSpinner />;
   }
 
-  if (isGameLoading || isGameFetching) {
+  if (isGameLoading || isGameFetching || isActiveCasualLoading) {
     return <LoadingSpinner />;
   }
 
@@ -732,6 +736,10 @@ const MainWrapper = () => {
 
   if (trainingGameStarted && game) {
     return renderTrainingGameScreen();
+  }
+
+  if (casualGameStarted && casualGame) {
+    return renderCasualGameScreen();
   }
 
   return renderStartScreen();
