@@ -41,6 +41,7 @@ const MainWrapper = () => {
   const [casualGame, setCasualGame] = useState<ICasualGame | null>(null);
   const [casualGameLoading, setCasualGameLoading] = useState(false);
   const [casualGameError, setCasualGameError] = useState<string | null>(null);
+  const [casualSummary, setCasualSummary] = useState<any | null>(null);
 
   // CONSTANTS
 
@@ -229,7 +230,7 @@ const MainWrapper = () => {
         "POST"
       );
       setCasualGame({
-        id: res.data.match_id,
+        match_id: res.data.match_id,
         current_question: res.data.current_question,
       });
       setCasualGameStarted(true);
@@ -243,22 +244,50 @@ const MainWrapper = () => {
 
   const handleCasualAnswer = async (answer: string) => {
     if (!casualGame) return;
+
+    setSelectedOption(answer);
     try {
-      const res = await request("casual/answer", "POST", {
-        game_id: casualGame.id,
-        answer,
-      });
-      if (res.data.finished) {
-        setCasualGame(null);
-        refetchUser();
-      } else {
-        setCasualGame(res.data.game);
-      }
+      const res = await request(
+        `games/casual/match/${casualGame.match_id}/answer`,
+        "POST",
+        { answer }
+      );
+
+      setIsCorrect(res.data.correct);
+
+      // Wait 2s before proceeding to next question or showing summary
+      setTimeout(async () => {
+        setSelectedOption(null);
+        setIsCorrect(null);
+
+        if (res.data.finished) {
+          // Fetch summary after match ends
+          const summary = await fetchCasualSummary(casualGame.match_id);
+          setCasualSummary(summary);
+          setCasualGame(null);
+          setCasualGameStarted(false);
+          refetchUser();
+        } else {
+          setCasualGame({
+            match_id: casualGame.match_id,
+            current_question: res.data.current_question,
+          });
+        }
+      }, 1250);
     } catch (err) {
       console.error("Answer error", err);
     }
   };
 
+  const fetchCasualSummary = async (matchId: string) => {
+    try {
+      const res = await request(`games/casual/match/${matchId}/summary`, "GET");
+      return res.data;
+    } catch (err) {
+      console.error("Summary error", err);
+      return null;
+    }
+  };
   const openCommunity = () => {
     window.open("https://t.me/guessflags", "_blank");
   };
@@ -583,6 +612,40 @@ const MainWrapper = () => {
     );
   };
 
+  const renderCasualGameOverScreen = () => {
+    if (!casualSummary) return null;
+
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-white px-4">
+        <h2 className="text-2xl font-bold mb-4">Casual Game Over!</h2>
+        <p className="text-lg mb-2">
+          Your score: {casualSummary.score} / {casualSummary.num_questions}
+        </p>
+        <div className="max-w-md overflow-auto text-left">
+          <h3 className="font-semibold mb-2">Summary of answers:</h3>
+          <ul className="list-disc pl-5 space-y-1">
+            {casualSummary.answers.map((ans: any, idx: number) => (
+              <li key={idx}>
+                Question #{ans.question_idx + 1}: Your answer "{ans.user_answer}
+                " — {ans.is_correct ? "Correct" : "Incorrect"}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <button
+          onClick={() => {
+            setCasualSummary(null);
+            setCasualGame(null);
+            setCasualGameStarted(false);
+            refetchUser();
+          }}
+          className="mt-6 bg-primary/10 backdrop-blur-2xl px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Back to Home
+        </button>
+      </div>
+    );
+  };
   // RENDER: Game Over Screen
   const renderTrainingGameOverScreen = () => (
     <div className="flex flex-col items-center justify-center h-screen text-white">
@@ -740,6 +803,10 @@ const MainWrapper = () => {
 
   if (casualGameStarted && casualGame) {
     return renderCasualGameScreen();
+  }
+
+  if (casualSummary) {
+    return renderCasualGameOverScreen();
   }
 
   return renderStartScreen();
