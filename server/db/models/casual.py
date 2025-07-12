@@ -11,6 +11,7 @@ class CasualMatch(Model):
     score = fields.IntField(default=0)
     num_questions = fields.IntField()
     current_question_idx = fields.IntField(default=0)
+    current_question_started_at = fields.DatetimeField(null=True)
     questions = fields.JSONField()
 
 

@@ -31,8 +31,6 @@ export default function Leaderboard({
   const [isUserVisible, setIsUserVisible] = useState(true);
   const [period, setPeriod] = useState<"Today" | "All Time">("All Time");
 
-  console.log(userTodayRank);
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsUserVisible(entry.isIntersecting),

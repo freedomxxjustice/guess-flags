@@ -31,6 +31,7 @@ const MainWrapper = () => {
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [typedAnswer, setTypedAnswer] = useState<string>("");
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   // FILTER STATES
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
@@ -42,6 +43,10 @@ const MainWrapper = () => {
   const [casualGameLoading, setCasualGameLoading] = useState(false);
   const [casualGameError, setCasualGameError] = useState<string | null>(null);
   const [casualSummary, setCasualSummary] = useState<any | null>(null);
+  const [isAwaiting, setIsAwaiting] = useState(false);
+  // TIMER
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // CONSTANTS
 
@@ -58,6 +63,7 @@ const MainWrapper = () => {
     refetch: refetchUser,
   } = useQuery({
     queryKey: ["user"],
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       const response = await request("users/get");
       return response.data;
@@ -72,9 +78,13 @@ const MainWrapper = () => {
     error: activeCasualError,
   } = useQuery<ICasualGame | null>({
     queryKey: ["casual", "active-match"],
+    refetchOnWindowFocus: false,
     queryFn: async () => {
       try {
         const res = await request("games/casual/match/active");
+        if (res.data.status == "Match not found!") {
+          return null;
+        }
         return res.data;
       } catch (error: any) {
         if (error?.response?.status === 404) {
@@ -101,6 +111,8 @@ const MainWrapper = () => {
     refetch: refetchLeaders,
   } = useQuery({
     queryKey: ["leaders"],
+    refetchOnWindowFocus: false,
+    enabled: !!user,
     queryFn: async () => {
       if (user) {
         const response = await request(
@@ -217,7 +229,11 @@ const MainWrapper = () => {
 
   // CASUAL GAME
 
-  const handleStartCasualGame = async () => {
+  const handleStartCasualGame = async (
+    numQuestions: number,
+    category: string,
+    gamemode: string
+  ) => {
     if (!user || user.tries_left <= 0) {
       setShowModal("notEnoughTries");
       return;
@@ -226,7 +242,7 @@ const MainWrapper = () => {
     setCasualGameError(null);
     try {
       const res = await request(
-        `games/casual/start?num_questions=5&category=country&gamemode=choose`,
+        `games/casual/start?num_questions=${numQuestions}&category=${category}&gamemode=${gamemode}`,
         "POST"
       );
       setCasualGame({
@@ -243,9 +259,11 @@ const MainWrapper = () => {
   };
 
   const handleCasualAnswer = async (answer: string) => {
-    if (!casualGame) return;
-
+    if (!casualGame || isAwaiting) return; // prevent double-click
+    setIsAwaiting(true);
     setSelectedOption(answer);
+    if (timerRef.current) clearInterval(timerRef.current);
+
     try {
       const res = await request(
         `games/casual/match/${casualGame.match_id}/answer`,
@@ -254,30 +272,61 @@ const MainWrapper = () => {
       );
 
       setIsCorrect(res.data.correct);
-
-      // Wait 2s before proceeding to next question or showing summary
+      setCorrectAnswer(res.data.correct_answer);
+      console.log(res.data);
       setTimeout(async () => {
         setSelectedOption(null);
         setIsCorrect(null);
+        setIsAwaiting(false); // allow next answer
 
         if (res.data.finished) {
-          // Fetch summary after match ends
           const summary = await fetchCasualSummary(casualGame.match_id);
           setCasualSummary(summary);
           setCasualGame(null);
           setCasualGameStarted(false);
+          setTypedAnswer("");
           refetchUser();
         } else {
           setCasualGame({
             match_id: casualGame.match_id,
             current_question: res.data.current_question,
           });
+          setTypedAnswer("");
         }
       }, 1250);
     } catch (err) {
       console.error("Answer error", err);
+      setIsAwaiting(false);
     }
   };
+  const expiredSubmittedRef = useRef(false);
+
+  useEffect(() => {
+    expiredSubmittedRef.current = false; // reset when new question arrives
+    if (casualGameStarted && casualGame) {
+      setTimeLeft(5);
+      if (timerRef.current) clearInterval(timerRef.current);
+
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev === null) return null;
+          if (prev <= 1) {
+            clearInterval(timerRef.current!);
+            if (!expiredSubmittedRef.current) {
+              expiredSubmittedRef.current = true;
+              handleCasualAnswer("Time expired", true);
+              console.log("expired");
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [casualGameStarted, casualGame]);
 
   const fetchCasualSummary = async (matchId: string) => {
     try {
@@ -288,6 +337,7 @@ const MainWrapper = () => {
       return null;
     }
   };
+
   const openCommunity = () => {
     window.open("https://t.me/guessflags", "_blank");
   };
@@ -376,6 +426,7 @@ const MainWrapper = () => {
             </p>
           </div>
         </div>
+
         {/* 404 Modal */}
         {showModal == "error" && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -397,8 +448,8 @@ const MainWrapper = () => {
             </div>
           </div>
         )}
-        {/* Buy Tries Modal */}
 
+        {/* Buy Tries Modal */}
         {showModal == "notEnoughTries" && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
@@ -577,6 +628,7 @@ const MainWrapper = () => {
         <h2 className="text-2xl font-bold mb-4">
           Question {question.index + 1}
         </h2>
+        <p className="text-lg mb-4">Time left: {timeLeft ?? "--"}s</p>
 
         <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
           <img
@@ -585,29 +637,84 @@ const MainWrapper = () => {
             className="w-full h-full object-contain mb-4"
           />
         </div>
+        {question.mode === "choose" && (
+          <div className="flex flex-col gap-2 w-full max-w-xs">
+            {question.options.map((opt, idx) => {
+              const isSelected = selectedOption === opt;
 
-        <div className="flex flex-col gap-2 w-full max-w-xs">
-          {question.options.map((opt, idx) => {
-            const isSelected = selectedOption === opt;
+              let btnClass = `${btnBig} bg-primary/10`;
 
-            let btnClass = `${btnBig} bg-primary/10`;
-            if (selectedOption) {
-              btnClass = isSelected ? "bg-red-600" : "bg-primary/10";
-              if (isCorrect && isSelected) btnClass = "bg-green-600";
-            }
+              if (selectedOption && isCorrect !== null) {
+                if (isSelected) {
+                  btnClass = isCorrect ? "bg-green-600" : "bg-red-600";
+                } else if (!isCorrect && opt.toLowerCase() === correctAnswer) {
+                  btnClass = "bg-green-600";
+                } else {
+                  btnClass = "bg-primary/10";
+                }
+              }
 
-            return (
-              <button
-                key={idx}
-                disabled={!!selectedOption}
-                onClick={() => handleCasualAnswer(opt)}
-                className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
-              >
-                {opt}
-              </button>
-            );
-          })}
-        </div>
+              return (
+                <button
+                  key={idx}
+                  disabled={!!selectedOption}
+                  onClick={() => handleCasualAnswer(opt)}
+                  className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
+                >
+                  {opt}
+                </button>
+              );
+            })}
+          </div>
+        )}
+        {question.mode === "enter" && (
+          <div className="flex flex-col gap-4 w-full max-w-xs">
+            <input
+              type="text"
+              value={typedAnswer}
+              onChange={(e) => setTypedAnswer(e.target.value)}
+              disabled={!!selectedOption}
+              className={`
+    px-4 py-3 rounded-lg w-full transition-all bg-primary/10
+    ${
+      selectedOption
+        ? isCorrect
+          ? "border-green-500 bg-green-100 text-black"
+          : "border-red-500 bg-red-100 text-black"
+        : "border-gray-300"
+    }
+  `}
+              placeholder="Type your answer..."
+            />
+
+            <button
+              onClick={() => handleCasualAnswer(typedAnswer.trim())}
+              disabled={!!selectedOption || !typedAnswer.trim()}
+              className={`
+    font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
+    ${
+      selectedOption && isCorrect !== null
+        ? isCorrect
+          ? "bg-green-600 hover:bg-green-700"
+          : "bg-red-600 hover:bg-red-700"
+        : "bg-primary hover:bg-blue-700"
+    }
+    ${btnClickAnimation}
+  `}
+            >
+              {isCorrect !== null
+                ? isCorrect
+                  ? "✅ Correct!"
+                  : `❌ Right answer: ${
+                      correctAnswer
+                        ? correctAnswer.charAt(0).toUpperCase() +
+                          correctAnswer.slice(1)
+                        : ""
+                    }`
+                : "Submit"}
+            </button>
+          </div>
+        )}
       </div>
     );
   };
@@ -683,7 +790,12 @@ const MainWrapper = () => {
     return <LoadingSpinner />;
   }
 
-  if (isGameLoading || isGameFetching || isActiveCasualLoading) {
+  if (
+    isGameLoading ||
+    isGameFetching ||
+    isActiveCasualLoading ||
+    casualGameLoading
+  ) {
     return <LoadingSpinner />;
   }
 
@@ -714,7 +826,7 @@ const MainWrapper = () => {
     );
   }
 
-  if (gameError) {
+  if (gameError || activeCasualError || casualGameError) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">

@@ -17,11 +17,12 @@ from config_reader import config, dp, bot, app
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://app.guessflags.space"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 dp.include_router(setup_bot_routers())
 app.include_router(setup_api_routers())

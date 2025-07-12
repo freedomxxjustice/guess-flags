@@ -12,7 +12,7 @@
       {
         "label": "Run Backend (Poetry)",
         "type": "shell",
-        "command": "poetry run python __main__.py",
+        "command": "poetry run uvicorn main:app --reload --host localhost --port 8000",
         "problemMatcher": [],
         "options": {
           "cwd": "${workspaceFolder}/server"

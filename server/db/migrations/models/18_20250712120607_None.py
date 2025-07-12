@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS "casualmatch" (
     "score" INT NOT NULL DEFAULT 0,
     "num_questions" INT NOT NULL,
     "current_question_idx" INT NOT NULL DEFAULT 0,
+    "current_question_started_at" TIMESTAMPTZ,
     "questions" JSONB NOT NULL,
     "user_id" BIGINT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE
 );

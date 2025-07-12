@@ -16,12 +16,15 @@ import {
 // TELEGRAM INITIATION
 init();
 initData.restore();
+
 if (viewport.bindCssVars.isAvailable()) {
   viewport.bindCssVars();
 }
+
 if (viewport.mount.isAvailable()) {
   viewport.mount();
 }
+
 themeParams.mountSync();
 mainButton.mount();
 backButton.mount();
@@ -33,13 +36,16 @@ mainButton.setParams({
   isLoaderVisible: false,
   textColor: "#FFFFFF",
 });
+
 if (viewport.expand.isAvailable()) {
   viewport.expand();
 }
 
 const App = () => {
   const [showIntro, setShowIntro] = useState(true);
-
+  const [showFullScreenModal, setShowFullScreenModal] =
+    useState<boolean>(false);
+  const btnClickAnimation = "transform active:scale-95 transition-transform";
   useEffect(() => {
     function handleClick(e: any) {
       if (e.target.tagName === "BUTTON") {
@@ -64,8 +70,16 @@ const App = () => {
   useEffect(() => {
     if (viewport.requestFullscreen.isAvailable()) {
       viewport.requestFullscreen();
+    } else {
+      setShowFullScreenModal(true);
     }
   }, []);
+
+  useEffect(() => {
+    if (!viewport.isFullscreen()) {
+      setShowFullScreenModal(true);
+    }
+  }, [viewport.isFullscreen()]);
 
   const particlesInit = useCallback(async (engine: any) => {
     await loadStarsPreset(engine);
@@ -79,6 +93,26 @@ const App = () => {
     if (showIntro) {
       return <IntroScreen />;
     }
+  };
+
+  const renderShowFullScreenModal = () => {
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="bg-grey-2/60 backdrop-blur-xl p-6 max-w-sm w-full text-center">
+          <h1 className="mb-6">It's recomended to play in fullscreen mode!</h1>
+          <button
+            onClick={() => setShowFullScreenModal(false)}
+            className={`py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
+            style={{
+              backgroundColor: "var(--color-warning)",
+              color: "white",
+            }}
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -128,7 +162,8 @@ const App = () => {
         />
 
         {/* Main content */}
-        <div className="relative backdrop-blur-xs z-20 flex justify-center items-center text-white">
+        <div className="relative h-screen backdrop-blur-xs z-20 flex justify-center items-center text-white">
+          {showFullScreenModal ? renderShowFullScreenModal() : ""}
           <MainWrapper />
         </div>
       </div>

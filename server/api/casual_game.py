@@ -12,7 +12,7 @@ from fastapi import APIRouter, Request, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 router = APIRouter(prefix="/api/games/casual", dependencies=[Depends(auth)])
 
@@ -32,7 +32,13 @@ async def casual_start(
     question_list = await create_casual_questions(num_questions, category, gamemode)
 
     match = await CasualMatch.create(
-        user=user, num_questions=num_questions, questions=question_list
+        user=user,
+        num_questions=num_questions,
+        questions=question_list,
+        started_at=datetime.now(timezone.utc),
+        current_question_started_at=datetime.now(
+            timezone.utc
+        ),  # <-- start first question timer
     )
 
     user.casual_games_played += 1
@@ -46,6 +52,7 @@ async def casual_start(
                 "flag_id": question_list[0]["flag_id"],
                 "image": question_list[0]["image"],
                 "options": question_list[0]["options"],
+                "mode": question_list[0]["mode"],
             },
         }
     )
@@ -103,8 +110,30 @@ async def get_match(
     match = await CasualMatch.get_or_none(user_id=user.id, completed_at=None)
 
     if not match:
-        raise HTTPException(status_code=404, detail="No active match")
+        return JSONResponse({"status": "Match not found!"})
 
+    # Validate timer
+    if match.current_question_started_at:
+        elapsed = datetime.now(timezone.utc) - match.current_question_started_at
+        if elapsed.total_seconds() > 6:
+            await CasualAnswer.create(
+                match=match,
+                question_idx=match.current_question_idx,
+                flag_id=match.questions[match.current_question_idx]["flag_id"],
+                user_answer="Time expired",
+                is_correct=False,
+            )
+            match.current_question_idx += 1
+            if match.current_question_idx >= match.num_questions:
+                match.completed_at = datetime.now(timezone.utc)
+                await complete_casual_match(match, user)
+                await match.save()
+                return JSONResponse({"status": "Time expired. Match completed."})
+            else:
+                match.current_question_started_at = datetime.now(timezone.utc)
+                await match.save()
+
+    # Return current question (could be a new one if time expired)
     idx = match.current_question_idx
     question = match.questions[idx]
 
@@ -116,38 +145,91 @@ async def get_match(
                 "flag_id": question["flag_id"],
                 "image": question["image"],
                 "options": question["options"],
+                "mode": question["mode"],
             },
         }
     )
 
 
-@router.post("/match/{id}/answer")
+@router.post("/match/{match_id}/answer")
 async def answer(
-    id: str, auth_data: WebAppInitData = Depends(auth), payload: dict = Body(...)
+    match_id: str,
+    auth_data: WebAppInitData = Depends(auth),
+    payload: dict = Body(...),
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
     user_id = user.id
+
     submitted_answer = payload.get("answer")
-    if not submitted_answer:
+    if submitted_answer is None:
         raise HTTPException(status_code=400, detail="Missing answer")
+    if not submitted_answer.strip():
+        raise HTTPException(status_code=400, detail="Empty answer")
+
+    submitted_answer = submitted_answer.strip().lower()
 
     # Load match
-    match = await CasualMatch.filter(id=id, user_id=user_id).first()
+    match = await CasualMatch.filter(id=match_id, user_id=user_id).first()
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
     if match.completed_at:
         raise HTTPException(status_code=400, detail="Match already completed")
 
-    # Get current question
-    questions = match.questions
-    if not questions or match.current_question_idx >= len(questions):
-        raise HTTPException(status_code=400, detail="Invalid question index")
-
-    question = questions[match.current_question_idx]
+    question = match.questions[match.current_question_idx]
     correct_answer = question["answer"].strip().lower()
-    is_correct = submitted_answer.strip().lower() == correct_answer
 
-    # Record answer
+    # Calculate elapsed time
+    elapsed = None
+    if match.current_question_started_at:
+        elapsed = datetime.now(timezone.utc) - match.current_question_started_at
+
+    # Handle timeout either by elapsed time or explicit "time expired" answer
+    if (elapsed and elapsed.total_seconds() > 6) or submitted_answer == "time expired":
+        await CasualAnswer.create(
+            match=match,
+            question_idx=match.current_question_idx,
+            flag_id=question["flag_id"],
+            user_answer="Time expired",
+            is_correct=False,
+        )
+
+        match.current_question_idx += 1
+
+        if match.current_question_idx >= match.num_questions:
+            match.completed_at = datetime.now(timezone.utc)
+            await complete_casual_match(match, user)
+            await match.save()
+            return JSONResponse(
+                {
+                    "correct": False,
+                    "correct_answer": correct_answer,
+                    "finished": True,
+                    "current_question": None,
+                    "score": match.score,
+                }
+            )
+        else:
+            match.current_question_started_at = datetime.now(timezone.utc)
+            await match.save()
+            next_q = match.questions[match.current_question_idx]
+            return JSONResponse(
+                {
+                    "correct": False,
+                    "correct_answer": correct_answer,
+                    "finished": False,
+                    "current_question": {
+                        "index": match.current_question_idx,
+                        "image": next_q["image"],
+                        "options": next_q["options"],
+                        "mode": next_q["mode"],
+                    },
+                    "score": match.score,
+                }
+            )
+
+    # Process normal answer
+    is_correct = submitted_answer == correct_answer
+
     await CasualAnswer.create(
         match=match,
         question_idx=match.current_question_idx,
@@ -156,45 +238,51 @@ async def answer(
         is_correct=is_correct,
     )
 
-    # Update match
     if is_correct:
         match.score += 1
 
-    # Advance or complete
-    if match.current_question_idx + 1 >= match.num_questions:
-        match.completed_at = datetime.utcnow()
+    match.current_question_idx += 1
+
+    if match.current_question_idx >= match.num_questions:
+        match.completed_at = datetime.now(timezone.utc)
         await complete_casual_match(match, user)
+        await match.save()
+        return JSONResponse(
+            {
+                "correct": is_correct,
+                "correct_answer": correct_answer,
+                "finished": True,
+                "current_question": None,
+                "score": match.score,
+            }
+        )
     else:
-        match.current_question_idx += 1
-
-    await match.save()
-
-    # Prepare next question if available
-    next_question = None
-    if not match.completed_at:
-        q = questions[match.current_question_idx]
-        next_question = {
-            "index": match.current_question_idx,
-            "image": q["image"],
-            "options": q["options"],
-        }
-
-    return JSONResponse(
-        {
-            "correct": is_correct,
-            "finished": bool(match.completed_at),
-            "current_question": next_question,
-            "score": match.score,
-        }
-    )
+        match.current_question_started_at = datetime.now(timezone.utc)
+        await match.save()
+        next_q = match.questions[match.current_question_idx]
+        return JSONResponse(
+            {
+                "correct": is_correct,
+                "correct_answer": correct_answer,
+                "finished": False,
+                "current_question": {
+                    "index": match.current_question_idx,
+                    "image": next_q["image"],
+                    "options": next_q["options"],
+                    "mode": next_q["mode"],
+                },
+                "score": match.score,
+            }
+        )
 
 
-@router.get("/match/{id}/summary")
+@router.get("/match/{match_id}/summary")
 async def get_summary(
-    id: str, auth_data: WebAppInitData = Depends(auth)
+    match_id: str, auth_data: WebAppInitData = Depends(auth)
 ) -> JSONResponse:
     user_id = auth_data.user.id
-    match = await CasualMatch.filter(id=id, user_id=user_id).first()
+    match = await CasualMatch.filter(id=match_id, user_id=user_id).first()
+    print(match)
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
 
@@ -240,12 +328,12 @@ async def submit_casual_match(
 
 
 async def complete_casual_match(match, user) -> None:
-    match.completed_at = datetime.utcnow()
+    match.completed_at = datetime.now(timezone.utc)
     user.casual_score += match.score
     user.today_casual_score += match.score
     # Adjust tries or do other logic here
     if match.score < match.num_questions / 2:
         user.tries_left -= 1
-        await user.save()
 
+    await user.save()
     await match.save()

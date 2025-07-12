@@ -3,6 +3,7 @@ export interface ICasualQuestion {
   flag_id: number;
   image: string;
   options: string[];
+  mode: string;
 }
 
 export interface ICasualGame {

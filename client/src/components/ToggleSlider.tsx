@@ -18,11 +18,11 @@ export default function ToggleSlider({
     <div className="flex items-center justify-center">
       <button
         onClick={() => onChange(isRight ? leftLabel : rightLabel)}
-        className="relative flex w-48 h-12 bg-grey-2 rounded-full p-1 transition-colors duration-300"
+        className="relative flex w-48 h-12 bg-grey-2 rounded-full p-1 transition-colors duration-300 items-center"
       >
         {/* Absolutely positioned slider */}
         <span
-          className={`absolute top-1 left-1 w-22 h-10 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
+          className={`pointer-events-none absolute inset-y-1 left-1 w-22 rounded-full bg-white shadow-md transform transition-transform duration-300 ${
             isRight ? "translate-x-24" : ""
           }`}
         />
