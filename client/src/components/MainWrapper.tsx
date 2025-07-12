@@ -304,7 +304,7 @@ const MainWrapper = () => {
   useEffect(() => {
     expiredSubmittedRef.current = false; // reset when new question arrives
     if (casualGameStarted && casualGame) {
-      setTimeLeft(5);
+      setTimeLeft(15);
       if (timerRef.current) clearInterval(timerRef.current);
 
       timerRef.current = setInterval(() => {
@@ -314,8 +314,7 @@ const MainWrapper = () => {
             clearInterval(timerRef.current!);
             if (!expiredSubmittedRef.current) {
               expiredSubmittedRef.current = true;
-              handleCasualAnswer("Time expired", true);
-              console.log("expired");
+              handleCasualAnswer("Time expired");
             }
             return 0;
           }
@@ -357,10 +356,11 @@ const MainWrapper = () => {
     }
   };
   const renderHomeScreen = () => (
-    <div className="h-screen">
+    <div className="h-screen w-full container mx-auto flex flex-col px-4">
+      {/* Upper Panel */}
       <div
         id="upperPanel"
-        className="flex justify-center mx-auto mt-27 items-center w-max z-50"
+        className="flex justify-center items-center mt-14 w-full z-50"
       >
         <div
           onClick={() => setShowBuyTries(true)}
@@ -373,71 +373,112 @@ const MainWrapper = () => {
           </h2>
         </div>
       </div>
-      <div className="flex justify-center items-center flex-col gap-8 mt-12">
-        <div className="bg-grey-2/10 backdrop-blur py-4 px-5 shadow-2xl">
-          <h1 className="text-white text-center text-2xl font-bold text-shadow-background text-shadow-md">
+
+      {/* Main Content */}
+      <div className="flex flex-col items-center gap-8 mt-12 w-full">
+        {/* Welcome Box */}
+        <div className="bg-grey-2/10 backdrop-blur py-4 px-5 shadow-2xl w-full max-w-md rounded-xl text-center">
+          <h1 className="text-white text-2xl font-bold text-shadow-background text-shadow-md">
             {user?.name}, <br />
             Welcome to Guess Flags!
           </h1>
           {user?.tries_left === 0 && (
-            <h2 className="text-center text-warning text-sm px-4">
+            <h2 className="text-warning text-sm mt-2">
               Come back tomorrow or buy more tries using stars!
             </h2>
           )}
         </div>
-        <img className="rounded-xl object-cover w-75" src="/....png" />
 
-        <div className="flex justify-center flex-col items-center gap-2">
+        {/* Image */}
+        <img
+          className="rounded-xl object-cover w-full max-w-sm h-auto"
+          src="/....png"
+          alt="Game Illustration"
+        />
+
+        {/* Buttons */}
+        <div className="flex flex-col items-center gap-3 w-full">
           <button
             type="button"
             disabled={!!casualGame}
-            className={`${btnBig} ${btnClickAnimation} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${
+            className={`w-full max-w-xs ${btnBig} ${btnClickAnimation} font-medium rounded-lg text-sm text-center ${
               !casualGame ? btnRegular : btnDisabled
             }`}
             onClick={() => setShowCasualFilter(true)}
           >
             Casual
           </button>
+
           <button
             type="button"
-            className={`${btnRegular} ${btnBig} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnClickAnimation}`}
+            className={`w-full max-w-xs ${btnRegular} ${btnBig} font-medium rounded-lg text-sm text-center ${btnClickAnimation}`}
             onClick={() => setShowTrainingFilter(true)}
           >
             Training
           </button>
+
           <button
             onClick={() => setShowModal("error")}
-            // onClick={() => joinMultiplayer()}
             type="button"
-            className={`text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnDisabled}`}
+            className={`w-full max-w-xs text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm text-center ${btnDisabled}`}
           >
             Rating
           </button>
+
           <button
             type="button"
-            className={`${btnRegular} ${btnBig} font-medium rounded-lg text-sm px-20 py-3 text-center mb-2 ${btnClickAnimation}`}
+            className={`w-full max-w-xs ${btnRegular} ${btnBig} font-medium rounded-lg text-sm text-center ${btnClickAnimation}`}
             onClick={openCommunity}
           >
             Community
           </button>
-          <div>
-            <p className="text-accent text-shadow-2xs text-xs mt-4">
-              Early Access
+
+          <p className="text-accent text-shadow-2xs text-xs mt-4">
+            Early Access
+          </p>
+        </div>
+      </div>
+
+      {/* Modals */}
+      {showModal === "error" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-grey-2/60 backdrop-blur-xl p-6 w-full max-w-sm rounded-xl text-center">
+            <h2 className="text-xl font-bold mb-4">Error 404</h2>
+            <p className="mb-6">
+              Unfortunately this feature isn't available yet!
             </p>
+            <button
+              onClick={() => setShowModal(false)}
+              className={`py-2 px-4 w-full ${btnClickAnimation} rounded-xl font-semibold`}
+              style={{
+                backgroundColor: "var(--color-warning)",
+                color: "white",
+              }}
+            >
+              Close
+            </button>
           </div>
         </div>
+      )}
 
-        {/* 404 Modal */}
-        {showModal == "error" && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-grey-2/60 backdrop-blur-xl p-6 max-w-sm w-full text-center">
-              <h2 className="text-xl font-bold mb-4">Error 404</h2>
-              <p className="mb-6">
-                Unfortunately this feature isn't available yet!
-              </p>
+      {showModal === "notEnoughTries" && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-background p-6 w-full max-w-sm rounded-2xl text-center">
+            <h2 className="text-xl font-bold mb-4">Not enough tries!</h2>
+            <p className="mb-6">
+              Unfortunately you have run out of tries. Still, you can buy them
+              using Telegram Stars or simply wait 24 hours!
+            </p>
+            <div className="flex flex-col gap-4">
+              <button
+                className={`w-full ${btnRegular} py-2 px-4 rounded-xl font-semibold ${btnClickAnimation}`}
+                onClick={() => setShowBuyTries(true)}
+              >
+                Buy tries!
+              </button>
               <button
                 onClick={() => setShowModal(false)}
-                className={`py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
+                className={`py-2 px-4 w-full rounded-xl font-semibold ${btnClickAnimation}`}
                 style={{
                   backgroundColor: "var(--color-warning)",
                   color: "white",
@@ -447,41 +488,11 @@ const MainWrapper = () => {
               </button>
             </div>
           </div>
-        )}
-
-        {/* Buy Tries Modal */}
-        {showModal == "notEnoughTries" && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
-              <h2 className="text-xl font-bold mb-4">Not enough tries!</h2>
-              <p className="mb-6">
-                Unfortunately you have run out of tries. Still, you can buy them
-                using Telegram Stars or simply wait 24 hours!
-              </p>
-              <div className="flex flex-col gap-4">
-                <button
-                  className={`${btnRegular} py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
-                  onClick={() => setShowBuyTries(true)}
-                >
-                  Buy tries!
-                </button>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className={`py-2 px-4 rounded-xl font-semibold transition-all ${btnClickAnimation}`}
-                  style={{
-                    backgroundColor: "var(--color-warning)",
-                    color: "white",
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
+
   if (!user) return null;
 
   const renderProfileScreen = () => {
@@ -730,11 +741,27 @@ const MainWrapper = () => {
         </p>
         <div className="max-w-md overflow-auto text-left">
           <h3 className="font-semibold mb-2">Summary of answers:</h3>
-          <ul className="list-disc pl-5 space-y-1">
+          <ul className="list-disc pl-5 space-y-2">
             {casualSummary.answers.map((ans: any, idx: number) => (
-              <li key={idx}>
-                Question #{ans.question_idx + 1}: Your answer "{ans.user_answer}
-                " — {ans.is_correct ? "Correct" : "Incorrect"}
+              <li key={idx} className="flex items-center space-x-3">
+                {ans.image && (
+                  <img
+                    src={ans.image}
+                    alt={`Flag for question ${ans.question_idx + 1}`}
+                    className="w-10 h-6 object-cover border rounded"
+                  />
+                )}
+                <span>
+                  Question #{ans.question_idx + 1}: Your answer "
+                  {ans.user_answer.charAt(0).toUpperCase() +
+                    ans.user_answer.slice(1)}
+                  "{" — "}
+                  {ans.is_correct ? (
+                    <span className="text-green-400">Correct</span>
+                  ) : (
+                    <span className="text-red-400">Incorrect</span>
+                  )}
+                </span>
               </li>
             ))}
           </ul>
@@ -753,6 +780,7 @@ const MainWrapper = () => {
       </div>
     );
   };
+
   // RENDER: Game Over Screen
   const renderTrainingGameOverScreen = () => (
     <div className="flex flex-col items-center justify-center h-screen text-white">
