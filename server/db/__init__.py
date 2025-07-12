@@ -6,3 +6,9 @@ from .models.casual import (
     CasualAnswer,
     CasualAnswerSchema,
 )
+from .models.tournament import (
+    CasualEverydayTournament,
+    CasualEverydayTournamentSchema,
+    CasualEverydayTournamentParticipant,
+    CasualEverydayTournamentParticipantSchema,
+)

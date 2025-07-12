@@ -18,7 +18,7 @@ async def donate(request: Request) -> JSONResponse:
         CreateInvoiceLink(
             title="Donate",
             description="None",
-            payload="donate",
+            payload="tries",
             currency="XTR",
             prices=[LabeledPrice(label="XTR", amount=data["amount"])],
         )

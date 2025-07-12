@@ -115,7 +115,7 @@ async def get_match(
     # Validate timer
     if match.current_question_started_at:
         elapsed = datetime.now(timezone.utc) - match.current_question_started_at
-        if elapsed.total_seconds() > 6:
+        if elapsed.total_seconds() > 15:
             await CasualAnswer.create(
                 match=match,
                 question_idx=match.current_question_idx,
@@ -184,7 +184,7 @@ async def answer(
         elapsed = datetime.now(timezone.utc) - match.current_question_started_at
 
     # Handle timeout either by elapsed time or explicit "time expired" answer
-    if (elapsed and elapsed.total_seconds() > 6) or submitted_answer == "time expired":
+    if (elapsed and elapsed.total_seconds() > 15) or submitted_answer == "time expired":
         await CasualAnswer.create(
             match=match,
             question_idx=match.current_question_idx,
@@ -282,7 +282,6 @@ async def get_summary(
 ) -> JSONResponse:
     user_id = auth_data.user.id
     match = await CasualMatch.filter(id=match_id, user_id=user_id).first()
-    print(match)
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
 
@@ -293,12 +292,25 @@ async def get_summary(
     answers = (
         await CasualAnswer.filter(match_id=match.id)
         .order_by("question_idx")
-        .values("question_idx", "flag_id", "user_answer", "is_correct", "answered_at")
+        .values(
+            "question_idx",
+            "flag_id",
+            "user_answer",
+            "is_correct",
+            "answered_at",
+        )
     )
 
-    for i in answers:
-        if i["answered_at"]:
-            i["answered_at"] = i["answered_at"].isoformat()
+    # Make a lookup dict for questions by index
+    question_lookup = {idx: q for idx, q in enumerate(match.questions)}
+
+    # Attach image to each answer
+    for a in answers:
+        if a["answered_at"]:
+            a["answered_at"] = a["answered_at"].isoformat()
+
+        q = question_lookup.get(a["question_idx"])
+        a["image"] = q["image"] if q else None
 
     return JSONResponse(
         {
