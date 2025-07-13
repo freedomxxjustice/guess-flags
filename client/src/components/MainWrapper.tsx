@@ -13,6 +13,7 @@ import { backButton } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
 import { AnimatePresence, motion } from "framer-motion";
+import Tournaments from "./Tournaments";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -24,7 +25,9 @@ const MainWrapper = () => {
   const [showBuyTries, setShowBuyTries] = useState(false);
   const [showTrainingFilter, setShowTrainingFilter] = useState(false);
   const [showCasualFilter, setShowCasualFilter] = useState(false);
-  const [page, setPage] = useState<"home" | "profile" | "leaderboard">("home");
+  const [page, setPage] = useState<
+    "home" | "profile" | "leaderboard" | "tournaments"
+  >("home");
   // TRAINING GAME STATES
   const [trainingGameStarted, setTrainingGameStarted] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -351,6 +354,8 @@ const MainWrapper = () => {
         return renderProfileScreen();
       case "leaderboard":
         return renderLeaderboardScreen();
+      case "tournaments":
+        return renderTournamentsScreen();
       default:
         return renderHomeScreen();
     }
@@ -497,6 +502,10 @@ const MainWrapper = () => {
 
   const renderProfileScreen = () => {
     return <Profile user={user} />;
+  };
+
+  const renderTournamentsScreen = () => {
+    return <Tournaments />;
   };
 
   const renderLeaderboardScreen = () => {

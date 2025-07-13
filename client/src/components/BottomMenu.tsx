@@ -1,11 +1,13 @@
-import { FaHome } from "react-icons/fa";
-import { MdLeaderboard } from "react-icons/md";
+import { FaHome, FaMedal } from "react-icons/fa";
+import { MdLeaderboard, MdPerson } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 
 type BottomMenuProps = {
-  onNavigate: (page: "home" | "leaderboard" | "profile") => void;
+  onNavigate: (
+    page: "home" | "leaderboard" | "profile" | "tournaments"
+  ) => void;
   refetchLeaders: () => void;
-  page: "home" | "leaderboard" | "profile";
+  page: "home" | "leaderboard" | "profile" | "tournaments";
 };
 
 export default function BottomMenu({
@@ -15,7 +17,7 @@ export default function BottomMenu({
 }: BottomMenuProps) {
   return (
     <div className="fixed bottom-0 left-0 z-51 w-full h-25 bg-white/10 backdrop-blur-md">
-      <div className="grid h-full max-w-lg grid-cols-3 mx-auto font-medium">
+      <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
         <button
           type="button"
           className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
@@ -59,13 +61,29 @@ export default function BottomMenu({
           } group`}
           onClick={() => onNavigate("profile")}
         >
-          <CgProfile />
+          <MdPerson />
           <span
             className={`text-sm ${
               page == "profile" ? "text-primary" : ""
             } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
           >
             Profile
+          </span>
+        </button>
+        <button
+          type="button"
+          className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
+            page == "tournaments" ? "text-primary" : ""
+          } group`}
+          onClick={() => onNavigate("tournaments")}
+        >
+          <FaMedal />
+          <span
+            className={`text-sm ${
+              page == "tournaments" ? "text-primary" : ""
+            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+          >
+            Tournaments
           </span>
         </button>
       </div>
