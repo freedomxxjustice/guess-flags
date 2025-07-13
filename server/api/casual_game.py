@@ -7,6 +7,8 @@ from db import (
     CasualAnswer,
     CasualAnswerSchema,
     CasualMatchSchema,
+    CasualEverydayTournament,
+    CasualEverydayTournamentParticipant,
 )
 from fastapi import APIRouter, Request, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
@@ -343,9 +345,34 @@ async def complete_casual_match(match, user) -> None:
     match.completed_at = datetime.now(timezone.utc)
     user.casual_score += match.score
     user.today_casual_score += match.score
-    # Adjust tries or do other logic here
+
+    # Decrease tries if score < half questions
     if match.score < match.num_questions / 2:
         user.tries_left -= 1
 
+    # Save user and match updates
     await user.save()
     await match.save()
+
+    # Check for active tournament today
+    now = datetime.now(timezone.utc)
+    start_of_today = datetime(
+        year=now.year, month=now.month, day=now.day, tzinfo=timezone.utc
+    )
+    start_of_tomorrow = start_of_today + timedelta(days=1)
+
+    tournament = await CasualEverydayTournament.filter(
+        created_at__gte=start_of_today,
+        created_at__lt=start_of_tomorrow,
+        finished_at=None,
+    ).first()
+
+    if tournament:
+        # Check if user is participant in this tournament
+        participant = await CasualEverydayTournamentParticipant.filter(
+            tournament_id=tournament.id, user_id=user.id
+        ).first()
+
+        if participant:
+            participant.score += match.score
+            await participant.save()

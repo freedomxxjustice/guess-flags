@@ -1,21 +1,19 @@
-from random import shuffle, sample
-from typing import List
 from db import (
     CasualEverydayTournament,
     CasualEverydayTournamentSchema,
     CasualEverydayTournamentParticipant,
     CasualEverydayTournamentParticipantSchema,
 )
-from fastapi import APIRouter, Request, Depends, HTTPException, Query, Body
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from aiogram.methods import CreateInvoiceLink
 from aiogram.types import (
     LabeledPrice,
 )
-from .utils import auth, check_user
 from datetime import datetime, timedelta, timezone
 from config_reader import bot
+from .utils import auth, check_user
 
 router = APIRouter(
     prefix="/api/tournaments/casual/everyday", dependencies=[Depends(auth)]
@@ -30,24 +28,43 @@ async def get_today_tournament() -> JSONResponse:
     )
     start_of_tomorrow = start_of_today + timedelta(days=1)
 
-    # Query tournaments created today and not yet finished
-    today_tournament = await CasualEverydayTournament.filter(
-        created_at__gte=start_of_today,
-        created_at__lt=start_of_tomorrow,
-        finished_at=None,
-    ).first()
-
-    print(today_tournament)
+    today_tournament = (
+        await CasualEverydayTournament.filter(
+            created_at__gte=start_of_today,
+            created_at__lt=start_of_tomorrow,
+            finished_at=None,
+        )
+        .prefetch_related("participants__user")
+        .first()
+    )
 
     if not today_tournament:
         raise HTTPException(status_code=404, detail="No active tournament today")
 
+    # Use the participants relation directly, since prefetch_related loaded them
+    participants = today_tournament.participants
+
+    participant_list = []
+    for p in participants:
+        # 'p.user' is loaded thanks to prefetch_related
+        participant_list.append(
+            {
+                "id": p.id,
+                "user_id": p.user_id,
+                "username": p.user.name,  # <-- should work now
+                "score": p.score,
+                "place": p.place,
+                "prize": p.prize,
+            }
+        )
+
     return JSONResponse(
         {
             "tournament_id": today_tournament.id,
-            "created_at": today_tournament.created_at,
-            "prized": today_tournament.prizes,
-            "participants": today_tournament.participants,
+            "tournament_name": today_tournament.name,
+            "created_at": today_tournament.created_at.isoformat(),
+            "prizes": today_tournament.prizes or [],
+            "participants": participant_list,
         }
     )
 
@@ -57,19 +74,25 @@ async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(au
     tournament = await CasualEverydayTournament.filter(id=tournament_id).first()
     tournament_participation_cost = tournament.participation_cost
     if tournament_participation_cost > 0:
+        existing_participant = await CasualEverydayTournamentParticipant.filter(
+            tournament_id=tournament_id, user_id=auth_data.user.id
+        ).first()
+
+        if existing_participant:
+            return JSONResponse({"message": "You are already participating."})
+
         invoice_link = await bot(
-            invoice_link=await bot(
-                CreateInvoiceLink(
-                    title="Participation in tournament",
-                    description=f"Tournament #{tournament_id}",
-                    payload=f"tournament_{tournament_id}",
-                    currency="XTR",
-                    prices=[
-                        LabeledPrice(label="XTR", amount=tournament_participation_cost)
-                    ],
-                )
+            CreateInvoiceLink(
+                title="Participation in tournament",
+                description=f"Tournament #{tournament_id}",
+                payload=f"tournament_{tournament_id}",
+                currency="XTR",
+                prices=[
+                    LabeledPrice(label="XTR", amount=tournament_participation_cost)
+                ],
             )
         )
+
         return JSONResponse({"invoice_link": invoice_link})
     else:
         existing_participant = await CasualEverydayTournamentParticipant.filter(
