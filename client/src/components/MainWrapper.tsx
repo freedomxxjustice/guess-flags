@@ -9,11 +9,12 @@ import BuyTries from "./BuyTries";
 import Leaderboard from "./Leaderboard";
 import Profile from "./Profile";
 import PreGame from "./PreGame";
-import { backButton } from "@telegram-apps/sdk";
+import { backButton, isFullscreen } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
 import { AnimatePresence, motion } from "framer-motion";
 import Tournaments from "./Tournaments";
+import Header from "./Header";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -50,14 +51,8 @@ const MainWrapper = () => {
   // TIMER
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // CONSTANTS
-
-  const btnClickAnimation = "transform active:scale-95 transition-transform";
-  const btnDisabled = "text-grey backdrop-blur bg-grey/10 text-xl";
-  const btnRegular =
-    "text-white bg-gradient-to-b from-primary to-primary/70 backdrop-blur rounded-3xl text-xl shadow-xl";
-  const btnBig = "py-4 w-75";
+  // UI
+  const [isFullscreenState, setIsFullscreenState] = useState<boolean>(false);
 
   // GET USER INFO
   const {
@@ -216,6 +211,28 @@ const MainWrapper = () => {
     }
   }, [trainingGameStarted]);
 
+  useEffect(() => {
+    const checkFullscreen = () => {
+      if (isFullscreen()) {
+        setIsFullscreenState(true);
+      } else {
+        setIsFullscreenState(false);
+      }
+    };
+
+    // Initial check
+    checkFullscreen();
+
+    // Listen to resize and fullscreen changes
+    window.addEventListener("resize", checkFullscreen);
+    document.addEventListener("fullscreenchange", checkFullscreen);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener("resize", checkFullscreen);
+      document.removeEventListener("fullscreenchange", checkFullscreen);
+    };
+  }, []);
   // ERROR HANDLING
   useEffect(() => {
     if (gameError) {
@@ -360,87 +377,66 @@ const MainWrapper = () => {
         return renderHomeScreen();
     }
   };
+
+  const headerStyleFullscreen =
+    "relative min-w-screen min-h-36 md:min-h-24 border-b-1 border-grey-2 bg-background top-0 flex flex-col justify-center items-center";
+  const headerStyle =
+    "relative min-w-screen min-h-18 border-b-1 border-grey-2 bg-background top-0 flex flex-row justify-between items-center";
+
   const renderHomeScreen = () => (
-    <div className="h-screen w-full container mx-auto flex flex-col px-4">
-      {/* Upper Panel */}
-      <div
-        id="upperPanel"
-        className="flex justify-center items-center mt-14 w-full z-50"
+    <div className="min-h-screen">
+      {/* Header */}
+      <Header
+        isFullscreen={isFullscreenState}
+        headerStyle={headerStyle}
+        headerStyleFullscreen={headerStyleFullscreen}
+        title="Home"
       >
-        <div
-          onClick={() => setShowBuyTries(true)}
-          className={`rounded-xl py-1 px-3 text-center shadow-md cursor-pointer ${
-            user?.tries_left === 0 ? "bg-warning" : "bg-primary"
-          }`}
-        >
-          <h2 className="text-sm font-semibold">
-            Tries left: {user?.tries_left}
-          </h2>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex flex-col items-center gap-8 mt-12 w-full">
-        {/* Welcome Box */}
-        <div className="bg-grey-2/10 backdrop-blur py-4 px-5 shadow-2xl w-full max-w-md rounded-xl text-center">
-          <h1 className="text-white text-2xl font-bold text-shadow-background text-shadow-md">
-            {user?.name}, <br />
-            Welcome to Guess Flags!
+        <p>Tries left: {user?.tries_left}</p>
+      </Header>
+      <div className="flex flex-col items-center w-full px-4 py-6 flex-grow short-screen-grid">
+        <div className="grid-left mb-12">
+          <h1 className="text-xs font-semibold text-center mb-6">
+            {user?.name}, welcome to <br />
+            <span className="text-3xl font-bold">GuessFlags</span>
           </h1>
-          {user?.tries_left === 0 && (
-            <h2 className="text-warning text-sm mt-2">
-              Come back tomorrow or buy more tries using stars!
-            </h2>
-          )}
+          <img
+            src="/....png"
+            className="mx-auto w-77 object-contain rounded-lg"
+            alt="Guess Flags"
+          />
         </div>
-
-        {/* Image */}
-        <img
-          className="rounded-xl object-cover w-full max-w-sm h-auto"
-          src="/....png"
-          alt="Game Illustration"
-        />
-
-        {/* Buttons */}
-        <div className="flex flex-col items-center gap-3 w-full">
+        <div className="flex flex-col items-center gap-3 mb-6 grid-right w-90">
           <button
             type="button"
             disabled={!!casualGame}
-            className={`w-full max-w-xs ${btnBig} ${btnClickAnimation} font-medium rounded-lg text-sm text-center ${
-              !casualGame ? btnRegular : btnDisabled
-            }`}
+            className={`btn-regular btn-big btn-click-animation`}
             onClick={() => setShowCasualFilter(true)}
           >
             Casual
           </button>
-
           <button
             type="button"
-            className={`w-full max-w-xs ${btnRegular} ${btnBig} font-medium rounded-lg text-sm text-center ${btnClickAnimation}`}
+            className={`btn-regular btn-big btn-click-animation`}
             onClick={() => setShowTrainingFilter(true)}
           >
             Training
           </button>
-
           <button
             onClick={() => setShowModal("error")}
             type="button"
-            className={`w-full max-w-xs text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm text-center ${btnDisabled}`}
+            className={`btn-regular btn-big btn-click-animation`}
           >
             Rating
           </button>
-
           <button
             type="button"
-            className={`w-full max-w-xs ${btnRegular} ${btnBig} font-medium rounded-lg text-sm text-center ${btnClickAnimation}`}
+            className={`btn-regular btn-big btn-click-animation`}
             onClick={openCommunity}
           >
             Community
           </button>
-
-          <p className="text-accent text-shadow-2xs text-xs mt-4">
-            Early Access
-          </p>
+          <p className="text-xs text-gray-500 select-none mt-4">Early access</p>
         </div>
       </div>
 
@@ -454,7 +450,7 @@ const MainWrapper = () => {
             </p>
             <button
               onClick={() => setShowModal(false)}
-              className={`py-2 px-4 w-full ${btnClickAnimation} rounded-xl font-semibold`}
+              className={`py-2 px-4 w-full btn-click-animation rounded-xl font-semibold`}
               style={{
                 backgroundColor: "var(--color-warning)",
                 color: "white",
@@ -476,14 +472,14 @@ const MainWrapper = () => {
             </p>
             <div className="flex flex-col gap-4">
               <button
-                className={`w-full ${btnRegular} py-2 px-4 rounded-xl font-semibold ${btnClickAnimation}`}
+                className={`w-full btnRegular py-2 px-4 rounded-xl font-semibold btn-click-animation`}
                 onClick={() => setShowBuyTries(true)}
               >
                 Buy tries!
               </button>
               <button
                 onClick={() => setShowModal(false)}
-                className={`py-2 px-4 w-full rounded-xl font-semibold ${btnClickAnimation}`}
+                className={`py-2 px-4 w-full rounded-xl font-semibold btn-click-animation`}
                 style={{
                   backgroundColor: "var(--color-warning)",
                   color: "white",
@@ -497,6 +493,143 @@ const MainWrapper = () => {
       )}
     </div>
   );
+  // const renderHomeScreen = () => (
+  //   <div className="h-screen w-full container mx-auto flex flex-col px-4">
+  //     {/* Upper Panel */}
+  //     <div
+  //       id="upperPanel"
+  //       className="flex justify-center items-center mt-14 w-full z-50"
+  //     >
+  //       <div
+  //         onClick={() => setShowBuyTries(true)}
+  //         className={`rounded-xl py-1 px-3 text-center shadow-md cursor-pointer ${
+  //           user?.tries_left === 0 ? "bg-warning" : "bg-primary"
+  //         }`}
+  //       >
+  //         <h2 className="text-sm font-semibold">
+  //           Tries left: {user?.tries_left}
+  //         </h2>
+  //       </div>
+  //     </div>
+
+  //     {/* Main Content */}
+  //     <div className="flex flex-col items-center gap-8 mt-12 w-full">
+  //       {/* Welcome Box */}
+  //       <div className="bg-grey-2/10 backdrop-blur py-4 px-5 shadow-2xl w-full max-w-md rounded-xl text-center">
+  //         <h1 className="text-white text-2xl font-bold text-shadow-background text-shadow-md">
+  //           {user?.name}, <br />
+  //           Welcome to Guess Flags!
+  //         </h1>
+  //         {user?.tries_left === 0 && (
+  //           <h2 className="text-warning text-sm mt-2">
+  //             Come back tomorrow or buy more tries using stars!
+  //           </h2>
+  //         )}
+  //       </div>
+
+  //       {/* Image */}
+  //       <img
+  //         className="rounded-xl object-cover w-full max-w-sm h-auto"
+  //         src="/....png"
+  //         alt="Game Illustration"
+  //       />
+
+  //       {/* Buttons */}
+  //       <div className="flex flex-col items-center gap-3 w-full">
+  //         <button
+  //           type="button"
+  //           disabled={!!casualGame}
+  //           className={`w-full max-w-xs ${btnBig} ${btnClickAnimation} font-medium rounded-lg text-sm text-center ${
+  //             !casualGame ? btnRegular : btnDisabled
+  //           }`}
+  //           onClick={() => setShowCasualFilter(true)}
+  //         >
+  //           Casual
+  //         </button>
+
+  //         <button
+  //           type="button"
+  //           className={`w-full max-w-xs ${btnRegular} ${btnBig} font-medium rounded-lg text-sm text-center ${btnClickAnimation}`}
+  //           onClick={() => setShowTrainingFilter(true)}
+  //         >
+  //           Training
+  //         </button>
+
+  //         <button
+  //           onClick={() => setShowModal("error")}
+  //           type="button"
+  //           className={`w-full max-w-xs text-background ${btnBig} bg-gradient-to-r font-medium rounded-lg text-sm text-center ${btnDisabled}`}
+  //         >
+  //           Rating
+  //         </button>
+
+  //         <button
+  //           type="button"
+  //           className={`w-full max-w-xs ${btnRegular} ${btnBig} font-medium rounded-lg text-sm text-center ${btnClickAnimation}`}
+  //           onClick={openCommunity}
+  //         >
+  //           Community
+  //         </button>
+
+  //         <p className="text-accent text-shadow-2xs text-xs mt-4">
+  //           Early Access
+  //         </p>
+  //       </div>
+  //     </div>
+
+  //     {/* Modals */}
+  //     {showModal === "error" && (
+  //       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  //         <div className="bg-grey-2/60 backdrop-blur-xl p-6 w-full max-w-sm rounded-xl text-center">
+  //           <h2 className="text-xl font-bold mb-4">Error 404</h2>
+  //           <p className="mb-6">
+  //             Unfortunately this feature isn't available yet!
+  //           </p>
+  //           <button
+  //             onClick={() => setShowModal(false)}
+  //             className={`py-2 px-4 w-full ${btnClickAnimation} rounded-xl font-semibold`}
+  //             style={{
+  //               backgroundColor: "var(--color-warning)",
+  //               color: "white",
+  //             }}
+  //           >
+  //             Close
+  //           </button>
+  //         </div>
+  //       </div>
+  //     )}
+
+  //     {showModal === "notEnoughTries" && (
+  //       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  //         <div className="bg-background p-6 w-full max-w-sm rounded-2xl text-center">
+  //           <h2 className="text-xl font-bold mb-4">Not enough tries!</h2>
+  //           <p className="mb-6">
+  //             Unfortunately you have run out of tries. Still, you can buy them
+  //             using Telegram Stars or simply wait 24 hours!
+  //           </p>
+  //           <div className="flex flex-col gap-4">
+  //             <button
+  //               className={`w-full ${btnRegular} py-2 px-4 rounded-xl font-semibold ${btnClickAnimation}`}
+  //               onClick={() => setShowBuyTries(true)}
+  //             >
+  //               Buy tries!
+  //             </button>
+  //             <button
+  //               onClick={() => setShowModal(false)}
+  //               className={`py-2 px-4 w-full rounded-xl font-semibold ${btnClickAnimation}`}
+  //               style={{
+  //                 backgroundColor: "var(--color-warning)",
+  //                 color: "white",
+  //               }}
+  //             >
+  //               Close
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     )}
+  //   </div>
+  // );
 
   if (!user) return null;
 
@@ -522,7 +655,7 @@ const MainWrapper = () => {
 
   // RENDER: Start Screen
   const renderStartScreen = () => (
-    <div className="flex justify-center items-center h-screen flex-col">
+    <div>
       <BottomMenu
         onNavigate={setPage}
         page={page}
@@ -566,7 +699,7 @@ const MainWrapper = () => {
               const isCorrectAnswer = opt === question.answer;
               const isSelected = selectedOption === opt;
 
-              let btnClass = `${btnBig} bg-primary/10`;
+              let btnClass = `btn-big bg-primary/10`;
               if (selectedOption) {
                 if (isCorrectAnswer) {
                   btnClass = "bg-green-600";
@@ -582,7 +715,7 @@ const MainWrapper = () => {
                   key={idx}
                   disabled={!!selectedOption}
                   onClick={() => handleTrainingAnswer(opt)}
-                  className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
+                  className={`btn-click-animation rounded-md btn-big ${btnClass}`}
                 >
                   {opt}
                 </button>
@@ -622,7 +755,7 @@ const MainWrapper = () => {
             : "bg-red-600 hover:bg-red-700"
           : "bg-primary hover:bg-blue-700"
       }
-      ${btnClickAnimation}
+      btn-click-animation
     `}
             >
               {selectedOption
@@ -662,7 +795,7 @@ const MainWrapper = () => {
             {question.options.map((opt, idx) => {
               const isSelected = selectedOption === opt;
 
-              let btnClass = `${btnBig} bg-primary/10`;
+              let btnClass = `btn-big bg-primary/10`;
 
               if (selectedOption && isCorrect !== null) {
                 if (isSelected) {
@@ -679,7 +812,7 @@ const MainWrapper = () => {
                   key={idx}
                   disabled={!!selectedOption}
                   onClick={() => handleCasualAnswer(opt)}
-                  className={`${btnClickAnimation} rounded-md ${btnBig} ${btnClass}`}
+                  className={`btn-click-animation rounded-md btn-big ${btnClass}`}
                 >
                   {opt}
                 </button>
@@ -719,7 +852,7 @@ const MainWrapper = () => {
           : "bg-red-600 hover:bg-red-700"
         : "bg-primary hover:bg-blue-700"
     }
-    ${btnClickAnimation}
+    btn-click-animation
   `}
             >
               {isCorrect !== null
@@ -748,7 +881,7 @@ const MainWrapper = () => {
         <p className="text-lg mb-2">
           Your score: {casualSummary.score} / {casualSummary.num_questions}
         </p>
-        <div className="max-w-md overflow-auto text-left">
+        <div className="max-w-md text-left">
           <h3 className="font-semibold mb-2">Summary of answers:</h3>
           <ul className="list-disc pl-5 space-y-2">
             {casualSummary.answers.map((ans: any, idx: number) => (

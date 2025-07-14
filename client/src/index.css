@@ -44,3 +44,94 @@ html {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* TICKER */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 15s linear infinite;
+}
+
+/* BUTTONS */
+
+/* Click animation */
+.btn-click-animation {
+  transition: transform 150ms ease-in-out;
+}
+.btn-click-animation:active {
+  transform: scale(0.95);
+}
+
+/* Disabled button */
+.btn-disabled {
+  background-color: rgba(128, 128, 128, 0.1); /* Tailwind's grey/10 approximation */
+  color: #9ca3af; /* Tailwind's text-grey */
+  font-size: 1.25rem; /* text-xl */
+  border-radius: 0.5rem; /* rounded-3xl */
+  backdrop-filter: blur(4px); /* backdrop-blur */
+  cursor: not-allowed;
+}
+
+/* Regular button */
+.btn-regular {
+  color: white;
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary),
+    #1d85d4 
+  );
+  font-size: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+  backdrop-filter: blur(4px);
+  font-weight: bolder;
+}
+
+/* Big button sizing */
+.btn-big {
+  max-width: 100%;
+  padding-top: 1rem; 
+  padding-bottom: 1rem;
+  width: 80%;
+  text-align: center;
+}
+
+@media (max-height: 750px) {
+  .short-screen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    align-items: start;
+    position: absolute;
+    top: 25%;
+  }
+
+  .short-screen-grid > .grid-left img {
+    max-width: 170px;
+  }
+
+  .short-screen-grid > .grid-left h1 {
+    font-size: 1rem;
+  }
+
+  .short-screen-grid > .grid-right button {
+    font-size: 0.875rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 300px;
+  }
+
+ 
+
+  .short-screen-grid > .grid-right p {
+    display: none;
+  }
+}
