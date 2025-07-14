@@ -1,20 +1,17 @@
+from datetime import datetime, timedelta, timezone
 from random import shuffle, sample
 from typing import List
 from db import (
     Flag,
-    FlagSchema,
     CasualMatch,
     CasualAnswer,
-    CasualAnswerSchema,
-    CasualMatchSchema,
-    CasualEverydayTournament,
-    CasualEverydayTournamentParticipant,
+    Tournament,
+    TournamentParticipant,
 )
-from fastapi import APIRouter, Request, Depends, HTTPException, Query, Body
+from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
-from datetime import datetime, timedelta, timezone
 
 router = APIRouter(prefix="/api/games/casual", dependencies=[Depends(auth)])
 
@@ -325,12 +322,12 @@ async def get_summary(
     )
 
 
-@router.post("/match/{id}/submit")
+@router.post("/match/{match_id}/submit")
 async def submit_casual_match(
-    id: str, auth_data: WebAppInitData = Depends(auth)
+    match_id: str, auth_data: WebAppInitData = Depends(auth)
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
-    match = await CasualMatch.filter(id=id, user_id=user.id).first()
+    match = await CasualMatch.filter(id=match_id, user_id=user.id).first()
     if not match:
         raise HTTPException(404, "Match not found")
     if match.completed_at:
@@ -361,7 +358,7 @@ async def complete_casual_match(match, user) -> None:
     )
     start_of_tomorrow = start_of_today + timedelta(days=1)
 
-    tournament = await CasualEverydayTournament.filter(
+    tournament = await Tournament.filter(
         created_at__gte=start_of_today,
         created_at__lt=start_of_tomorrow,
         finished_at=None,
@@ -369,7 +366,7 @@ async def complete_casual_match(match, user) -> None:
 
     if tournament:
         # Check if user is participant in this tournament
-        participant = await CasualEverydayTournamentParticipant.filter(
+        participant = await TournamentParticipant.filter(
             tournament_id=tournament.id, user_id=user.id
         ).first()
 

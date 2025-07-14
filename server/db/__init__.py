@@ -7,8 +7,8 @@ from .models.casual import (
     CasualAnswerSchema,
 )
 from .models.tournament import (
-    CasualEverydayTournament,
-    CasualEverydayTournamentSchema,
-    CasualEverydayTournamentParticipant,
-    CasualEverydayTournamentParticipantSchema,
+    Tournament,
+    TournamentSchema,
+    TournamentParticipant,
+    TournamentParticipantSchema,
 )

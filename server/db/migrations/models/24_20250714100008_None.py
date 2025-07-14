@@ -53,20 +53,23 @@ CREATE TABLE IF NOT EXISTS "casualanswer" (
     "answered_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "match_id" UUID NOT NULL REFERENCES "casualmatch" ("id") ON DELETE CASCADE
 );
-CREATE TABLE IF NOT EXISTS "casualeverydaytournament" (
+CREATE TABLE IF NOT EXISTS "tournament" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
+    "type" VARCHAR(50) NOT NULL DEFAULT 'casual_everyday',
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "started_at" TIMESTAMPTZ,
     "finished_at" TIMESTAMPTZ,
     "prizes" JSONB,
-    "participation_cost" INT NOT NULL DEFAULT 0
+    "participation_cost" INT NOT NULL DEFAULT 0,
+    "min_participants" INT NOT NULL DEFAULT 0
 );
-CREATE TABLE IF NOT EXISTS "casualeverydaytournamentparticipant" (
+CREATE TABLE IF NOT EXISTS "tournamentparticipant" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "score" INT NOT NULL DEFAULT 0,
     "place" INT,
     "prize" JSONB,
-    "tournament_id" INT NOT NULL REFERENCES "casualeverydaytournament" ("id") ON DELETE CASCADE,
+    "tournament_id" INT NOT NULL REFERENCES "tournament" ("id") ON DELETE CASCADE,
     "user_id" BIGINT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "aerich" (

@@ -5,10 +5,10 @@ from tortoise.exceptions import DoesNotExist
 from config_reader import bot
 
 from db import (
-    CasualEverydayTournament,
-    CasualEverydayTournamentSchema,
-    CasualEverydayTournamentParticipant,
-    CasualEverydayTournamentParticipantSchema,
+    Tournament,
+    TournamentSchema,
+    TournamentParticipant,
+    TournamentParticipantSchema,
 )
 
 router = Router(name="payment")
@@ -62,7 +62,7 @@ async def successful_payment(message: Message) -> None:
         )
         try:
             user = await User.get(id=user_id)
-            existing_participant = await CasualEverydayTournamentParticipant.filter(
+            existing_participant = await TournamentParticipant.filter(
                 tournament_id=tournament_id, user_id=user_id
             ).first()
 
@@ -70,7 +70,7 @@ async def successful_payment(message: Message) -> None:
                 return message.answer("You are already participating.")
 
             # Create participant record
-            await CasualEverydayTournamentParticipant.create(
+            await TournamentParticipant.create(
                 tournament_id=tournament_id,
                 user_id=user_id,
                 score=0,  # initial score

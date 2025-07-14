@@ -2,11 +2,26 @@ from tortoise import fields
 from tortoise.models import Model
 from tortoise.contrib.pydantic import pydantic_model_creator
 
+class Tournament(Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=255)
+    type = fields.CharField(
+        max_length=50, default="casual_everyday"
+    )  # e.g., 'casual_everyday', 'special_event'
+    created_at = fields.DatetimeField(auto_now_add=True)
+    started_at = fields.DatetimeField(null=True)
+    finished_at = fields.DatetimeField(null=True)
+    prizes = fields.JSONField(null=True)
+    participation_cost = fields.IntField(default=0)
+    min_participants = fields.IntField(default=0)
 
-class CasualEverydayTournamentParticipant(Model):
+    participants: fields.ReverseRelation["TournamentParticipant"]
+
+
+class TournamentParticipant(Model):
     id = fields.IntField(pk=True)
     tournament = fields.ForeignKeyField(
-        "models.CasualEverydayTournament",
+        "models.Tournament",
         related_name="participants",
         on_delete=fields.CASCADE,
     )
@@ -20,19 +35,5 @@ class CasualEverydayTournamentParticipant(Model):
     prize = fields.JSONField(null=True)
 
 
-class CasualEverydayTournament(Model):
-    id = fields.IntField(pk=True)
-    name = fields.CharField(max_length=255)
-    created_at = fields.DatetimeField(auto_now_add=True)
-    finished_at = fields.DatetimeField(null=True)
-    prizes = fields.JSONField(null=True)
-    participation_cost = fields.IntField(default=0)
-
-    participants: fields.ReverseRelation["CasualEverydayTournamentParticipant"]
-
-
-CasualEverydayTournamentSchema = pydantic_model_creator(CasualEverydayTournament)
-
-CasualEverydayTournamentParticipantSchema = pydantic_model_creator(
-    CasualEverydayTournamentParticipant
-)
+TournamentSchema = pydantic_model_creator(Tournament)
+TournamentParticipantSchema = pydantic_model_creator(TournamentParticipant)

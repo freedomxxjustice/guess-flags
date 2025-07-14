@@ -1,8 +1,8 @@
 from db import (
-    CasualEverydayTournament,
-    CasualEverydayTournamentSchema,
-    CasualEverydayTournamentParticipant,
-    CasualEverydayTournamentParticipantSchema,
+    Tournament,
+    TournamentSchema,
+    TournamentParticipant,
+    TournamentParticipantSchema,
 )
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
@@ -29,7 +29,7 @@ async def get_today_tournament() -> JSONResponse:
     start_of_tomorrow = start_of_today + timedelta(days=1)
 
     today_tournament = (
-        await CasualEverydayTournament.filter(
+        await Tournament.filter(
             created_at__gte=start_of_today,
             created_at__lt=start_of_tomorrow,
             finished_at=None,
@@ -71,10 +71,10 @@ async def get_today_tournament() -> JSONResponse:
 
 @router.post("/{tournament_id}/participate")
 async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(auth)):
-    tournament = await CasualEverydayTournament.filter(id=tournament_id).first()
+    tournament = await Tournament.filter(id=tournament_id).first()
     tournament_participation_cost = tournament.participation_cost
     if tournament_participation_cost > 0:
-        existing_participant = await CasualEverydayTournamentParticipant.filter(
+        existing_participant = await TournamentParticipant.filter(
             tournament_id=tournament_id, user_id=auth_data.user.id
         ).first()
 
@@ -95,7 +95,7 @@ async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(au
 
         return JSONResponse({"invoice_link": invoice_link})
     else:
-        existing_participant = await CasualEverydayTournamentParticipant.filter(
+        existing_participant = await TournamentParticipant.filter(
             tournament_id=tournament_id, user_id=auth_data.user.id
         ).first()
 
@@ -103,7 +103,7 @@ async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(au
             return JSONResponse({"message": "You are already participating."})
 
         # Create participant record
-        participant = await CasualEverydayTournamentParticipant.create(
+        participant = await TournamentParticipant.create(
             tournament_id=tournament_id,
             user_id=auth_data.user.id,
             score=0,  # initial score
