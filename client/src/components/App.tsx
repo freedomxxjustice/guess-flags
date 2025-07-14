@@ -43,10 +43,9 @@ if (viewport.expand.isAvailable()) {
 
 const App = () => {
   const [showIntro, setShowIntro] = useState(true);
-  const btnClickAnimation = "transform active:scale-95 transition-transform";
   useEffect(() => {
     function handleClick(e: any) {
-      if (e.target.tagName === "BUTTON") {
+      if (e.target.tagName === "BUTTON" || e.target.tagName === "SPAN") {
         hapticFeedback.impactOccurred("medium");
       }
     }

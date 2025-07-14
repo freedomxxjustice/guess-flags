@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ToggleSliderProps {
   options: [string, string];
   value: string;

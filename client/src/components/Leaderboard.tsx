@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import ToggleSlider from "./ToggleSlider";
 import type { IUser } from "../interfaces/IUser";
 import Header from "./Header";
-import { FaCrown } from "react-icons/fa";
+import { FaCrown, FaMedal } from "react-icons/fa";
 
 type LeaderboardProps = {
   leaders: {
@@ -179,7 +179,7 @@ export default function Leaderboard({
                         <span className="flex items-center gap-2 text-base font-semibold truncate max-w-[75%]">
                           #{index + 1}
                           {index < 3 && (
-                            <FaCrown
+                            <FaMedal
                               className={`mx-1 ${
                                 index === 0
                                   ? "text-yellow-400"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type {
@@ -102,164 +102,175 @@ function Tournaments({
         headerStyleFullscreen={headerStyleFullscreen}
         title="Tournaments"
       />
-
-      {dailyTournaments.length > 0 && (
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-4 text-green-400">
-            Daily Tournament
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {dailyTournaments.map((tournament) => (
-              <div
-                key={tournament.tournament_id}
-                className="bg-green-900 border border-green-600 rounded-xl p-4 shadow-md flex flex-col justify-between"
-              >
-                <div>
-                  <h2 className="text-lg font-semibold mb-2 text-green-300">
-                    {tournament.tournament_name}
-                  </h2>
-                  <p className="text-sm text-green-200">
-                    Created: {new Date(tournament.created_at).toLocaleString()}
-                  </p>
-                  {tournament.finished_at && (
+      <div className="flex flex-col items-center justify-center w-full">
+        {dailyTournaments.length > 0 && (
+          <div className="p-4">
+            <h2 className="text-xl font-bold mb-4 text-green-400">
+              Daily Tournament
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {dailyTournaments.map((tournament) => (
+                <div
+                  key={tournament.tournament_id}
+                  className="bg-green-900 border border-green-600 rounded-xl p-4 shadow-md flex flex-col justify-between"
+                >
+                  <div>
+                    <h2 className="text-lg font-semibold mb-2 text-green-300">
+                      {tournament.tournament_name}
+                    </h2>
                     <p className="text-sm text-green-200">
-                      Finished:{" "}
-                      {new Date(tournament.finished_at).toLocaleString()}
+                      Created:{" "}
+                      {new Date(tournament.created_at).toLocaleString()}
                     </p>
-                  )}
-
-                  <div className="mt-2">
-                    <p className="text-sm text-green-200">
-                      Min Participants: {tournament.min_participants ?? "—"}
-                    </p>
-                    <p className="text-sm text-green-200">
-                      Cost:{" "}
-                      {tournament.participation_cost &&
-                      tournament.participation_cost > 0
-                        ? `${tournament.participation_cost} Stars`
-                        : "FREE"}
-                    </p>
-                    <p className="text-sm font-medium">Prizes:</p>
-                    {tournament.prizes.length > 0 ? (
-                      <ul className="list-disc list-inside text-sm text-green-100">
-                        {tournament.prizes.map((prize, index) => (
-                          <li key={index}>
-                            Place {prize.place}: {prize.type}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-sm text-green-300">No prizes listed</p>
+                    {tournament.finished_at && (
+                      <p className="text-sm text-green-200">
+                        Finished:{" "}
+                        {new Date(tournament.finished_at).toLocaleString()}
+                      </p>
                     )}
+
+                    <div className="mt-2">
+                      <p className="text-sm text-green-200">
+                        Min Participants: {tournament.min_participants ?? "—"}
+                      </p>
+                      <p className="text-sm text-green-200">
+                        Cost:{" "}
+                        {tournament.participation_cost &&
+                        tournament.participation_cost > 0
+                          ? `${tournament.participation_cost} Stars`
+                          : "FREE"}
+                      </p>
+                      <p className="text-sm font-medium">Prizes:</p>
+                      {tournament.prizes.length > 0 ? (
+                        <ul className="list-disc list-inside text-sm text-green-100">
+                          {tournament.prizes.map((prize, index) => (
+                            <li key={index}>
+                              Place {prize.place}: {prize.type}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-sm text-green-300">
+                          No prizes listed
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mt-4">
+                    <button
+                      onClick={() =>
+                        handleParticipate(tournament.tournament_id)
+                      }
+                      className="bg-green-600 text-white font-semibold py-2 px-4 rounded hover:bg-green-500 transition"
+                    >
+                      Participate
+                    </button>
+                    <button
+                      onClick={() =>
+                        openParticipantsModal(tournament.participants)
+                      }
+                      className="bg-green-400 text-green-900 font-semibold py-2 px-4 rounded hover:bg-green-300 transition"
+                    >
+                      Show Participants
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex flex-col gap-2 mt-4">
-                  <button
-                    onClick={() => handleParticipate(tournament.tournament_id)}
-                    className="bg-green-600 text-white font-semibold py-2 px-4 rounded hover:bg-green-500 transition"
-                  >
-                    Participate
-                  </button>
-                  <button
-                    onClick={() =>
-                      openParticipantsModal(tournament.participants)
-                    }
-                    className="bg-green-400 text-green-900 font-semibold py-2 px-4 rounded hover:bg-green-300 transition"
-                  >
-                    Show Participants
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {otherTournaments.length > 0 && (
-        <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">Casual Tournaments</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {otherTournaments.map((tournament) => (
-              <div
-                key={tournament.tournament_id}
-                className="bg-background border border-gray-700 rounded-xl p-4 shadow-md flex flex-col justify-between"
-              >
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">
-                    {tournament.tournament_name}
-                  </h2>
-                  <p className="text-sm text-gray-400">
-                    Created: {new Date(tournament.created_at).toLocaleString()}
-                  </p>
-                  {tournament.finished_at && (
+        {otherTournaments.length > 0 && (
+          <div className="p-4">
+            <h2 className="text-xl font-bold mb-4">Casual Tournaments</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              {otherTournaments.map((tournament) => (
+                <div
+                  key={tournament.tournament_id}
+                  className="bg-background border border-gray-700 rounded-xl p-4 shadow-md flex flex-col justify-between"
+                >
+                  <div>
+                    <h2 className="text-lg font-semibold mb-2">
+                      {tournament.tournament_name}
+                    </h2>
                     <p className="text-sm text-gray-400">
-                      Finished:{" "}
-                      {new Date(tournament.finished_at).toLocaleString()}
+                      Created:{" "}
+                      {new Date(tournament.created_at).toLocaleString()}
                     </p>
-                  )}
-                  <div className="mt-2">
-                    <p className="text-sm text-green-200">
-                      Min Participants: {tournament.min_participants ?? "—"}
-                    </p>
-                    <p className="text-sm text-gray-400">
-                      Cost:{" "}
-                      {tournament.participation_cost &&
-                      tournament.participation_cost > 0
-                        ? `${tournament.participation_cost} Stars`
-                        : "FREE"}
-                    </p>
-                    <p className="text-sm font-medium">Prizes:</p>
-                    {tournament.prizes.length > 0 ? (
-                      <ul className="list-disc list-inside text-sm text-gray-300">
-                        {tournament.prizes.map((prize, index) => (
-                          <li key={index}>
-                            Place {prize.place}: {prize.type}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="text-sm text-gray-500">No prizes listed</p>
+                    {tournament.finished_at && (
+                      <p className="text-sm text-gray-400">
+                        Finished:{" "}
+                        {new Date(tournament.finished_at).toLocaleString()}
+                      </p>
                     )}
+                    <div className="mt-2">
+                      <p className="text-sm text-green-200">
+                        Min Participants: {tournament.min_participants ?? "—"}
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Cost:{" "}
+                        {tournament.participation_cost &&
+                        tournament.participation_cost > 0
+                          ? `${tournament.participation_cost} Stars`
+                          : "FREE"}
+                      </p>
+                      <p className="text-sm font-medium">Prizes:</p>
+                      {tournament.prizes.length > 0 ? (
+                        <ul className="list-disc list-inside text-sm text-gray-300">
+                          {tournament.prizes.map((prize, index) => (
+                            <li key={index}>
+                              Place {prize.place}: {prize.type}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-sm text-gray-500">
+                          No prizes listed
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col gap-2 mt-4">
+                    <button
+                      onClick={() =>
+                        handleParticipate(tournament.tournament_id)
+                      }
+                      className="bg-primary text-white font-semibold py-2 px-4 rounded hover:bg-primary/80 transition"
+                    >
+                      Participate
+                    </button>
+                    <button
+                      onClick={() =>
+                        openParticipantsModal(tournament.participants)
+                      }
+                      className="bg-primary/80 text-white font-semibold py-2 px-4 rounded hover:bg-primary/60 transition"
+                    >
+                      Show Participants
+                    </button>
                   </div>
                 </div>
-
-                <div className="flex flex-col gap-2 mt-4">
-                  <button
-                    onClick={() => handleParticipate(tournament.tournament_id)}
-                    className="bg-primary text-white font-semibold py-2 px-4 rounded hover:bg-primary/80 transition"
-                  >
-                    Participate
-                  </button>
-                  <button
-                    onClick={() =>
-                      openParticipantsModal(tournament.participants)
-                    }
-                    className="bg-primary/80 text-white font-semibold py-2 px-4 rounded hover:bg-primary/60 transition"
-                  >
-                    Show Participants
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-      {infoModalMessage && (
-        <BottomModal
-          title="Info"
-          text={infoModalMessage}
-          onClose={() => setInfoModalMessage(null)}
-          actionLabel="Close"
-        />
-      )}
-      {showParticipantsModal && selectedParticipants && (
-        <TournamentParticipantsModal
-          title="Tournament Participants"
-          participants={selectedParticipants}
-          onClose={() => setShowParticipantsModal(false)}
-        />
-      )}
+        )}
+        {infoModalMessage && (
+          <BottomModal
+            title="Info"
+            text={infoModalMessage}
+            onClose={() => setInfoModalMessage(null)}
+            actionLabel="Close"
+          />
+        )}
+        {showParticipantsModal && selectedParticipants && (
+          <TournamentParticipantsModal
+            title="Tournament Participants"
+            participants={selectedParticipants}
+            onClose={() => setShowParticipantsModal(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }

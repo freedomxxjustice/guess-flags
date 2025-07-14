@@ -82,19 +82,42 @@ html {
 
 /* Regular button */
 .btn-regular {
+  position: relative;
+  overflow: hidden; /* make sure the shine stays inside the button */
   color: white;
-  background: linear-gradient(
-    to bottom,
-    var(--color-primary),
-    #1d85d4 
-  );
+  background-color: var(--color-primary);
   font-size: 1.25rem;
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-  backdrop-filter: blur(4px);
-  font-weight: bolder;
 }
 
+/* Shine pseudo-element */
+.btn-regular::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%; /* start off-screen */
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shine 2.5s infinite;
+}
+
+/* Animation keyframes */
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
 /* Big button sizing */
 .btn-big {
   max-width: 100%;

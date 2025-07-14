@@ -325,16 +325,20 @@ const MainWrapper = () => {
 
   const handleSubmitCasualMatch = async () => {
     try {
-      const res = await request(
-        `games/casual/match/${casualGame?.match_id}/submit`,
-        "POST"
-      );
-      const summary = await fetchCasualSummary(casualGame.match_id);
-      setCasualSummary(summary);
-      setCasualGame(null);
-      setCasualGameStarted(false);
-      setTypedAnswer("");
-      refetchUser();
+      if (casualGame) {
+        await request(
+          `games/casual/match/${casualGame?.match_id}/submit`,
+          "POST"
+        );
+        const summary = await fetchCasualSummary(casualGame.match_id);
+        setCasualSummary(summary);
+        setCasualGame(null);
+        setCasualGameStarted(false);
+        setTypedAnswer("");
+        refetchUser();
+      } else {
+        return null;
+      }
     } catch (err) {
       console.error(err);
     }
@@ -404,7 +408,6 @@ const MainWrapper = () => {
 
   const renderHomeScreen = () => (
     <div className="min-h-screen h-50 overflow-auto pb-20">
-      {/* Header */}
       <Header
         isFullscreen={isFullscreenState}
         headerStyle={headerStyle}
@@ -415,7 +418,7 @@ const MainWrapper = () => {
           Tries left: {user?.tries_left}
         </p>
       </Header>
-      <div className="flex flex-col items-center w-full px-4 py-6 flex-grow">
+      <div className="flex flex-col justify-center items-center w-full px-4 py-6 flex-grow content-center">
         <div className="mb-12">
           <h1 className="text-xs font-semibold text-center mb-6">
             {user?.name}, welcome to <br />
@@ -551,56 +554,57 @@ const MainWrapper = () => {
     const question = game?.questions[currentQuestionIndex];
     if (!question) return null;
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-white px-4">
-        <h2 className="text-2xl font-bold mb-4">
-          Question {currentQuestionIndex + 1}
-        </h2>
-        <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
-          <img
-            src={question.image}
-            alt="Flag"
-            className="w-full h-full object-contain mb-4"
-          />
-        </div>
-        {selectedGamemode === "choose" ? (
-          // buttons
-          <div className="flex flex-col gap-2 w-full max-w-xs">
-            {question.options.map((opt: string, idx: number) => {
-              const isCorrectAnswer = opt === question.answer;
-              const isSelected = selectedOption === opt;
-
-              let btnClass = `btn-big bg-primary/10`;
-              if (selectedOption) {
-                if (isCorrectAnswer) {
-                  btnClass = "bg-green-600";
-                } else if (isSelected) {
-                  btnClass = "bg-red-600";
-                } else {
-                  btnClass = "bg-primary/10"; // dim unselected incorrect ones
-                }
-              }
-
-              return (
-                <button
-                  key={idx}
-                  disabled={!!selectedOption}
-                  onClick={() => handleTrainingAnswer(opt)}
-                  className={`btn-click-animation rounded-md btn-big ${btnClass}`}
-                >
-                  {opt}
-                </button>
-              );
-            })}
+      <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center">
+        <div className="flex flex-col items-center justify-center text-white px-4">
+          <h2 className="text-2xl font-bold mb-4">
+            Question {currentQuestionIndex + 1}
+          </h2>
+          <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
+            <img
+              src={question.image}
+              alt="Flag"
+              className="w-full h-full object-contain mb-4"
+            />
           </div>
-        ) : (
-          // input
-          <div className="flex flex-col gap-4 w-full max-w-xs">
-            <input
-              type="text"
-              value={typedAnswer}
-              onChange={(e) => setTypedAnswer(e.target.value)}
-              disabled={!!selectedOption}
-              className={`
+          {selectedGamemode === "choose" ? (
+            // buttons
+            <div className="flex flex-col gap-2 w-90 justify-center items-center">
+              {question.options.map((opt: string, idx: number) => {
+                const isCorrectAnswer = opt === question.answer;
+                const isSelected = selectedOption === opt;
+
+                let btnClass = `btn-big bg-primary/10`;
+                if (selectedOption) {
+                  if (isCorrectAnswer) {
+                    btnClass = "bg-green-600";
+                  } else if (isSelected) {
+                    btnClass = "bg-red-600";
+                  } else {
+                    btnClass = "bg-primary/10"; // dim unselected incorrect ones
+                  }
+                }
+
+                return (
+                  <button
+                    key={idx}
+                    disabled={!!selectedOption}
+                    onClick={() => handleTrainingAnswer(opt)}
+                    className={`btn-click-animation rounded-md btn-big ${btnClass}`}
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            // input
+            <div className="flex flex-col gap-4 w-full max-w-xs">
+              <input
+                type="text"
+                value={typedAnswer}
+                onChange={(e) => setTypedAnswer(e.target.value)}
+                disabled={!!selectedOption}
+                className={`
       px-4 py-3 rounded-lg w-full transition-all bg-primary/10
       ${
         selectedOption
@@ -610,13 +614,13 @@ const MainWrapper = () => {
           : "border-gray-300"
       }
     `}
-              placeholder="Type your answer..."
-            />
+                placeholder="Type your answer..."
+              />
 
-            <button
-              onClick={() => handleTrainingAnswer(typedAnswer.trim())}
-              disabled={!!selectedOption || !typedAnswer.trim()}
-              className={`
+              <button
+                onClick={() => handleTrainingAnswer(typedAnswer.trim())}
+                disabled={!!selectedOption || !typedAnswer.trim()}
+                className={`
       font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
       ${
         selectedOption
@@ -627,15 +631,16 @@ const MainWrapper = () => {
       }
       btn-click-animation
     `}
-            >
-              {selectedOption
-                ? isCorrect
-                  ? "✅ Correct!"
-                  : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
-                : "Submit"}
-            </button>
-          </div>
-        )}
+              >
+                {selectedOption
+                  ? isCorrect
+                    ? "✅ Correct!"
+                    : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
+                  : "Submit"}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -651,22 +656,22 @@ const MainWrapper = () => {
     if (!question) return null;
     backButton.show();
     return (
-      <div className="min-h-screen w-full">
-        <div className="flex flex-col items-center justify-center h-screen text-white px-4">
+      <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center">
+        <div className="flex flex-col items-center justify-center text-white px-4">
           <h2 className="text-2xl font-bold mb-4">
             Question {question.index + 1}
           </h2>
           <p className="text-lg mb-4">Time left: {timeLeft ?? "--"}s</p>
 
-          <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
+          <div className="w-44 h-22 flex flex-col items-center justify-center my-12">
             <img
               src={question.image}
               alt="Flag"
-              className="w-120 h-67.5 object-contain mb-4"
+              className="w-120 h-67.5 object-contain py-12"
             />
           </div>
           {question.mode === "choose" && (
-            <div className="flex flex-col justify-center gap-2 w-full">
+            <div className="flex flex-col justify-center items-center gap-2 w-full">
               {question.options.map((opt, idx) => {
                 const isSelected = selectedOption === opt;
 
@@ -690,7 +695,7 @@ const MainWrapper = () => {
                     key={idx}
                     disabled={!!selectedOption}
                     onClick={() => handleCasualAnswer(opt)}
-                    className={`btn-click-animation py-4 px-2 rounded-md ${btnClass}`}
+                    className={`btn-click-animation py-4 px-2 rounded-md w-90 ${btnClass}`}
                   >
                     {opt}
                   </button>
@@ -749,8 +754,8 @@ const MainWrapper = () => {
         </div>
         {showExitModal && (
           <BottomModal
-            title="Not enough tries!"
-            text="Unfortunately you have run out of tries. You can buy more or wait 24 hours."
+            title="Are you sure you want to exit?"
+            text="The game will be submitted and finished!"
             actionLabel="Submit match & exit"
             onAction={() => {
               handleSubmitCasualMatch();

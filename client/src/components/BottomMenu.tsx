@@ -1,6 +1,5 @@
 import { FaHome, FaMedal } from "react-icons/fa";
 import { MdLeaderboard, MdPerson } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
 
 type BottomMenuProps = {
   onNavigate: (
@@ -20,7 +19,7 @@ export default function BottomMenu({
       <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
         <button
           type="button"
-          className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
+          className={`inline-flex flex-col items-center justify-center px-5 ${
             page == "leaderboard" ? "text-primary" : ""
           } group`}
           onClick={() => {
@@ -32,14 +31,14 @@ export default function BottomMenu({
           <span
             className={`text-sm ${
               page == "leaderboard" ? "text-primary" : ""
-            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+            }  group-hover:text-primary`}
           >
             Leaderboard
           </span>
         </button>
         <button
           type="button"
-          className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
+          className={`inline-flex flex-col items-center justify-center px-5 ${
             page == "home" ? "text-primary" : ""
           } group`}
           onClick={() => onNavigate("home")}
@@ -48,7 +47,7 @@ export default function BottomMenu({
           <span
             className={`text-sm ${
               page == "home" ? "text-primary" : ""
-            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+            } group-hover:text-primary`}
           >
             Home
           </span>
@@ -56,7 +55,7 @@ export default function BottomMenu({
 
         <button
           type="button"
-          className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
+          className={`inline-flex flex-col items-center justify-center px-5 ${
             page == "profile" ? "text-primary" : ""
           } group`}
           onClick={() => onNavigate("profile")}
@@ -65,14 +64,14 @@ export default function BottomMenu({
           <span
             className={`text-sm ${
               page == "profile" ? "text-primary" : ""
-            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+            } group-hover:text-primary`}
           >
             Profile
           </span>
         </button>
         <button
           type="button"
-          className={`inline-flex flex-col items-center justify-center px-5 hover:bg-gray-800 ${
+          className={`inline-flex flex-col items-center justify-center px-5${
             page == "tournaments" ? "text-primary" : ""
           } group`}
           onClick={() => onNavigate("tournaments")}
@@ -81,7 +80,7 @@ export default function BottomMenu({
           <span
             className={`text-sm ${
               page == "tournaments" ? "text-primary" : ""
-            } group-hover:text-blue-600 dark:group-hover:text-blue-500`}
+            } group-hover:text-primary`}
           >
             Tournaments
           </span>
