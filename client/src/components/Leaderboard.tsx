@@ -78,7 +78,7 @@ export default function Leaderboard({
           onChange={setPeriod}
         />
       </Header>
-      <div className=" w-full flex flex-col gap-4 px-4">
+      <div className="w-full flex flex-col gap-4 px-4">
         <div className="mt-6">
           {period === "Season" && (
             <div className="">

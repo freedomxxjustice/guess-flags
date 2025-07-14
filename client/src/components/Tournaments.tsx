@@ -95,7 +95,7 @@ function Tournaments({
     return <div>No active tournaments.</div>;
 
   return (
-    <div className="min-h-screen overflow-auto pb-32">
+    <div className="min-h-screen h-50 overflow-auto pb-32">
       <Header
         isFullscreen={isFullscreen}
         headerStyle={headerStyle}
@@ -127,7 +127,18 @@ function Tournaments({
                       {new Date(tournament.finished_at).toLocaleString()}
                     </p>
                   )}
+
                   <div className="mt-2">
+                    <p className="text-sm text-green-200">
+                      Min Participants: {tournament.min_participants ?? "—"}
+                    </p>
+                    <p className="text-sm text-green-200">
+                      Cost:{" "}
+                      {tournament.participation_cost &&
+                      tournament.participation_cost > 0
+                        ? `${tournament.participation_cost} Stars`
+                        : "FREE"}
+                    </p>
                     <p className="text-sm font-medium">Prizes:</p>
                     {tournament.prizes.length > 0 ? (
                       <ul className="list-disc list-inside text-sm text-green-100">
@@ -188,6 +199,16 @@ function Tournaments({
                     </p>
                   )}
                   <div className="mt-2">
+                    <p className="text-sm text-green-200">
+                      Min Participants: {tournament.min_participants ?? "—"}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      Cost:{" "}
+                      {tournament.participation_cost &&
+                      tournament.participation_cost > 0
+                        ? `${tournament.participation_cost} Stars`
+                        : "FREE"}
+                    </p>
                     <p className="text-sm font-medium">Prizes:</p>
                     {tournament.prizes.length > 0 ? (
                       <ul className="list-disc list-inside text-sm text-gray-300">

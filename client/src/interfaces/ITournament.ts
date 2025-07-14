@@ -7,6 +7,8 @@ export interface ITournament {
   started_at: string;
   type: string;
   finished_at: string;
+  participation_cost: number;
+  min_participants: number;
 }
 
 export interface ITournamentPrizes {

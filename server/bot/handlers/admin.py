@@ -23,34 +23,41 @@ async def create_tournament(message: Message):
         return
 
     # Parse arguments
-    args = message.text.strip().split(maxsplit=3)
-    if len(args) < 3:
+    args = message.text.strip().split(maxsplit=5)
+    if len(args) < 5:
         await message.answer(
-            "⚠️ Usage:\n/create_tournament <name> <participation_cost> [prizes_json]"
+            "⚠️ Usage:\n/create_tournament <name> <type> <participation_cost> <min_participants> [prizes_json]"
         )
         return
 
     name = args[1]
+    tournament_type = args[2]
 
     try:
-        participation_cost = int(args[2])
+        participation_cost = int(args[3])
     except ValueError:
         await message.answer("⚠️ Participation cost must be a number.")
+        return
+
+    try:
+        min_participants = int(args[4])
+    except ValueError:
+        await message.answer("⚠️ Min participants must be a number.")
         return
 
     # Default to None if prizes not provided
     prizes = None
 
-    if len(args) >= 4:
-        try:
-            prizes = json_loads(args[3])
+    if len(args) >= 6:
+        from json import loads as json_loads, JSONDecodeError
 
-            # Basic validation: must be a list
+        try:
+            prizes = json_loads(args[5])
+
             if not isinstance(prizes, list):
                 await message.answer("⚠️ Prizes must be a JSON array.")
                 return
 
-            # Validate each prize item
             for prize in prizes:
                 if not isinstance(prize, dict):
                     await message.answer("⚠️ Each prize must be a JSON object.")
@@ -64,12 +71,9 @@ async def create_tournament(message: Message):
                     if "link" not in prize:
                         await message.answer("⚠️ NFT prizes must include 'link'.")
                         return
-                elif prize["type"] != "nft":
-                    if "quantity" not in prize:
-                        await message.answer(
-                            "⚠️ Non-NFT prizes must include 'quantity'."
-                        )
-                        return
+                elif "quantity" not in prize:
+                    await message.answer("⚠️ Non-NFT prizes must include 'quantity'.")
+                    return
 
         except JSONDecodeError:
             await message.answer("⚠️ Invalid JSON format for prizes.")
@@ -78,7 +82,9 @@ async def create_tournament(message: Message):
     # Create tournament
     tournament = await Tournament.create(
         name=name,
+        type=tournament_type,
         participation_cost=participation_cost,
+        min_participants=min_participants,
         prizes=prizes,
     )
 
@@ -86,7 +92,9 @@ async def create_tournament(message: Message):
         f"✅ Tournament created!\n\n"
         f"ID: {tournament.id}\n"
         f"Name: {tournament.name}\n"
+        f"Type: {tournament.type}\n"
         f"Participation cost: {tournament.participation_cost}\n"
+        f"Min participants: {tournament.min_participants}\n"
         f"Prizes: {prizes if prizes else 'None'}"
     )
 

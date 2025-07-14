@@ -54,6 +54,7 @@ const MainWrapper = () => {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   // UI
   const [isFullscreenState, setIsFullscreenState] = useState<boolean>(false);
+  const [showExitModal, setShowExitModal] = useState(false);
 
   // GET USER INFO
   const {
@@ -148,6 +149,7 @@ const MainWrapper = () => {
   });
 
   const submittedRef = useRef(false);
+
   useEffect(() => {
     if (
       trainingGameStarted &&
@@ -294,7 +296,6 @@ const MainWrapper = () => {
 
       setIsCorrect(res.data.correct);
       setCorrectAnswer(res.data.correct_answer);
-      console.log(res.data);
       setTimeout(async () => {
         setSelectedOption(null);
         setIsCorrect(null);
@@ -321,6 +322,23 @@ const MainWrapper = () => {
     }
   };
   const expiredSubmittedRef = useRef(false);
+
+  const handleSubmitCasualMatch = async () => {
+    try {
+      const res = await request(
+        `games/casual/match/${casualGame?.match_id}/submit`,
+        "POST"
+      );
+      const summary = await fetchCasualSummary(casualGame.match_id);
+      setCasualSummary(summary);
+      setCasualGame(null);
+      setCasualGameStarted(false);
+      setTypedAnswer("");
+      refetchUser();
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     expiredSubmittedRef.current = false; // reset when new question arrives
@@ -622,80 +640,88 @@ const MainWrapper = () => {
     );
   };
 
+  if (casualGame) {
+    backButton.onClick(() => setShowExitModal(true));
+  }
+
   const renderCasualGameScreen = () => {
     if (!casualGame) return null;
 
     const question = casualGame.current_question;
     if (!question) return null;
-
+    backButton.show();
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-white px-4">
-        <h2 className="text-2xl font-bold mb-4">
-          Question {question.index + 1}
-        </h2>
-        <p className="text-lg mb-4">Time left: {timeLeft ?? "--"}s</p>
+      <div className="min-h-screen w-full">
+        <div className="flex flex-col items-center justify-center h-screen text-white px-4">
+          <h2 className="text-2xl font-bold mb-4">
+            Question {question.index + 1}
+          </h2>
+          <p className="text-lg mb-4">Time left: {timeLeft ?? "--"}s</p>
 
-        <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
-          <img
-            src={question.image}
-            alt="Flag"
-            className="w-full h-full object-contain mb-4"
-          />
-        </div>
-        {question.mode === "choose" && (
-          <div className="flex flex-col gap-2 w-full max-w-xs">
-            {question.options.map((opt, idx) => {
-              const isSelected = selectedOption === opt;
-
-              let btnClass = `btn-big bg-primary/10`;
-
-              if (selectedOption && isCorrect !== null) {
-                if (isSelected) {
-                  btnClass = isCorrect ? "bg-green-600" : "bg-red-600";
-                } else if (!isCorrect && opt.toLowerCase() === correctAnswer) {
-                  btnClass = "bg-green-600";
-                } else {
-                  btnClass = "bg-primary/10";
-                }
-              }
-
-              return (
-                <button
-                  key={idx}
-                  disabled={!!selectedOption}
-                  onClick={() => handleCasualAnswer(opt)}
-                  className={`btn-click-animation rounded-md btn-big ${btnClass}`}
-                >
-                  {opt}
-                </button>
-              );
-            })}
+          <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
+            <img
+              src={question.image}
+              alt="Flag"
+              className="w-120 h-67.5 object-contain mb-4"
+            />
           </div>
-        )}
-        {question.mode === "enter" && (
-          <div className="flex flex-col gap-4 w-full max-w-xs">
-            <input
-              type="text"
-              value={typedAnswer}
-              onChange={(e) => setTypedAnswer(e.target.value)}
-              disabled={!!selectedOption}
-              className={`
+          {question.mode === "choose" && (
+            <div className="flex flex-col justify-center gap-2 w-full">
+              {question.options.map((opt, idx) => {
+                const isSelected = selectedOption === opt;
+
+                let btnClass = `bg-primary/10`;
+
+                if (selectedOption && isCorrect !== null) {
+                  if (isSelected) {
+                    btnClass = isCorrect ? "bg-green-600" : "bg-red-600";
+                  } else if (
+                    !isCorrect &&
+                    opt.toLowerCase() === correctAnswer
+                  ) {
+                    btnClass = "bg-green-600";
+                  } else {
+                    btnClass = "bg-primary/10";
+                  }
+                }
+
+                return (
+                  <button
+                    key={idx}
+                    disabled={!!selectedOption}
+                    onClick={() => handleCasualAnswer(opt)}
+                    className={`btn-click-animation py-4 px-2 rounded-md ${btnClass}`}
+                  >
+                    {opt}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {question.mode === "enter" && (
+            <div className="flex flex-col gap-4 w-full max-w-xs">
+              <input
+                type="text"
+                value={typedAnswer}
+                onChange={(e) => setTypedAnswer(e.target.value)}
+                disabled={!!selectedOption}
+                className={`
     px-4 py-3 rounded-lg w-full transition-all bg-primary/10
     ${
       selectedOption
         ? isCorrect
           ? "border-green-500 bg-green-100 text-black"
-          : "border-red-500 bg-red-100 text-black"
+          : "text-black"
         : "border-gray-300"
     }
   `}
-              placeholder="Type your answer..."
-            />
+                placeholder="Type your answer..."
+              />
 
-            <button
-              onClick={() => handleCasualAnswer(typedAnswer.trim())}
-              disabled={!!selectedOption || !typedAnswer.trim()}
-              className={`
+              <button
+                onClick={() => handleCasualAnswer(typedAnswer.trim())}
+                disabled={!!selectedOption || !typedAnswer.trim()}
+                className={`
     font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
     ${
       selectedOption && isCorrect !== null
@@ -706,19 +732,32 @@ const MainWrapper = () => {
     }
     btn-click-animation
   `}
-            >
-              {isCorrect !== null
-                ? isCorrect
-                  ? "✅ Correct!"
-                  : `❌ Right answer: ${
-                      correctAnswer
-                        ? correctAnswer.charAt(0).toUpperCase() +
-                          correctAnswer.slice(1)
-                        : ""
-                    }`
-                : "Submit"}
-            </button>
-          </div>
+              >
+                {isCorrect !== null
+                  ? isCorrect
+                    ? "✅ Correct!"
+                    : `❌ Right answer: ${
+                        correctAnswer
+                          ? correctAnswer.charAt(0).toUpperCase() +
+                            correctAnswer.slice(1)
+                          : ""
+                      }`
+                  : "Submit"}
+              </button>
+            </div>
+          )}
+        </div>
+        {showExitModal && (
+          <BottomModal
+            title="Not enough tries!"
+            text="Unfortunately you have run out of tries. You can buy more or wait 24 hours."
+            actionLabel="Submit match & exit"
+            onAction={() => {
+              handleSubmitCasualMatch();
+              setShowExitModal(false);
+            }}
+            onClose={() => setShowExitModal(false)}
+          />
         )}
       </div>
     );
@@ -726,6 +765,8 @@ const MainWrapper = () => {
 
   const renderCasualGameOverScreen = () => {
     if (!casualSummary) return null;
+
+    backButton.hide();
 
     return (
       <div className="flex flex-col items-center justify-center h-screen text-white px-4">
@@ -767,7 +808,7 @@ const MainWrapper = () => {
             setCasualGameStarted(false);
             refetchUser();
           }}
-          className="mt-6 bg-primary/10 backdrop-blur-2xl px-4 py-2 rounded hover:bg-blue-700"
+          className="mt-6 bg-primary/10 backdrop-blur-2xl px-4 py-2 rounded"
         >
           Back to Home
         </button>

@@ -76,6 +76,8 @@ async def get_today_tournament() -> JSONResponse:
                 if today_tournament.finished_at
                 else None
             ),
+            "participation_cost": today_tournament.participation_cost,
+            "min_participants": today_tournament.min_participants,
         }
     )
 
@@ -125,6 +127,8 @@ async def get_all_tournaments() -> JSONResponse:
                 "started_at": (
                     tournament.started_at.isoformat() if tournament.started_at else None
                 ),
+                "participation_cost": tournament.participation_cost,
+                "min_participants": tournament.min_participants,
             }
         )
 
