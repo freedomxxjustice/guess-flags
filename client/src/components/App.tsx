@@ -43,9 +43,10 @@ if (viewport.expand.isAvailable()) {
 
 const App = () => {
   const [showIntro, setShowIntro] = useState(true);
+
   useEffect(() => {
     function handleClick(e: any) {
-      if (e.target.tagName === "BUTTON" || e.target.tagName === "SPAN") {
+      if (e.target.tagName === "BUTTON") {
         hapticFeedback.impactOccurred("medium");
       }
     }
@@ -55,13 +56,6 @@ const App = () => {
     return () => {
       document.removeEventListener("click", handleClick, true);
     };
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 2000);
-    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -78,16 +72,14 @@ const App = () => {
     return container;
   }, []);
 
-  const renderIntroScreen = () => {
-    if (showIntro) {
-      return <IntroScreen />;
-    }
-  };
-
   return (
-    <div className="h-screen w-screen">
-      {renderIntroScreen()}
-      <div id="mainBackground" className="h-full">
+    <div className="h-screen flex justify-center items-center text-white">
+      {showIntro && <IntroScreen onFinish={() => setShowIntro(false)} />}
+
+      <div
+        id="mainBackground"
+        className="relative w-full h-full overflow-hidden"
+      >
         {/* Particles */}
 
         <Particles
@@ -112,7 +104,7 @@ const App = () => {
 
         {/* Top shadow */}
         <div
-          className="absolute top-0 left-0 w-full h-48 z-10"
+          className="pointer-events-none absolute top-0 left-0 w-full h-48 z-10"
           style={{
             background:
               "linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)",
@@ -121,14 +113,14 @@ const App = () => {
 
         {/* Bottom shadow */}
         <div
-          className="absolute bottom-0 left-0 w-full h-48 z-10"
+          className="pointer-events-none absolute bottom-0 left-0 w-full h-48 z-10"
           style={{
             background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
           }}
         />
 
         {/* Main content */}
-        <div className="relative min-w-screen min-h-screen backdrop-blur-xs z-20 flex justify-center items-center text-white">
+        <div className="relative min-h-screen backdrop-blur-xs z-20 flex justify-center items-center text-white">
           <MainWrapper />
         </div>
       </div>

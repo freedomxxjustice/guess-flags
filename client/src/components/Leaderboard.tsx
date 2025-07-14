@@ -239,14 +239,14 @@ export default function Leaderboard({
 
         <div className="w-full px-4">
           <div className="bg-grey-2 rounded-xl p-4 max-w-2xl mx-auto shadow text-white flex flex-col items-center text-center gap-2">
-            <h2 className="text-3xl font-bold text-white">Season 1</h2>
+            <h2 className="text-3xl font-bold text-white">Pre-Season</h2>
             <p className="text-grey text-sm">
               Climb the leaderboard and prove your knowledge!
             </p>
 
             {/* Countdown Placeholder */}
             <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
-              12d 03h 44m remaining
+              Not Started Yet!
             </div>
             {/* Prize Container */}
             <div className="flex justify-center items-end gap-4 mt-2">
@@ -254,7 +254,7 @@ export default function Leaderboard({
               <div className="flex flex-col items-center">
                 <FaCrown className="text-yellow-400 text-xl mb-1" />
                 <img
-                  src="/prize1.jpg"
+                  src="/prize1-first.png"
                   alt="1st Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
@@ -265,7 +265,7 @@ export default function Leaderboard({
               <div className="flex flex-col items-center">
                 <FaCrown className="text-gray-300 text-xl mb-1" />
                 <img
-                  src="/prize2.jpg"
+                  src="/prize2-first.png"
                   alt="2nd Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
@@ -276,7 +276,7 @@ export default function Leaderboard({
               <div className="flex flex-col items-center">
                 <FaCrown className="text-amber-600 text-xl mb-1" />
                 <img
-                  src="/prize3.jpg"
+                  src="/prize3-first.png"
                   alt="3rd Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
