@@ -134,4 +134,25 @@ html {
   .short-screen-grid > .grid-right p {
     display: none;
   }
+
+  .leaderboard-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: start;
+
+  }
+  .leaderboard-wrapper,
+  .season-wrapper {
+    max-height: 10vh;
+  }
+
+  .season-wrapper > * > * {
+    padding: 0;
+  }
+
+  .season-wrapper > div {
+    gap: 1;
+  }
+
 }

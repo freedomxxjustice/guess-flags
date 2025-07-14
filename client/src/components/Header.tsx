@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({
       {/* Optional second content */}
       {children && (
         <div
-          className={`bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs ${
+          className={` ${
             isFullscreen ? "" : "mr-5"
           }`}
         >
