@@ -104,68 +104,53 @@ html {
   text-align: center;
 }
 
-@media (max-height: 750px) {
-  .short-screen-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.4rem;
-    align-items: start;
-
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
   }
-
-  .short-screen-grid > .grid-left img {
-    max-width: 170px;
+  to {
+    transform: translateY(0);
   }
+}
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out forwards;
+}
 
-  .short-screen-grid > .grid-left h1 {
-    font-size: 1rem;
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
   }
-
-  .short-screen-grid > .grid-right button {
-    font-size: 0.875rem;
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
-    width: 300px;
+  to {
+    transform: translateY(100%);
+    opacity: 0;
   }
+}
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out forwards;
+}
 
- 
-
-  .short-screen-grid > .grid-right p {
-    display: none;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-
-  .leaderboard-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: start;
-
+  to {
+    opacity: 0.5;  /* <-- fade to semi-transparent black */
   }
-  .leaderboard-wrapper,
-  .season-wrapper {
-    max-height: 10vh;
+}
+@keyframes fadeOut {
+  from {
+    opacity: 0.5;  /* <-- start from semi-transparent black */
   }
-
-  .season-wrapper > * > * {
-    padding: 0;
+  to {
+    opacity: 0;
   }
+}
 
-  .season-wrapp > * {
-    gap: 2;
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
 
-  }
-
-  .profile-short-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    align-items: start;
-    padding-bottom: 2rem;
-  }
-
-  .profile-short-container > div > div {
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
+.animate-fadeOut {
+  animation: fadeOut 0.3s ease forwards;
 }

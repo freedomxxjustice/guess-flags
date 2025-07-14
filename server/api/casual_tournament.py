@@ -65,8 +65,70 @@ async def get_today_tournament() -> JSONResponse:
             "created_at": today_tournament.created_at.isoformat(),
             "prizes": today_tournament.prizes or [],
             "participants": participant_list,
+            "type": today_tournament.type,
+            "started_at": (
+                today_tournament.started_at.isoformat()
+                if today_tournament.started_at
+                else None
+            ),
+            "finished_at": (
+                today_tournament.finished_at.isoformat()
+                if today_tournament.finished_at
+                else None
+            ),
         }
     )
+
+
+@router.get("/all")
+async def get_all_tournaments() -> JSONResponse:
+    # Fetch ALL tournaments, ordered by creation date descending
+    tournaments = (
+        await Tournament.all()
+        .order_by("-created_at")
+        .prefetch_related("participants__user")
+    )
+
+    if not tournaments:
+        raise HTTPException(status_code=404, detail="No tournaments found")
+
+    tournaments_data = []
+    for tournament in tournaments:
+        participants = tournament.participants
+
+        participant_list = []
+        for p in participants:
+            participant_list.append(
+                {
+                    "id": p.id,
+                    "user_id": p.user_id,
+                    "username": p.user.name,
+                    "score": p.score,
+                    "place": p.place,
+                    "prize": p.prize,
+                }
+            )
+
+        tournaments_data.append(
+            {
+                "tournament_id": tournament.id,
+                "tournament_name": tournament.name,
+                "created_at": tournament.created_at.isoformat(),
+                "finished_at": (
+                    tournament.finished_at.isoformat()
+                    if tournament.finished_at
+                    else None
+                ),
+                "prizes": tournament.prizes or [],
+                "participants": participant_list,
+                "type": tournament.type,
+                "started_at": (
+                    tournament.started_at.isoformat() if tournament.started_at else None
+                ),
+            }
+        )
+
+    return JSONResponse(tournaments_data)
 
 
 @router.post("/{tournament_id}/participate")

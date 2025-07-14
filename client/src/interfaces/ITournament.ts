@@ -1,9 +1,12 @@
 export interface ITournament {
   tournament_id: number;
-  name: string;
-  created_at: Date;
+  tournament_name: string;
+  created_at: string;
   prizes: ITournamentPrizes[];
   participants: ITournamentParticipant[];
+  started_at: string;
+  type: string;
+  finished_at: string;
 }
 
 export interface ITournamentPrizes {
@@ -13,6 +16,7 @@ export interface ITournamentPrizes {
   amount?: number;
   [key: string]: any;
 }
+
 export interface ITournamentParticipant {
   user_id: number;
   username: string;

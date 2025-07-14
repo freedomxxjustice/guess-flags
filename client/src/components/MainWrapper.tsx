@@ -15,6 +15,7 @@ import * as fuzzball from "fuzzball";
 import { AnimatePresence, motion } from "framer-motion";
 import Tournaments from "./Tournaments";
 import Header from "./Header";
+import BottomModal from "./BottomModal";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -384,7 +385,7 @@ const MainWrapper = () => {
     "relative min-w-screen min-h-18 border-b-1 border-grey-2 bg-background top-0 flex flex-row justify-between items-center";
 
   const renderHomeScreen = () => (
-    <div className="min-h-screen">
+    <div className="min-h-screen h-50 overflow-auto pb-20">
       {/* Header */}
       <Header
         isFullscreen={isFullscreenState}
@@ -396,8 +397,8 @@ const MainWrapper = () => {
           Tries left: {user?.tries_left}
         </p>
       </Header>
-      <div className="flex flex-col items-center w-full px-4 py-6 flex-grow short-screen-grid">
-        <div className="grid-left mb-12">
+      <div className="flex flex-col items-center w-full px-4 py-6 flex-grow">
+        <div className="mb-12">
           <h1 className="text-xs font-semibold text-center mb-6">
             {user?.name}, welcome to <br />
             <span className="text-3xl font-bold">GuessFlags</span>
@@ -408,7 +409,7 @@ const MainWrapper = () => {
             alt="Guess Flags"
           />
         </div>
-        <div className="flex flex-col items-center gap-3 mb-6 grid-right w-90">
+        <div className="flex flex-col items-center gap-3 mb-6 w-90">
           <button
             type="button"
             disabled={!!casualGame}
@@ -443,55 +444,25 @@ const MainWrapper = () => {
       </div>
 
       {/* Modals */}
-      {showModal === "error" && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-grey-2/60 backdrop-blur-xl p-6 w-full max-w-sm rounded-xl text-center">
-            <h2 className="text-xl font-bold mb-4">Error 404</h2>
-            <p className="mb-6">
-              Unfortunately this feature isn't available yet!
-            </p>
-            <button
-              onClick={() => setShowModal(false)}
-              className={`py-2 px-4 w-full btn-click-animation rounded-xl font-semibold`}
-              style={{
-                backgroundColor: "var(--color-warning)",
-                color: "white",
-              }}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+      {showModal === "notEnoughTries" && (
+        <BottomModal
+          title="Not enough tries!"
+          text="Unfortunately you have run out of tries. You can buy more or wait 24 hours."
+          actionLabel="Buy tries"
+          onAction={() => {
+            setShowBuyTries(true);
+            setShowModal(false);
+          }}
+          onClose={() => setShowModal(false)}
+        />
       )}
 
-      {showModal === "notEnoughTries" && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-background p-6 w-full max-w-sm rounded-2xl text-center">
-            <h2 className="text-xl font-bold mb-4">Not enough tries!</h2>
-            <p className="mb-6">
-              Unfortunately you have run out of tries. Still, you can buy them
-              using Telegram Stars or simply wait 24 hours!
-            </p>
-            <div className="flex flex-col gap-4">
-              <button
-                className={`w-full btnRegular py-2 px-4 rounded-xl font-semibold btn-click-animation`}
-                onClick={() => setShowBuyTries(true)}
-              >
-                Buy tries!
-              </button>
-              <button
-                onClick={() => setShowModal(false)}
-                className={`py-2 px-4 w-full rounded-xl font-semibold btn-click-animation`}
-                style={{
-                  backgroundColor: "var(--color-warning)",
-                  color: "white",
-                }}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
+      {showModal === "error" && (
+        <BottomModal
+          title="Error 404"
+          text="Unfortunately this feature isn't available yet!"
+          onClose={() => setShowModal(false)}
+        />
       )}
     </div>
   );
@@ -510,7 +481,13 @@ const MainWrapper = () => {
   };
 
   const renderTournamentsScreen = () => {
-    return <Tournaments />;
+    return (
+      <Tournaments
+        isFullscreen={isFullscreenState}
+        headerStyle={headerStyle}
+        headerStyleFullscreen={headerStyleFullscreen}
+      />
+    );
   };
 
   const renderLeaderboardScreen = () => {
@@ -871,26 +848,21 @@ const MainWrapper = () => {
     );
   }
 
-  if (gameError || activeCasualError || casualGameError) {
-    return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div className="bg-background rounded-2xl p-6 max-w-sm w-full text-center">
-          <h2 className="text-xl font-bold mb-4">Error!</h2>
-          <p className="mb-6">
-            {gameError instanceof Error ? gameError.message : "Unknown error"}
-          </p>
-          <button
-            onClick={() => setShowModal(false)}
-            className="py-2 px-4 rounded-xl font-semibold transition-all"
-            style={{
-              backgroundColor: "var(--color-warning)",
-              color: "white",
-            }}
-          >
-            Close
-          </button>
-        </div>
-      </div>
+  {
+    (gameError || activeCasualError || casualGameError) && (
+      <BottomModal
+        title="Error!"
+        text={
+          gameError instanceof Error
+            ? gameError.message
+            : activeCasualError instanceof Error
+            ? activeCasualError.message
+            : casualGameError
+            ? casualGameError
+            : "Unknown error"
+        }
+        onClose={() => setShowModal(false)}
+      />
     );
   }
 

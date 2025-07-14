@@ -17,7 +17,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <div
-      className={`relative mb-1 ${
+      className={`relative ${
         isFullscreen ? headerStyleFullscreen : headerStyle
       }`}
     >
@@ -32,13 +32,7 @@ const Header: React.FC<HeaderProps> = ({
 
       {/* Optional second content */}
       {children && (
-        <div
-          className={` ${
-            isFullscreen ? "" : "mr-5"
-          }`}
-        >
-          {children}
-        </div>
+        <div className={` ${isFullscreen ? "" : "mr-5"}`}>{children}</div>
       )}
     </div>
   );

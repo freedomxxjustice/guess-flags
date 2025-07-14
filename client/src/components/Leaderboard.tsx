@@ -65,7 +65,7 @@ export default function Leaderboard({
   const isUserInAllTime = entries.some(([id]) => id === userIdStr);
   const isUserInToday = todayEntries.some(([id]) => id === userIdStr);
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen h-50 overflow-auto pb-32">
       <Header
         isFullscreen={isFullscreen}
         headerStyle={headerStyle}
@@ -78,8 +78,8 @@ export default function Leaderboard({
           onChange={setPeriod}
         />
       </Header>
-      <div className="leaderboard-container w-full flex flex-col gap-4 px-4">
-        <div className="leaderboard-wrapper mt-6">
+      <div className=" w-full flex flex-col gap-4 px-4">
+        <div className="mt-6">
           {period === "Season" && (
             <div className="">
               <div className="w-full max-w-4xl overflow-x-hidden h-[40vh] relative mx-auto">
@@ -237,7 +237,7 @@ export default function Leaderboard({
           )}
         </div>
 
-        <div className="w-full px-4 season-wrapper">
+        <div className="w-full px-4">
           <div className="bg-grey-2 rounded-xl p-4 max-w-2xl mx-auto shadow text-white flex flex-col items-center text-center gap-2">
             <h2 className="text-3xl font-bold text-white">Season 1</h2>
             <p className="text-grey text-sm">
