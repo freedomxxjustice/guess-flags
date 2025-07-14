@@ -1,6 +1,6 @@
 export interface IUser {
   id: number;
-  created_at: DataTransfer;
+  created_at: Date;
   name: string;
   tries_left: number;
   rating: number;

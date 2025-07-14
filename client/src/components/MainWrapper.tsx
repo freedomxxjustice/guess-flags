@@ -499,7 +499,14 @@ const MainWrapper = () => {
   if (!user) return null;
 
   const renderProfileScreen = () => {
-    return <Profile user={user} />;
+    return (
+      <Profile
+        user={user}
+        isFullscreen={isFullscreenState}
+        headerStyle={headerStyle}
+        headerStyleFullscreen={headerStyleFullscreen}
+      />
+    );
   };
 
   const renderTournamentsScreen = () => {

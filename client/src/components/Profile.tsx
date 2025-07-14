@@ -1,12 +1,21 @@
 import { useEffect, useState } from "react";
 
 import type { IUser } from "../interfaces/IUser";
+import Header from "./Header";
 
 type ProfileProps = {
   user: IUser;
+  isFullscreen: boolean;
+  headerStyle: string;
+  headerStyleFullscreen: string;
 };
 
-export default function Profile({ user }: ProfileProps) {
+export default function Profile({
+  user,
+  isFullscreen,
+  headerStyle,
+  headerStyleFullscreen,
+}: ProfileProps) {
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   useEffect(() => {
@@ -26,74 +35,92 @@ export default function Profile({ user }: ProfileProps) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <div id="upperPanel" className="w-max z-50 flex flex-col justify-center">
-        <h1 className="text-4xl font-extrabold text-white text-center">
-          Profile
-        </h1>
-        <p className="text-gray-300 max-w-2xl text-center">
-          Take a look at your stats!
-        </p>
-      </div>
-      <div className="w-85 mx-auto mt-6 p-6 bg-white/10 backdrop-blur rounded-3xl shadow-lg text-center">
-        <div className="flex justify-center mb-6">
-          {profilePhoto ? (
-            <img
-              src={profilePhoto}
-              alt={`${user.name}'s profile`}
-              className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-md"
-            />
-          ) : (
-            <div className="w-32 h-32 rounded-full bg-grey flex items-center justify-center text-white text-5xl font-bold shadow-md border-4 border-primary">
-              {user.name.charAt(0).toUpperCase()}
+    <div className="min-h-screen">
+      <Header
+        isFullscreen={isFullscreen}
+        headerStyle={headerStyle}
+        headerStyleFullscreen={headerStyleFullscreen}
+        title="Profile"
+      ></Header>
+      <div className="profile-short-container">
+        <div className="profile-left">
+          <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">
+            <div className="flex items-center gap-4">
+              {profilePhoto ? (
+                <img
+                  src={profilePhoto}
+                  alt={`${user.name}'s profile`}
+                  className="w-14 h-14 rounded-full object-cover border-2 border-primary shadow"
+                />
+              ) : (
+                <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-lg font-bold shadow border-2 border-primary">
+                  {user.name.charAt(0).toUpperCase()}
+                </div>
+              )}
+              <div>
+                <h1 className="text-lg font-semibold">{user.name}</h1>
+                <p className="text-xs text-grey">Active player</p>
+              </div>
             </div>
-          )}
+            <div className="flex flex-col text-right">
+              <p className="text-sm text-grey">Joined</p>
+              <p className="text-sm font-medium">
+                {new Date(user.created_at).toLocaleDateString()}
+              </p>
+              <p className="text-sm mt-1 text-grey">Rating</p>
+              <p className="text-base font-semibold">{user.rating}</p>
+            </div>
+          </div>
+          <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-lg font-semibold">CASUAL</h1>
+                <p className="text-xs text-grey">Statistics</p>
+              </div>
+            </div>
+            <div className="flex flex-col text-right">
+              <p className="text-sm text-grey">Total Score</p>
+              <p className="text-base font-semibold">{user.casual_score}</p>
+              <p className="text-sm mt-1 text-grey">Games Played</p>
+              <p className="text-base font-semibold">
+                {user.casual_games_played}
+              </p>
+            </div>
+          </div>
         </div>
-        <h2 className="text-3xl font-semibold text-white mb-2">{user.name}</h2>
-        <h3>
-          <div className="text-primary">
-            <h3 className="text-xl font-semibold">
-              Rating — <span>{user.rating}</span>
-            </h3>
-          </div>
-        </h3>
-
-        <div className="flex flex-col gap-6 mt-6">
-          <div>
-            <h2>Rating Statistics</h2>
-            <div className="grid grid-cols-2 gap-4 text-gray-300">
+        <div className="profile-right">
+          <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">
+            <div className="flex items-center gap-4">
               <div>
-                <h3 className="text-xl font-semibold">Games Played</h3>
-                <p>{user.rating_games_played}</p>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold">Games Won</h3>
-                <p>{user.rating_games_won}</p>
+                <h1 className="text-lg font-semibold">RATING</h1>
+                <p className="text-xs text-grey">Statistics</p>
               </div>
             </div>
-          </div>
-          <div>
-            <h2>Casual Statistics</h2>
-            <div className="grid grid-cols-2 gap-4 text-gray-300">
-              <div>
-                <h3 className="text-xl font-semibold">Games Played</h3>
-                <p>{user.casual_games_played}</p>
-              </div>
-
-              <div>
-                <h3 className="text-xl font-semibold">Score</h3>
-                <p>{user.casual_score}</p>
-              </div>
+            <div className="flex flex-col text-right">
+              <p className="text-sm text-grey">Games Played</p>
+              <p className="text-base font-semibold">
+                {user.rating_games_played}
+              </p>
+              <p className="text-sm text-grey">Games Won</p>
+              <p className="text-base font-semibold">{user.rating_games_won}</p>
             </div>
           </div>
-          <div>
-            <h2>Training Statistics</h2>
-            <div className="grid grid-cols-1 gap-4 text-gray-300">
+          <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">
+            <div className="flex items-center gap-4">
               <div>
-                <h3 className="text-xl font-semibold">Score</h3>
-                <p>{user.training_score}</p>
+                <h1 className="text-lg font-semibold">TRAINING</h1>
+                <p className="text-xs text-grey">Statistics</p>
               </div>
             </div>
+            <div className="flex flex-col text-right">
+              <p className="text-sm text-grey">Score</p>
+              <p className="text-base font-semibold">{user.training_score}</p>
+            </div>
+          </div>
+          <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 gap-4 mt-6 items-center just">
+            <p className="text-xs text-center text-grey">
+              For other statistics visit Leaderboard and Tournaments
+            </p>
           </div>
         </div>
       </div>

@@ -108,10 +108,9 @@ html {
   .short-screen-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: 0.4rem;
     align-items: start;
-    position: absolute;
-    top: 25%;
+
   }
 
   .short-screen-grid > .grid-left img {
@@ -124,8 +123,8 @@ html {
 
   .short-screen-grid > .grid-right button {
     font-size: 0.875rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
     width: 300px;
   }
 
@@ -151,8 +150,22 @@ html {
     padding: 0;
   }
 
-  .season-wrapper > div {
-    gap: 1;
+  .season-wrapp > * {
+    gap: 2;
+
+  }
+
+  .profile-short-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    align-items: start;
+    padding-bottom: 2rem;
+  }
+
+  .profile-short-container > div > div {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
   }
 
 }
