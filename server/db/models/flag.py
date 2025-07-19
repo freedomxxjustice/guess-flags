@@ -14,9 +14,18 @@ class Flag(Model):
     total_shown = fields.IntField(default=0)
     total_correct = fields.IntField(default=0)
     category = fields.CharField(128, null=False)
+    tags = fields.ManyToManyField("models.Tag", related_name="flags")
 
     class Meta:
         table = "flags"
 
 
 FlagSchema = pydantic_model_creator(Flag)
+
+
+class Tag(Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(64, unique=True)
+
+
+TagSchema = pydantic_model_creator(Tag)

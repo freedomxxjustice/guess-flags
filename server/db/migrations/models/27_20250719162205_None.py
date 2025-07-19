@@ -33,6 +33,10 @@ CREATE TABLE IF NOT EXISTS "flags" (
     "total_correct" INT NOT NULL DEFAULT 0,
     "category" VARCHAR(128) NOT NULL
 );
+CREATE TABLE IF NOT EXISTS "tag" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "name" VARCHAR(64) NOT NULL UNIQUE
+);
 CREATE TABLE IF NOT EXISTS "casualmatch" (
     "id" UUID NOT NULL PRIMARY KEY,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -56,7 +60,7 @@ CREATE TABLE IF NOT EXISTS "casualanswer" (
 CREATE TABLE IF NOT EXISTS "tournament" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
-    "type" VARCHAR(50) NOT NULL DEFAULT 'casual_everyday',
+    "type" VARCHAR(50) NOT NULL DEFAULT 'casual_daily',
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "started_at" TIMESTAMPTZ,
     "finished_at" TIMESTAMPTZ,
@@ -77,7 +81,12 @@ CREATE TABLE IF NOT EXISTS "aerich" (
     "version" VARCHAR(255) NOT NULL,
     "app" VARCHAR(100) NOT NULL,
     "content" JSONB NOT NULL
-);"""
+);
+CREATE TABLE IF NOT EXISTS "flags_tag" (
+    "flags_id" INT NOT NULL REFERENCES "flags" ("id") ON DELETE CASCADE,
+    "tag_id" INT NOT NULL REFERENCES "tag" ("id") ON DELETE CASCADE
+);
+CREATE UNIQUE INDEX IF NOT EXISTS "uidx_flags_tag_flags_i_366886" ON "flags_tag" ("flags_id", "tag_id");"""
 
 
 async def downgrade(db: BaseDBAsyncClient) -> str:

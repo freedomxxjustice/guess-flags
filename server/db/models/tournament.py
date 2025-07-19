@@ -6,8 +6,8 @@ class Tournament(Model):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=255)
     type = fields.CharField(
-        max_length=50, default="casual_everyday"
-    )  # e.g., 'casual_everyday', 'special_event'
+        max_length=50, default="casual_daily"
+    )
     created_at = fields.DatetimeField(auto_now_add=True)
     started_at = fields.DatetimeField(null=True)
     finished_at = fields.DatetimeField(null=True)

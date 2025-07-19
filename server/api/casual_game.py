@@ -11,7 +11,7 @@ from db import (
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
-from .utils import auth, check_user
+from .utils import auth, check_user, calculate_multiplier
 
 router = APIRouter(prefix="/api/games/casual", dependencies=[Depends(auth)])
 
@@ -21,6 +21,7 @@ async def casual_start(
     num_questions: int = Query(..., gt=0),
     category: str = Query(None),
     gamemode: str = Query(None),
+    tags: List[str] = Query([]),
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
@@ -28,7 +29,9 @@ async def casual_start(
     if user.tries_left <= 0:
         raise HTTPException(status_code=403, detail="No tries left")
 
-    question_list = await create_casual_questions(num_questions, category, gamemode)
+    question_list = await create_casual_questions(
+        num_questions, category, gamemode, tags
+    )
 
     match = await CasualMatch.create(
         user=user,
@@ -38,6 +41,8 @@ async def casual_start(
         current_question_started_at=datetime.now(
             timezone.utc
         ),  # <-- start first question timer
+        gamemode=gamemode,
+        tags=tags,  # TODO: pass this in Query() later
     )
 
     user.casual_games_played += 1
@@ -57,13 +62,21 @@ async def casual_start(
     )
 
 
-async def create_casual_questions(num_questions, category, gamemode) -> List:
+async def create_casual_questions(num_questions, category, gamemode, tags) -> List:
     list_length = int(num_questions)
 
     if category and category != "frenzy":
         all_flags = await Flag.filter(category=category)
     else:
         all_flags = await Flag.all()
+
+    if tags:
+        filtered_flags = []
+        for flag in all_flags:
+            flag_tags = getattr(flag, "tags", []) or []
+            if any(tag in flag_tags for tag in tags):
+                filtered_flags.append(flag)
+        all_flags = filtered_flags
 
     all_ids = [f.id for f in all_flags]
 
@@ -75,7 +88,6 @@ async def create_casual_questions(num_questions, category, gamemode) -> List:
     questions = []
     for qid in question_ids:
         flag = next(f for f in all_flags if f.id == qid)
-        # correct_name = flag.name
         image = flag.image
 
         incorrect_pool = [f for f in all_flags if f.id != qid]
@@ -236,6 +248,7 @@ async def answer(
         user_answer=submitted_answer,
         is_correct=is_correct,
     )
+    await update_flag_stats(question["flag_id"], is_correct)
 
     if is_correct:
         match.score += 1
@@ -340,6 +353,13 @@ async def submit_casual_match(
 
 async def complete_casual_match(match, user) -> None:
     match.completed_at = datetime.now(timezone.utc)
+
+    # Apply multiplier
+    match.base_score = match.score
+    multiplier = calculate_multiplier(match.gamemode, match.tags)
+    match.difficulty_multiplier = multiplier
+    match.score = int(match.base_score * multiplier)
+
     user.casual_score += match.score
     user.today_casual_score += match.score
 
@@ -347,10 +367,8 @@ async def complete_casual_match(match, user) -> None:
     if match.score < match.num_questions / 2:
         user.tries_left -= 1
 
-    # Save user and match updates
     await user.save()
     await match.save()
-
     # Check for active tournament today
     now = datetime.now(timezone.utc)
     start_of_today = datetime(
@@ -373,3 +391,13 @@ async def complete_casual_match(match, user) -> None:
         if participant:
             participant.score += match.score
             await participant.save()
+
+
+async def update_flag_stats(flag_id: int, is_correct: bool):
+    flag = await Flag.get(id=flag_id)
+    flag.total_shown += 1
+    if is_correct:
+        flag.total_correct += 1
+    if flag.total_shown > 0:
+        flag.difficulty = 1 - (flag.total_correct / flag.total_shown)
+    await flag.save()

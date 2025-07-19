@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Tournaments from "./Tournaments";
 import Header from "./Header";
 import BottomModal from "./BottomModal";
+import Timer from "./Timer";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -42,6 +43,7 @@ const MainWrapper = () => {
   const [numQuestions, setNumQuestions] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedGamemode, setSelectedGamemode] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[] | null>(null);
   // CASUAL GAME STATES
   const [casualGameStarted, setCasualGameStarted] = useState(false);
   const [casualGame, setCasualGame] = useState<ICasualGame | null>(null);
@@ -136,11 +138,23 @@ const MainWrapper = () => {
     isFetching: isGameFetching,
     error: gameError,
   } = useQuery<ITrainingGame>({
-    queryKey: ["game", numQuestions, selectedCategory, selectedGamemode],
+    queryKey: [
+      "game",
+      numQuestions,
+      selectedCategory,
+      selectedGamemode,
+      selectedTags,
+    ],
     queryFn: async () => {
+      let tagQuery = "";
+      if (selectedTags !== null) {
+        tagQuery =
+          selectedTags.length > 0 ? `&tags=${selectedTags.join(",")}` : "";
+      }
+
       return (
         await request(
-          `games/training/create?num_questions=${numQuestions}&category=${selectedCategory}&gamemode=${selectedGamemode}`
+          `games/training/create?num_questions=${numQuestions}&category=${selectedCategory}&gamemode=${selectedGamemode}${tagQuery}`
         )
       ).data.game;
     },
@@ -168,11 +182,13 @@ const MainWrapper = () => {
   const handleStartTrainingGame = (
     numQuestions: number,
     category: string,
-    gamemode: string
+    gamemode: string,
+    tags: string[]
   ) => {
     setNumQuestions(numQuestions);
     setSelectedCategory(category);
     setSelectedGamemode(gamemode);
+    setSelectedTags(tags);
     setShowTrainingFilter(false);
     submittedRef.current = false;
     setTrainingGameStarted(true);
@@ -255,7 +271,8 @@ const MainWrapper = () => {
   const handleStartCasualGame = async (
     numQuestions: number,
     category: string,
-    gamemode: string
+    gamemode: string,
+    tags: string[]
   ) => {
     if (!user || user.tries_left <= 0) {
       setShowModal("notEnoughTries");
@@ -264,8 +281,10 @@ const MainWrapper = () => {
     setCasualGameLoading(true);
     setCasualGameError(null);
     try {
+      const tagQuery = tags.length > 0 ? `&tags=${tags.join(",")}` : "";
+
       const res = await request(
-        `games/casual/start?num_questions=${numQuestions}&category=${category}&gamemode=${gamemode}`,
+        `games/casual/start?num_questions=${numQuestions}&category=${category}&gamemode=${gamemode}${tagQuery}`,
         "POST"
       );
       setCasualGame({
@@ -414,7 +433,10 @@ const MainWrapper = () => {
         headerStyleFullscreen={headerStyleFullscreen}
         title="Home"
       >
-        <p className="bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs">
+        <p
+          className="bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs"
+          onClick={() => setShowBuyTries(true)}
+        >
           Tries left: {user?.tries_left}
         </p>
       </Header>
@@ -661,7 +683,7 @@ const MainWrapper = () => {
           <h2 className="text-2xl font-bold mb-4">
             Question {question.index + 1}
           </h2>
-          <p className="text-lg mb-4">Time left: {timeLeft ?? "--"}s</p>
+          <Timer timeLeft={timeLeft} />
 
           <div className="w-44 h-22 flex flex-col items-center justify-center my-12">
             <img
@@ -753,16 +775,18 @@ const MainWrapper = () => {
           )}
         </div>
         {showExitModal && (
-          <BottomModal
-            title="Are you sure you want to exit?"
-            text="The game will be submitted and finished!"
-            actionLabel="Submit match & exit"
-            onAction={() => {
-              handleSubmitCasualMatch();
-              setShowExitModal(false);
-            }}
-            onClose={() => setShowExitModal(false)}
-          />
+          <div>
+            <BottomModal
+              title="Are you sure you want to exit?"
+              text="The game will be submitted and finished!"
+              actionLabel="Submit match & exit"
+              onAction={() => {
+                handleSubmitCasualMatch();
+                setShowExitModal(false);
+              }}
+              onClose={() => setShowExitModal(false)}
+            />
+          </div>
         )}
       </div>
     );
@@ -932,6 +956,9 @@ const MainWrapper = () => {
               refetchUser();
               backButton.hide();
             }}
+            isFullscreen={isFullscreenState}
+            headerStyle={headerStyle}
+            headerStyleFullscreen={headerStyleFullscreen}
           />
         </motion.div>
       </AnimatePresence>
@@ -958,6 +985,9 @@ const MainWrapper = () => {
               refetchUser();
               backButton.hide();
             }}
+            isFullscreen={isFullscreenState}
+            headerStyle={headerStyle}
+            headerStyleFullscreen={headerStyleFullscreen}
           />
         </motion.div>
       </AnimatePresence>

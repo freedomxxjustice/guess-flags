@@ -24,3 +24,21 @@ async def check_user(user_id: int) -> User:
     if not user:
         raise HTTPException(401, {"error": "Unauthorized"})
     return user
+
+
+def calculate_multiplier(gamemode: str, tags: list[str]) -> float:
+    multiplier = 1.0
+
+    if gamemode == "CHOOSE":
+        multiplier *= 0.7
+    elif gamemode == "ENTER":
+        multiplier *= 1.2
+
+    if not tags or "ALL" in tags:
+        multiplier *= 1.0
+    elif "UN" in tags and len(tags) == 1:
+        multiplier *= 0.6
+    elif "RARE" in tags:
+        multiplier *= 1.3
+
+    return round(multiplier, 2)

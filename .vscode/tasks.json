@@ -10,9 +10,9 @@
         "isBackground": true
       },
       {
-        "label": "Run Backend (Poetry)",
+        "label": "Run Backend (uvicorn)",
         "type": "shell",
-        "command": "poetry run uvicorn main:app --reload --host localhost --port 8000",
+        "command": "uvicorn main:app --reload --host localhost --port 8000",
         "problemMatcher": [],
         "options": {
           "cwd": "${workspaceFolder}/server"

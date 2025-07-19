@@ -14,6 +14,11 @@ class CasualMatch(Model):
     current_question_started_at = fields.DatetimeField(null=True)
     questions = fields.JSONField()
 
+    difficulty_multiplier = fields.FloatField(default=1.0)
+    base_score = fields.IntField(default=0)
+    gamemode = fields.CharField(max_length=10, null=True)  # e.g., 'CHOOSE', 'ENTER'
+    tags = fields.JSONField(default=list)
+
 
 class CasualAnswer(Model):
     id = fields.UUIDField(pk=True)
