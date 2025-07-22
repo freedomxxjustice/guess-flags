@@ -1,12 +1,12 @@
 from fastapi import APIRouter
 from . import (
+    casual,
     common,
+    tournament,
     training_game,
     training_results,
     users,
     payment,
-    casual_game,
-    casual_tournament,
 )
 
 
@@ -17,7 +17,7 @@ def setup_routers() -> APIRouter:
     router.include_router(users.router)
     router.include_router(training_game.router)
     router.include_router(training_results.router)
-    router.include_router(casual_game.router)
+    router.include_router(casual.router)
     router.include_router(payment.router)
-    router.include_router(casual_tournament.router)
+    router.include_router(tournament.router)
     return router

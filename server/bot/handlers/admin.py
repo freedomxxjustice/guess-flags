@@ -1,101 +1,100 @@
+from datetime import datetime, timezone
+from json import loads as json_loads, JSONDecodeError
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from datetime import datetime, timezone
 from db import Tournament, TournamentParticipant
 from config_reader import bot
+from tortoise.exceptions import ValidationError
 
 router = Router(name="admin")
 ADMIN_IDS = {938450625}
 
-admin_router = Router(name="admin")
+
+def parse_args_to_dict(args: list[str]) -> dict:
+    parsed = {}
+    for arg in args:
+        if "=" not in arg:
+            continue
+        key, value = arg.split("=", 1)
+        parsed[key.strip()] = value.strip()
+    return parsed
 
 
-from json import loads as json_loads
-from json import JSONDecodeError
-
-
-@router.message(Command("create_tournament"))
-async def create_tournament(message: Message):
-    # Check if sender is admin
+@router.message(Command("add_tournament"))
+async def add_tournament(message: Message):
     if message.from_user.id not in ADMIN_IDS:
         await message.answer("🚫 You are not authorized to use this command.")
         return
 
-    # Parse arguments
-    args = message.text.strip().split(maxsplit=5)
-    if len(args) < 5:
+    args_text = message.text.strip().removeprefix("/add_tournament").strip()
+    if not args_text:
         await message.answer(
-            "⚠️ Usage:\n/create_tournament <name> <type> <participation_cost> <min_participants> [prizes_json]"
+            "⚠️ Usage example:\n/add_tournament name=SummerCup type=casual_daily cost=100 min=5 will_finish_at=2025-08-01T18:00"
         )
         return
 
-    name = args[1]
-    tournament_type = args[2]
+    args_dict = parse_args_to_dict(args_text.split())
 
     try:
-        participation_cost = int(args[3])
-    except ValueError:
-        await message.answer("⚠️ Participation cost must be a number.")
+        name = args_dict["name"].replace("_", " ")
+    except KeyError:
+        await message.answer("⚠️ 'name' is required.")
         return
 
     try:
-        min_participants = int(args[4])
+        will_finish_at = (
+            datetime.fromisoformat(args_dict.get("will_finish_at"))
+            if "will_finish_at" in args_dict
+            else None
+        )
     except ValueError:
-        await message.answer("⚠️ Min participants must be a number.")
+        await message.answer(
+            "⚠️ Invalid ISO format for will_finish_at. Example: 2025-07-30T20:00"
+        )
         return
 
-    # Default to None if prizes not provided
-    prizes = None
+    try:
+        prizes = json_loads(args_dict["prizes"]) if "prizes" in args_dict else None
+        if prizes and not isinstance(prizes, list):
+            raise ValueError("Prizes must be a JSON array")
+    except (JSONDecodeError, ValueError) as e:
+        await message.answer(f"⚠️ Invalid 'prizes': {e}")
+        return
 
-    if len(args) >= 6:
-        from json import loads as json_loads, JSONDecodeError
-
-        try:
-            prizes = json_loads(args[5])
-
-            if not isinstance(prizes, list):
-                await message.answer("⚠️ Prizes must be a JSON array.")
-                return
-
-            for prize in prizes:
-                if not isinstance(prize, dict):
-                    await message.answer("⚠️ Each prize must be a JSON object.")
-                    return
-
-                if "place" not in prize or "type" not in prize:
-                    await message.answer("⚠️ Each prize must have 'place' and 'type'.")
-                    return
-
-                if prize["type"] == "nft":
-                    if "link" not in prize:
-                        await message.answer("⚠️ NFT prizes must include 'link'.")
-                        return
-                elif "quantity" not in prize:
-                    await message.answer("⚠️ Non-NFT prizes must include 'quantity'.")
-                    return
-
-        except JSONDecodeError:
-            await message.answer("⚠️ Invalid JSON format for prizes.")
-            return
-
-    # Create tournament
-    tournament = await Tournament.create(
-        name=name,
-        type=tournament_type,
-        participation_cost=participation_cost,
-        min_participants=min_participants,
-        prizes=prizes,
-    )
+    try:
+        tournament = await Tournament.create(
+            name=name,
+            type=args_dict.get("type", "casual_daily"),
+            participation_cost=int(args_dict.get("cost", 0)),
+            min_participants=int(args_dict.get("min", 0)),
+            num_questions=int(args_dict.get("num_questions", 10)),
+            gamemode=args_dict.get("gamemode", "CHOOSE"),
+            category=args_dict.get("category", "country"),
+            tags=json_loads(args_dict["tags"]) if "tags" in args_dict else [],
+            difficulty_multiplier=float(args_dict.get("difficulty", 1.0)),
+            base_score=int(args_dict.get("base", 0)),
+            prizes=prizes,
+            tries=args_dict.get("tries", 1),
+            will_finish_at=will_finish_at,
+        )
+    except (ValidationError, ValueError) as e:
+        await message.answer(f"❌ Error creating tournament: {e}")
+        return
 
     await message.answer(
-        f"✅ Tournament created!\n\n"
+        f"✅ Tournament created!\n"
         f"ID: {tournament.id}\n"
         f"Name: {tournament.name}\n"
         f"Type: {tournament.type}\n"
-        f"Participation cost: {tournament.participation_cost}\n"
+        f"Gamemode: {tournament.gamemode}\n"
+        f"Category: {tournament.category}\n"
         f"Min participants: {tournament.min_participants}\n"
-        f"Prizes: {prizes if prizes else 'None'}"
+        f"Participation cost: {tournament.participation_cost}\n"
+        f"Questions: {tournament.num_questions}\n"
+        f"Tags: {tournament.tags}\n"
+        f"Base score: {tournament.base_score}\n"
+        f"Finish time: {tournament.will_finish_at or 'N/A'}"
     )
 
 

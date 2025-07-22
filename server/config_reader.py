@@ -73,7 +73,7 @@ TORTOISE_ORM = {
             "models": [
                 "db.models.user",
                 "db.models.flag",
-                "db.models.casual",
+                "db.models.match",
                 "db.models.tournament",
                 "aerich.models",
             ],

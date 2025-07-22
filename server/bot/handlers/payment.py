@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 from aiogram import Router, F
 from aiogram.types import Message, PreCheckoutQuery
 from db import User
@@ -62,6 +63,7 @@ async def successful_payment(message: Message) -> None:
         )
         try:
             user = await User.get(id=user_id)
+            tournament = await Tournament.filter(id=tournament_id).first()
             existing_participant = await TournamentParticipant.filter(
                 tournament_id=tournament_id, user_id=user_id
             ).first()
@@ -69,18 +71,40 @@ async def successful_payment(message: Message) -> None:
             if existing_participant:
                 return message.answer("You are already participating.")
 
-            # Create participant record
+
             await TournamentParticipant.create(
                 tournament_id=tournament_id,
                 user_id=user_id,
-                score=0,  # initial score
+                score=0,
                 place=None,
                 prize=None,
+                tries_left=tournament.tries,
             )
+
+            current_count = await TournamentParticipant.filter(
+                tournament_id=tournament_id
+            ).count()
+
+            if (
+                current_count >= tournament.min_participants
+                and tournament.started_at is None
+            ):
+                tournament.started_at = datetime.now(timezone.utc)
+                await tournament.save(update_fields=["started_at"])
         except DoesNotExist:
             await message.answer(
                 "⚠️ Could not find your user profile. Please contact support."
             )
+        current_count = await TournamentParticipant.filter(
+            tournament_id=tournament_id
+        ).count()
+        if (
+            current_count >= tournament.min_participants
+            and tournament.started_at is None
+        ):
+            tournament.started_at = datetime.now(timezone.utc)
+            await tournament.save(update_fields=["started_at"])
+
         await message.answer(
             f"Payment received for tournament {tournament_id}, thank you! You're now participating."
         )

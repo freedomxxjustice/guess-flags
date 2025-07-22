@@ -153,12 +153,20 @@ html {
   animation: slideDown 0.3s ease-out forwards;
 }
 
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.3s ease-out;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
   }
   to {
-    opacity: 0.5;  /* <-- fade to semi-transparent black */
+    opacity: 0.5;
   }
 }
 @keyframes fadeOut {

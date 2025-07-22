@@ -1,16 +1,22 @@
 export interface ITournament {
   tournament_id: number;
   tournament_name: string;
-  created_at: string;
-  prizes: ITournamentPrizes[];
-  participants: ITournamentParticipant[];
-  started_at: string;
   type: string;
+  created_at: string;
+  started_at: string;
+  will_finish_at: string;
   finished_at: string;
+  prizes: ITournamentPrizes[];
   participation_cost: number;
   min_participants: number;
+  num_questions: number;
+  gamemode: "CHOOSE" | "ENTER";
+  category: string;
+  tags: string[];
+  difficulty_multiplier: number;
+  base_score: number;
+  participants: ITournamentParticipant[];
 }
-
 export interface ITournamentPrizes {
   place: number;
   type: string;

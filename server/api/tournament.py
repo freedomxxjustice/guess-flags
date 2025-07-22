@@ -1,8 +1,6 @@
 from db import (
     Tournament,
-    TournamentSchema,
     TournamentParticipant,
-    TournamentParticipantSchema,
 )
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
@@ -13,11 +11,9 @@ from aiogram.types import (
 )
 from datetime import datetime, timedelta, timezone
 from config_reader import bot
-from .utils import auth, check_user
+from .utils import auth
 
-router = APIRouter(
-    prefix="/api/tournaments/casual/everyday", dependencies=[Depends(auth)]
-)
+router = APIRouter(prefix="/api/tournaments", dependencies=[Depends(auth)])
 
 
 @router.get("/today")
@@ -41,17 +37,13 @@ async def get_today_tournament() -> JSONResponse:
     if not today_tournament:
         raise HTTPException(status_code=404, detail="No active tournament today")
 
-    # Use the participants relation directly, since prefetch_related loaded them
-    participants = today_tournament.participants
-
     participant_list = []
-    for p in participants:
-        # 'p.user' is loaded thanks to prefetch_related
+    for p in today_tournament.participants:
         participant_list.append(
             {
                 "id": p.id,
                 "user_id": p.user_id,
-                "username": p.user.name,  # <-- should work now
+                "username": p.user.name,
                 "score": p.score,
                 "place": p.place,
                 "prize": p.prize,
@@ -63,9 +55,6 @@ async def get_today_tournament() -> JSONResponse:
             "tournament_id": today_tournament.id,
             "tournament_name": today_tournament.name,
             "created_at": today_tournament.created_at.isoformat(),
-            "prizes": today_tournament.prizes or [],
-            "participants": participant_list,
-            "type": today_tournament.type,
             "started_at": (
                 today_tournament.started_at.isoformat()
                 if today_tournament.started_at
@@ -76,15 +65,24 @@ async def get_today_tournament() -> JSONResponse:
                 if today_tournament.finished_at
                 else None
             ),
+            "will_finish_at": today_tournament.will_finish_at.isoformat(),
+            "type": today_tournament.type,
+            "prizes": today_tournament.prizes or [],
+            "participants": participant_list,
             "participation_cost": today_tournament.participation_cost,
             "min_participants": today_tournament.min_participants,
+            "num_questions": today_tournament.num_questions,
+            "gamemode": today_tournament.gamemode,
+            "category": today_tournament.category,
+            "tags": today_tournament.tags,
+            "difficulty_multiplier": today_tournament.difficulty_multiplier,
+            "base_score": today_tournament.base_score,
         }
     )
 
 
 @router.get("/all")
 async def get_all_tournaments() -> JSONResponse:
-    # Fetch ALL tournaments, ordered by creation date descending
     tournaments = (
         await Tournament.all()
         .order_by("-created_at")
@@ -96,10 +94,8 @@ async def get_all_tournaments() -> JSONResponse:
 
     tournaments_data = []
     for tournament in tournaments:
-        participants = tournament.participants
-
         participant_list = []
-        for p in participants:
+        for p in tournament.participants:
             participant_list.append(
                 {
                     "id": p.id,
@@ -116,19 +112,26 @@ async def get_all_tournaments() -> JSONResponse:
                 "tournament_id": tournament.id,
                 "tournament_name": tournament.name,
                 "created_at": tournament.created_at.isoformat(),
+                "started_at": (
+                    tournament.started_at.isoformat() if tournament.started_at else None
+                ),
                 "finished_at": (
                     tournament.finished_at.isoformat()
                     if tournament.finished_at
                     else None
                 ),
+                "will_finish_at": tournament.will_finish_at.isoformat(),
+                "type": tournament.type,
                 "prizes": tournament.prizes or [],
                 "participants": participant_list,
-                "type": tournament.type,
-                "started_at": (
-                    tournament.started_at.isoformat() if tournament.started_at else None
-                ),
                 "participation_cost": tournament.participation_cost,
                 "min_participants": tournament.min_participants,
+                "num_questions": tournament.num_questions,
+                "gamemode": tournament.gamemode,
+                "category": tournament.category,
+                "tags": tournament.tags,
+                "difficulty_multiplier": tournament.difficulty_multiplier,
+                "base_score": tournament.base_score,
             }
         )
 
@@ -138,15 +141,18 @@ async def get_all_tournaments() -> JSONResponse:
 @router.post("/{tournament_id}/participate")
 async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(auth)):
     tournament = await Tournament.filter(id=tournament_id).first()
-    tournament_participation_cost = tournament.participation_cost
-    if tournament_participation_cost > 0:
-        existing_participant = await TournamentParticipant.filter(
-            tournament_id=tournament_id, user_id=auth_data.user.id
-        ).first()
 
-        if existing_participant:
-            return JSONResponse({"message": "You are already participating."})
+    if not tournament:
+        return JSONResponse({"message": "Tournament not found"}, status_code=404)
 
+    existing_participant = await TournamentParticipant.filter(
+        tournament_id=tournament_id, user_id=auth_data.user.id
+    ).first()
+
+    if existing_participant:
+        return JSONResponse({"message": "You are already participating."})
+
+    if tournament.participation_cost > 0:
         invoice_link = await bot(
             CreateInvoiceLink(
                 title="Participation in tournament",
@@ -154,29 +160,34 @@ async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(au
                 payload=f"tournament_{tournament_id}",
                 currency="XTR",
                 prices=[
-                    LabeledPrice(label="XTR", amount=tournament_participation_cost)
+                    LabeledPrice(label="XTR", amount=tournament.participation_cost)
                 ],
             )
         )
-
         return JSONResponse({"invoice_link": invoice_link})
-    else:
-        existing_participant = await TournamentParticipant.filter(
-            tournament_id=tournament_id, user_id=auth_data.user.id
-        ).first()
 
-        if existing_participant:
-            return JSONResponse({"message": "You are already participating."})
+    participant = await TournamentParticipant.create(
+        tournament_id=tournament_id,
+        user_id=auth_data.user.id,
+        score=0,
+        place=None,
+        prize=None,
+        tries_left=tournament.tries,
+    )
 
-        # Create participant record
-        participant = await TournamentParticipant.create(
-            tournament_id=tournament_id,
-            user_id=auth_data.user.id,
-            score=0,  # initial score
-            place=None,
-            prize=None,
-        )
+    current_count = await TournamentParticipant.filter(
+        tournament_id=tournament_id
+    ).count()
 
-        return JSONResponse(
-            {"message": "Participation confirmed", "participant_id": participant.id}
-        )
+    if current_count >= tournament.min_participants and tournament.started_at is None:
+        tournament.started_at = datetime.now(timezone.utc)
+        await tournament.save(update_fields=["started_at"])
+
+    return JSONResponse(
+        {
+            "message": "Participation confirmed",
+            "participant_id": participant.id,
+            "total_participants": current_count,
+            "tournament_started": tournament.started_at is not None,
+        }
+    )

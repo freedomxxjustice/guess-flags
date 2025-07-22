@@ -21,7 +21,6 @@ const Header: React.FC<HeaderProps> = ({
         isFullscreen ? headerStyleFullscreen : headerStyle
       }`}
     >
-      {/* Title */}
       <h1
         className={`${
           isFullscreen ? "absolute bottom-2 left-4" : "ml-5"
@@ -29,8 +28,6 @@ const Header: React.FC<HeaderProps> = ({
       >
         {title}
       </h1>
-
-      {/* Optional second content */}
       {children && (
         <div className={` ${isFullscreen ? "" : "mr-5"}`}>{children}</div>
       )}

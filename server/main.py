@@ -8,6 +8,8 @@ from aiogram.types import (
     LabeledPrice,
 )
 
+import secure
+
 import logging
 
 from api import setup_routers as setup_api_routers
@@ -31,9 +33,14 @@ app.include_router(setup_api_routers())
 @app.post(config.WEBHOOK_PATH)
 async def webhook(request: Request) -> None:
     data = await request.json()
-    print("RAW UPDATE:", data)  # <-- log this
-    update = Update.model_validate(await request.json(), context={"bot": bot})
+    update = Update.model_validate(data, context={"bot": bot})
     await dp.feed_update(bot, update)
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logging.error("Unhandled error: %s", exc)
+    return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
 
 
 if __name__ == "__main__":

@@ -529,6 +529,7 @@ const MainWrapper = () => {
         isFullscreen={isFullscreenState}
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
+        userId={user.id}
       />
     );
   };

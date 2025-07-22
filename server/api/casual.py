@@ -3,10 +3,8 @@ from random import shuffle, sample
 from typing import List
 from db import (
     Flag,
-    CasualMatch,
-    CasualAnswer,
-    Tournament,
-    TournamentParticipant,
+    Match,
+    MatchAnswer,
 )
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
@@ -33,7 +31,7 @@ async def casual_start(
         num_questions, category, gamemode, tags
     )
 
-    match = await CasualMatch.create(
+    match = await Match.create(
         user=user,
         num_questions=num_questions,
         questions=question_list,
@@ -118,7 +116,7 @@ async def get_match(
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
-    match = await CasualMatch.get_or_none(user_id=user.id, completed_at=None)
+    match = await Match.get_or_none(user_id=user.id, completed_at=None)
 
     if not match:
         return JSONResponse({"status": "Match not found!"})
@@ -127,7 +125,7 @@ async def get_match(
     if match.current_question_started_at:
         elapsed = datetime.now(timezone.utc) - match.current_question_started_at
         if elapsed.total_seconds() > 15:
-            await CasualAnswer.create(
+            await MatchAnswer.create(
                 match=match,
                 question_idx=match.current_question_idx,
                 flag_id=match.questions[match.current_question_idx]["flag_id"],
@@ -180,7 +178,7 @@ async def answer(
     submitted_answer = submitted_answer.strip().lower()
 
     # Load match
-    match = await CasualMatch.filter(id=match_id, user_id=user_id).first()
+    match = await Match.filter(id=match_id, user_id=user_id).first()
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
     if match.completed_at:
@@ -196,7 +194,7 @@ async def answer(
 
     # Handle timeout either by elapsed time or explicit "time expired" answer
     if (elapsed and elapsed.total_seconds() > 15) or submitted_answer == "time expired":
-        await CasualAnswer.create(
+        await MatchAnswer.create(
             match=match,
             question_idx=match.current_question_idx,
             flag_id=question["flag_id"],
@@ -241,7 +239,7 @@ async def answer(
     # Process normal answer
     is_correct = submitted_answer == correct_answer
 
-    await CasualAnswer.create(
+    await MatchAnswer.create(
         match=match,
         question_idx=match.current_question_idx,
         flag_id=question["flag_id"],
@@ -293,7 +291,7 @@ async def get_summary(
     match_id: str, auth_data: WebAppInitData = Depends(auth)
 ) -> JSONResponse:
     user_id = auth_data.user.id
-    match = await CasualMatch.filter(id=match_id, user_id=user_id).first()
+    match = await Match.filter(id=match_id, user_id=user_id).first()
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
 
@@ -302,7 +300,7 @@ async def get_summary(
 
     # Get all submitted answers
     answers = (
-        await CasualAnswer.filter(match_id=match.id)
+        await MatchAnswer.filter(match_id=match.id)
         .order_by("question_idx")
         .values(
             "question_idx",
@@ -340,7 +338,7 @@ async def submit_casual_match(
     match_id: str, auth_data: WebAppInitData = Depends(auth)
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
-    match = await CasualMatch.filter(id=match_id, user_id=user.id).first()
+    match = await Match.filter(id=match_id, user_id=user.id).first()
     if not match:
         raise HTTPException(404, "Match not found")
     if match.completed_at:
@@ -369,28 +367,6 @@ async def complete_casual_match(match, user) -> None:
 
     await user.save()
     await match.save()
-    # Check for active tournament today
-    now = datetime.now(timezone.utc)
-    start_of_today = datetime(
-        year=now.year, month=now.month, day=now.day, tzinfo=timezone.utc
-    )
-    start_of_tomorrow = start_of_today + timedelta(days=1)
-
-    tournament = await Tournament.filter(
-        created_at__gte=start_of_today,
-        created_at__lt=start_of_tomorrow,
-        finished_at=None,
-    ).first()
-
-    if tournament:
-        # Check if user is participant in this tournament
-        participant = await TournamentParticipant.filter(
-            tournament_id=tournament.id, user_id=user.id
-        ).first()
-
-        if participant:
-            participant.score += match.score
-            await participant.save()
 
 
 async def update_flag_stats(flag_id: int, is_correct: bool):
