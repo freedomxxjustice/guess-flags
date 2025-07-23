@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type {
   ITournament,
   ITournamentParticipant,
 } from "../interfaces/ITournament";
-import { invoice } from "@telegram-apps/sdk";
+import { backButton, invoice } from "@telegram-apps/sdk";
 import Header from "./Header";
 import TournamentParticipantsModal from "./TournamentParticipantsModal";
 import BottomModal from "./BottomModal";
 import { FaCrown } from "react-icons/fa";
+import GameOverScreen from "./GameOverScreen";
+import GameScreen from "./GameScreen";
 
 // Props
 interface TournamentsProps {
@@ -19,17 +21,62 @@ interface TournamentsProps {
   userId: number;
 }
 
-function Tournaments({
+const Tournaments = ({
   isFullscreen,
   headerStyle,
   headerStyleFullscreen,
   userId,
-}: TournamentsProps) {
+}: TournamentsProps) => {
   const [infoModalMessage, setInfoModalMessage] = useState<string | null>(null);
   const [selectedParticipants, setSelectedParticipants] = useState<
     ITournamentParticipant[] | null
   >(null);
   const [showParticipantsModal, setShowParticipantsModal] = useState(false);
+  const [tournamentGame, setTournamentGame] = useState<any>(null);
+  const [tournamentGameStarted, setTournamentGameStarted] = useState(false);
+  const [tournamentSummary, setTournamentSummary] = useState<any>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [typedAnswer, setTypedAnswer] = useState("");
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [tournamentGameError, setTournamentGameError] = useState<string | null>(
+    null
+  );
+  const [tournamentGameLoading, setTournamentGameLoading] =
+    useState<boolean>(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [isAwaiting, setIsAwaiting] = useState(false);
+  const expiredSubmittedRef = useRef(false);
+  const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
+
+  useEffect(() => {
+    expiredSubmittedRef.current = false;
+
+    if (tournamentGameStarted && tournamentGame) {
+      setTimeLeft(15);
+      if (timerRef.current) clearInterval(timerRef.current);
+
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev === null) return 15;
+          if (prev <= 1) {
+            clearInterval(timerRef.current!);
+            if (!expiredSubmittedRef.current) {
+              expiredSubmittedRef.current = true;
+              handleTournamentAnswer("Time expired");
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [tournamentGameStarted, tournamentGame]);
 
   const {
     data: todayTournament,
@@ -68,12 +115,119 @@ function Tournaments({
     refetchToday();
     refetchAll();
   };
+  useEffect(() => {
+    if (tournamentGameStarted && tournamentGame) {
+      backButton.show();
+      backButton.onClick(() => setShowExitModal(true));
+    }
+  }, [tournamentGameStarted, tournamentGame]);
+
+  useEffect(() => {
+    if (tournamentSummary) backButton.hide();
+  }, [tournamentSummary]);
 
   const hasUserParticipated = (t: ITournament) =>
     t.participants.some((p) => p.user_id === userId);
   const openParticipantsModal = (list: ITournamentParticipant[]) => {
     setSelectedParticipants(list);
     setShowParticipantsModal(true);
+  };
+
+  const handleStartTournamentGame = async (tournamentId: number) => {
+    setTournamentGameLoading(true);
+    setTournamentGameError(null);
+
+    try {
+      const res = await request(`tournaments/${tournamentId}/start`, "POST");
+      setTournamentGame({
+        match_id: res.data.match_id,
+        current_question: res.data.current_question,
+      });
+      setTournamentGameStarted(true);
+    } catch (err: any) {
+      const errorMsg = err?.response?.data?.detail || "Unknown error";
+
+      // Show special modal or UI for tries error
+      if (errorMsg === "No tries left in this tournament.") {
+        setInfoModalMessage("You've used all your tries for this tournament.");
+      } else {
+        setTournamentGameError(errorMsg);
+      }
+    } finally {
+      setTournamentGameLoading(false);
+    }
+  };
+
+  const handleTournamentAnswer = async (answer: string) => {
+    if (!tournamentGame || isAwaiting) return;
+    setIsAwaiting(true);
+    setSelectedOption(answer);
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    try {
+      const res = await request(
+        `games/tournament/match/${tournamentGame.match_id}/answer`,
+        "POST",
+        { answer }
+      );
+
+      setIsCorrect(res.data.correct);
+      setCorrectAnswer(res.data.correct_answer);
+
+      setTimeout(async () => {
+        setSelectedOption(null);
+        setIsCorrect(null);
+        setIsAwaiting(false);
+
+        if (res.data.finished) {
+          const summary = await fetchTournamentSummary(tournamentGame.match_id);
+          setTournamentSummary(summary);
+          setTournamentGame(null);
+          setTournamentGameStarted(false);
+          setTypedAnswer("");
+        } else {
+          setTournamentGame({
+            match_id: tournamentGame.match_id,
+            current_question: res.data.current_question,
+          });
+          setTypedAnswer("");
+        }
+      }, 1250);
+    } catch (err) {
+      console.error("Answer error", err);
+      setIsAwaiting(false);
+    }
+  };
+
+  const handleSubmitTournamentMatch = async () => {
+    try {
+      if (tournamentGame) {
+        await request(
+          `games/casual/match/${tournamentGame?.match_id}/submit`,
+          "POST"
+        );
+        const summary = await fetchTournamentSummary(tournamentGame.match_id);
+        setTournamentSummary(summary);
+        setTournamentGame(null);
+        setTournamentGameStarted(false);
+        setTypedAnswer("");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchTournamentSummary = async (matchId: string) => {
+    try {
+      const res = await request(
+        `games/tournament/match/${matchId}/summary`,
+        "GET"
+      );
+      return res.data;
+    } catch (err) {
+      console.error("Summary error", err);
+      return null;
+    }
   };
 
   const TournamentCard = ({ tournament }: { tournament: ITournament }) => {
@@ -128,6 +282,9 @@ function Tournaments({
               isDaily ? "bg-green-950" : "bg-grey-3"
             }`}
           >
+            <div className="font-semibold">Tries</div>
+            <div>{tournament.tries}</div>
+
             <div className="font-semibold">Questions</div>
             <div>{tournament.num_questions}</div>
 
@@ -203,7 +360,7 @@ function Tournaments({
                 ? "bg-gray-500 cursor-not-allowed text-white"
                 : isDaily
                 ? "bg-green-600 text-white hover:bg-green-500"
-                : "bg-grey-4 text-white hover:bg-grey-3"
+                : "bg-primary text-white hover:bg-grey-3"
             }`}
           >
             {hasUserParticipated(tournament) ? "Already Joined" : "Participate"}
@@ -212,14 +369,23 @@ function Tournaments({
           {hasUserParticipated(tournament) &&
             tournament.started_at &&
             tournament.participants.length >= tournament.min_participants && (
-              <button className="bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-400 transition">
+              <button
+                onClick={() =>
+                  handleStartTournamentGame(tournament.tournament_id)
+                }
+                className="bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-400 transition"
+              >
                 Play
               </button>
             )}
 
           <button
             onClick={() => openParticipantsModal(tournament.participants)}
-            className="bg-green-400 text-green-900 py-2 px-4 rounded-xl hover:bg-green-300 transition"
+            className={`py-2 px-4 rounded-xl transition ${
+              isDaily
+                ? "bg-green-600 text-white hover:bg-green-500"
+                : "bg-primary text-white hover:bg-grey-3"
+            }`}
           >
             Show Participants
           </button>
@@ -230,6 +396,40 @@ function Tournaments({
 
   const dailyTournaments = tournaments.filter((t) => t.type === "casual_daily");
   const otherTournaments = tournaments.filter((t) => t.type !== "casual_daily");
+
+  if (tournamentGameStarted && tournamentGame) {
+    return (
+      <GameScreen
+        game={tournamentGame}
+        timeLeft={timeLeft}
+        selectedOption={selectedOption}
+        typedAnswer={typedAnswer}
+        setTypedAnswer={setTypedAnswer}
+        isCorrect={isCorrect}
+        correctAnswer={tournamentGame.current_question.correct_answer}
+        showExitModal={showExitModal}
+        setShowExitModal={setShowExitModal}
+        onAnswer={handleTournamentAnswer}
+        onSubmit={handleSubmitTournamentMatch}
+      />
+    );
+  }
+
+  if (tournamentSummary) {
+    return (
+      <GameOverScreen
+        title="Tournament Finished!"
+        score={tournamentSummary.score}
+        numQuestions={tournamentSummary.num_questions}
+        answers={tournamentSummary.answers}
+        onBack={() => {
+          setTournamentSummary(null);
+          refetchToday();
+          refetchAll();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen pb-32">
@@ -286,6 +486,6 @@ function Tournaments({
       )}
     </div>
   );
-}
+};
 
 export default Tournaments;

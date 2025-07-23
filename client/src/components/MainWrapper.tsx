@@ -16,7 +16,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import Tournaments from "./Tournaments";
 import Header from "./Header";
 import BottomModal from "./BottomModal";
-import Timer from "./Timer";
+import GameScreen from "./GameScreen";
+import GameOverScreen from "./GameOverScreen";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -52,7 +53,7 @@ const MainWrapper = () => {
   const [casualSummary, setCasualSummary] = useState<any | null>(null);
   const [isAwaiting, setIsAwaiting] = useState(false);
   // TIMER
-  const [timeLeft, setTimeLeft] = useState<number | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   // UI
   const [isFullscreenState, setIsFullscreenState] = useState<boolean>(false);
@@ -163,7 +164,16 @@ const MainWrapper = () => {
   });
 
   const submittedRef = useRef(false);
+  useEffect(() => {
+    if (casualGameStarted && casualGame) {
+      backButton.show();
+      backButton.onClick(() => setShowExitModal(true));
+    }
+  }, [casualGameStarted, casualGame]);
 
+  useEffect(() => {
+    if (casualSummary) backButton.hide();
+  }, [casualSummary]);
   useEffect(() => {
     if (
       trainingGameStarted &&
@@ -252,6 +262,7 @@ const MainWrapper = () => {
       document.removeEventListener("fullscreenchange", checkFullscreen);
     };
   }, []);
+
   // ERROR HANDLING
   useEffect(() => {
     if (gameError) {
@@ -371,7 +382,7 @@ const MainWrapper = () => {
 
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
-          if (prev === null) return null;
+          if (prev === null) return 15;
           if (prev <= 1) {
             clearInterval(timerRef.current!);
             if (!expiredSubmittedRef.current) {
@@ -603,7 +614,7 @@ const MainWrapper = () => {
                   } else if (isSelected) {
                     btnClass = "bg-red-600";
                   } else {
-                    btnClass = "bg-primary/10"; // dim unselected incorrect ones
+                    btnClass = "bg-primary/10"; 
                   }
                 }
 
@@ -668,185 +679,41 @@ const MainWrapper = () => {
     );
   };
 
-  if (casualGame) {
-    backButton.onClick(() => setShowExitModal(true));
-  }
-
   const renderCasualGameScreen = () => {
-    if (!casualGame) return null;
-
-    const question = casualGame.current_question;
-    if (!question) return null;
-    backButton.show();
     return (
-      <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center">
-        <div className="flex flex-col items-center justify-center text-white px-4">
-          <h2 className="text-2xl font-bold mb-4">
-            Question {question.index + 1}
-          </h2>
-          <Timer timeLeft={timeLeft} />
-
-          <div className="w-44 h-22 flex flex-col items-center justify-center my-12">
-            <img
-              src={question.image}
-              alt="Flag"
-              className="w-120 h-67.5 object-contain py-12"
-            />
-          </div>
-          {question.mode === "choose" && (
-            <div className="flex flex-col justify-center items-center gap-2 w-full">
-              {question.options.map((opt, idx) => {
-                const isSelected = selectedOption === opt;
-
-                let btnClass = `bg-primary/10`;
-
-                if (selectedOption && isCorrect !== null) {
-                  if (isSelected) {
-                    btnClass = isCorrect ? "bg-green-600" : "bg-red-600";
-                  } else if (
-                    !isCorrect &&
-                    opt.toLowerCase() === correctAnswer
-                  ) {
-                    btnClass = "bg-green-600";
-                  } else {
-                    btnClass = "bg-primary/10";
-                  }
-                }
-
-                return (
-                  <button
-                    key={idx}
-                    disabled={!!selectedOption}
-                    onClick={() => handleCasualAnswer(opt)}
-                    className={`btn-click-animation py-4 px-2 rounded-md w-90 ${btnClass}`}
-                  >
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-          {question.mode === "enter" && (
-            <div className="flex flex-col gap-4 w-full max-w-xs">
-              <input
-                type="text"
-                value={typedAnswer}
-                onChange={(e) => setTypedAnswer(e.target.value)}
-                disabled={!!selectedOption}
-                className={`
-    px-4 py-3 rounded-lg w-full transition-all bg-primary/10
-    ${
-      selectedOption
-        ? isCorrect
-          ? "border-green-500 bg-green-100 text-black"
-          : "text-black"
-        : "border-gray-300"
-    }
-  `}
-                placeholder="Type your answer..."
-              />
-
-              <button
-                onClick={() => handleCasualAnswer(typedAnswer.trim())}
-                disabled={!!selectedOption || !typedAnswer.trim()}
-                className={`
-    font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
-    ${
-      selectedOption && isCorrect !== null
-        ? isCorrect
-          ? "bg-green-600 hover:bg-green-700"
-          : "bg-red-600 hover:bg-red-700"
-        : "bg-primary hover:bg-blue-700"
-    }
-    btn-click-animation
-  `}
-              >
-                {isCorrect !== null
-                  ? isCorrect
-                    ? "✅ Correct!"
-                    : `❌ Right answer: ${
-                        correctAnswer
-                          ? correctAnswer.charAt(0).toUpperCase() +
-                            correctAnswer.slice(1)
-                          : ""
-                      }`
-                  : "Submit"}
-              </button>
-            </div>
-          )}
-        </div>
-        {showExitModal && (
-          <div>
-            <BottomModal
-              title="Are you sure you want to exit?"
-              text="The game will be submitted and finished!"
-              actionLabel="Submit match & exit"
-              onAction={() => {
-                handleSubmitCasualMatch();
-                setShowExitModal(false);
-              }}
-              onClose={() => setShowExitModal(false)}
-            />
-          </div>
-        )}
-      </div>
+      <GameScreen
+        game={casualGame}
+        timeLeft={timeLeft}
+        selectedOption={selectedOption}
+        typedAnswer={typedAnswer}
+        setTypedAnswer={setTypedAnswer}
+        isCorrect={isCorrect}
+        correctAnswer={correctAnswer}
+        showExitModal={showExitModal}
+        setShowExitModal={setShowExitModal}
+        onAnswer={handleCasualAnswer}
+        onSubmit={handleSubmitCasualMatch}
+      />
     );
   };
 
   const renderCasualGameOverScreen = () => {
-    if (!casualSummary) return null;
-
-    backButton.hide();
-
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-white px-4">
-        <h2 className="text-2xl font-bold mb-4">Casual Game Over!</h2>
-        <p className="text-lg mb-2">
-          Your score: {casualSummary.score} / {casualSummary.num_questions}
-        </p>
-        <div className="max-w-md text-left">
-          <h3 className="font-semibold mb-2">Summary of answers:</h3>
-          <ul className="list-disc pl-5 space-y-2">
-            {casualSummary.answers.map((ans: any, idx: number) => (
-              <li key={idx} className="flex items-center space-x-3">
-                {ans.image && (
-                  <img
-                    src={ans.image}
-                    alt={`Flag for question ${ans.question_idx + 1}`}
-                    className="w-10 h-6 object-cover border rounded"
-                  />
-                )}
-                <span>
-                  Question #{ans.question_idx + 1}: Your answer "
-                  {ans.user_answer.charAt(0).toUpperCase() +
-                    ans.user_answer.slice(1)}
-                  "{" — "}
-                  {ans.is_correct ? (
-                    <span className="text-green-400">Correct</span>
-                  ) : (
-                    <span className="text-red-400">Incorrect</span>
-                  )}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <button
-          onClick={() => {
-            setCasualSummary(null);
-            setCasualGame(null);
-            setCasualGameStarted(false);
-            refetchUser();
-          }}
-          className="mt-6 bg-primary/10 backdrop-blur-2xl px-4 py-2 rounded"
-        >
-          Back to Home
-        </button>
-      </div>
+      <GameOverScreen
+        title="Casual Game Over!"
+        score={casualSummary.score}
+        numQuestions={casualSummary.num_questions}
+        answers={casualSummary.answers}
+        onBack={() => {
+          setCasualSummary(null);
+          setCasualGame(null);
+          setCasualGameStarted(false);
+          refetchUser();
+        }}
+      />
     );
   };
 
-  // RENDER: Game Over Screen
   const renderTrainingGameOverScreen = () => (
     <div className="flex flex-col items-center justify-center h-screen text-white">
       <h2 className="text-2xl font-bold mb-4">Game Over!</h2>

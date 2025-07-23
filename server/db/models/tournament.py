@@ -15,9 +15,9 @@ class Tournament(Model):
     participation_cost = fields.IntField(default=0)
     min_participants = fields.IntField(default=0)
     num_questions = fields.IntField(default=10)
-    gamemode = fields.CharField(max_length=10, default="CHOOSE")  # or 'ENTER'
+    gamemode = fields.CharField(max_length=10, default="choose")
     category = fields.CharField(max_length=32, null=True)
-    tags = fields.JSONField(default=list)  # e.g., ["Europe", "UN"]
+    tags = fields.JSONField(default=list)
     difficulty_multiplier = fields.FloatField(default=1.0)
     base_score = fields.IntField(default=0)
     tries = fields.IntField(default=1)

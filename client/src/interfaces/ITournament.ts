@@ -10,12 +10,13 @@ export interface ITournament {
   participation_cost: number;
   min_participants: number;
   num_questions: number;
-  gamemode: "CHOOSE" | "ENTER";
+  gamemode: string;
   category: string;
   tags: string[];
   difficulty_multiplier: number;
   base_score: number;
   participants: ITournamentParticipant[];
+  tries: number;
 }
 export interface ITournamentPrizes {
   place: number;

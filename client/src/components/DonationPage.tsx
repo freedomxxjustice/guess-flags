@@ -3,11 +3,7 @@ import CountUp from "react-countup";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import {
-  mainButton,
-  hapticFeedback,
-  invoice,
-} from "@telegram-apps/sdk";
+import { mainButton, hapticFeedback, invoice } from "@telegram-apps/sdk";
 import request from "../utils/api";
 
 mainButton.setParams({

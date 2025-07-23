@@ -1,17 +1,17 @@
-from db import (
-    Tournament,
-    TournamentParticipant,
-)
-from fastapi import APIRouter, Depends, HTTPException
+from datetime import datetime, timedelta, timezone
+
+from random import sample, shuffle
+from typing import List
+from db import Tournament, TournamentParticipant, Match, Flag
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from aiogram.methods import CreateInvoiceLink
 from aiogram.types import (
     LabeledPrice,
 )
-from datetime import datetime, timedelta, timezone
 from config_reader import bot
-from .utils import auth
+from .utils import auth, check_user
 
 router = APIRouter(prefix="/api/tournaments", dependencies=[Depends(auth)])
 
@@ -77,6 +77,7 @@ async def get_today_tournament() -> JSONResponse:
             "tags": today_tournament.tags,
             "difficulty_multiplier": today_tournament.difficulty_multiplier,
             "base_score": today_tournament.base_score,
+            "tries": today_tournament.tries,
         }
     )
 
@@ -132,6 +133,7 @@ async def get_all_tournaments() -> JSONResponse:
                 "tags": tournament.tags,
                 "difficulty_multiplier": tournament.difficulty_multiplier,
                 "base_score": tournament.base_score,
+                "tries": tournament.tries,
             }
         )
 
@@ -191,3 +193,132 @@ async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(au
             "tournament_started": tournament.started_at is not None,
         }
     )
+
+
+@router.post("/{tournament_id}/start")
+async def start_tournament_match(
+    tournament_id: int,
+    auth_data: WebAppInitData = Depends(auth),
+):
+    user = await check_user(auth_data.user.id)
+
+    tournament = await Tournament.get_or_none(id=tournament_id).prefetch_related(
+        "participants"
+    )
+    if not tournament:
+        raise HTTPException(404, detail="Tournament not found")
+
+    if not tournament.started_at:
+        raise HTTPException(400, detail="Tournament has not started yet")
+
+    participant = await TournamentParticipant.get_or_none(
+        tournament_id=tournament.id, user_id=user.id
+    )
+    if not participant:
+        raise HTTPException(403, detail="You are not registered in this tournament")
+
+    participant = await TournamentParticipant.get_or_none(
+        user=user, tournament=tournament
+    )
+
+    if not participant:
+        raise HTTPException(403, detail="You're not participating in this tournament.")
+
+    if participant.tries_left <= 0:
+        raise HTTPException(403, detail="No tries left in this tournament.")
+
+    existing_match = await Match.get_or_none(
+        user=user,
+        tournament=tournament,
+        match_type="tournament",
+        completed_at__isnull=True,
+    )
+
+    if existing_match:
+        raise HTTPException(
+            400, detail="You already have an active match in this tournament."
+        )
+
+    question_list = await create_tournament_questions(
+        tournament.num_questions,
+        tournament.category,
+        tournament.gamemode,
+        tournament.tags,
+    )
+
+    match = await Match.create(
+        user=user,
+        num_questions=tournament.num_questions,
+        questions=question_list,
+        created_at=datetime.now(timezone.utc),
+        current_question_started_at=datetime.now(timezone.utc),
+        gamemode=tournament.gamemode,
+        category=tournament.category,
+        tags=tournament.tags,
+        match_type="tournament",
+        tournament=tournament,
+        participant=participant,
+        base_score=tournament.base_score,
+        difficulty_multiplier=tournament.difficulty_multiplier,
+    )
+
+    participant.tries_left -= 1
+    await participant.save()
+
+    return JSONResponse(
+        {
+            "match_id": str(match.id),
+            "current_question": {
+                "index": 0,
+                "flag_id": question_list[0]["flag_id"],
+                "image": question_list[0]["image"],
+                "options": question_list[0]["options"],
+                "mode": question_list[0]["mode"],
+            },
+        }
+    )
+
+
+async def create_tournament_questions(num_questions, category, gamemode, tags) -> List:
+    flags_qs = Flag.all()
+
+    if category and category != "frenzy":
+        flags_qs = flags_qs.filter(category=category)
+
+    if tags:
+        flags_qs = flags_qs.filter(tags__name__in=tags).distinct()
+
+    all_flags = await flags_qs.prefetch_related("tags")
+    all_ids = [f.id for f in all_flags]
+
+    if len(all_ids) < num_questions:
+        raise HTTPException(400, "Not enough flags to create questions")
+
+    question_ids = sample(all_ids, num_questions)
+
+    questions = []
+    for qid in question_ids:
+        flag = next(f for f in all_flags if f.id == qid)
+        image = flag.image
+
+        incorrect_pool = [f for f in all_flags if f.id != qid]
+        if len(incorrect_pool) < 6:
+            raise HTTPException(400, "Not enough flags for options")
+
+        incorrect_options = sample(incorrect_pool, 6)
+        incorrect_names = [f.name for f in incorrect_options]
+        incorrect_names.append(flag.name)
+        options = incorrect_names
+        shuffle(options)
+
+        questions.append(
+            {
+                "flag_id": qid,
+                "image": image,
+                "options": options,
+                "mode": gamemode,
+                "answer": flag.name,
+            }
+        )
+
+    return questions

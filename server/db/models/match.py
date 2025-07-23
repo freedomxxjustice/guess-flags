@@ -18,7 +18,7 @@ class Match(Model):
     current_question_started_at = fields.DatetimeField(null=True)
     questions = fields.JSONField()
 
-    gamemode = fields.CharField(max_length=10, null=True)  # 'CHOOSE' / 'ENTER'
+    gamemode = fields.CharField(max_length=10, null=True)
     category = fields.CharField(max_length=32, null=True)
     tags = fields.JSONField(default=list)
 

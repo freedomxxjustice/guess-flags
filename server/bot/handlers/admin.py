@@ -69,7 +69,7 @@ async def add_tournament(message: Message):
             participation_cost=int(args_dict.get("cost", 0)),
             min_participants=int(args_dict.get("min", 0)),
             num_questions=int(args_dict.get("num_questions", 10)),
-            gamemode=args_dict.get("gamemode", "CHOOSE"),
+            gamemode=args_dict.get("gamemode", "choose"),
             category=args_dict.get("category", "country"),
             tags=json_loads(args_dict["tags"]) if "tags" in args_dict else [],
             difficulty_multiplier=float(args_dict.get("difficulty", 1.0)),
