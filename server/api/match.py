@@ -5,24 +5,26 @@ from db import (
     Flag,
     Match,
     MatchAnswer,
+    TournamentParticipant
 )
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user, calculate_multiplier
 
-router = APIRouter(prefix="/api/games/casual", dependencies=[Depends(auth)])
+router = APIRouter(prefix="/api/games", dependencies=[Depends(auth)])
 
 
-@router.post("/start")
+@router.post("/casual/start")
 async def casual_start(
     num_questions: int = Query(..., gt=0),
     category: str = Query(None),
     gamemode: str = Query(None),
-    tags: List[str] = Query([]),
+    tags: str = Query(""),
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
+    tags = [tag.strip() for tag in tags.split(",") if tag.strip()] if tags else []
 
     if user.tries_left <= 0:
         raise HTTPException(status_code=403, detail="No tries left")
@@ -40,7 +42,7 @@ async def casual_start(
             timezone.utc
         ),  # <-- start first question timer
         gamemode=gamemode,
-        tags=tags,  # TODO: pass this in Query() later
+        tags=tags,
     )
 
     user.casual_games_played += 1
@@ -60,48 +62,52 @@ async def casual_start(
     )
 
 
-async def create_casual_questions(num_questions, category, gamemode, tags) -> List:
+async def create_casual_questions(
+    num_questions: int, category: str, gamemode: str, tags: List[str]
+) -> List[dict]:
     list_length = int(num_questions)
 
+    # Step 1: Get flags by category or all flags
     if category and category != "frenzy":
-        all_flags = await Flag.filter(category=category)
+        all_flags = await Flag.filter(category=category).prefetch_related("tags")
     else:
-        all_flags = await Flag.all()
-
+        all_flags = await Flag.all().prefetch_related("tags")
+    print(tags)
+    # Step 2: Filter flags by tags if any
     if tags:
         filtered_flags = []
+        tags_set = set(tags)
         for flag in all_flags:
-            flag_tags = getattr(flag, "tags", []) or []
-            if any(tag in flag_tags for tag in tags):
+            flag_tags = {tag.name for tag in getattr(flag, "tags", [])}
+            print(f"Flag {flag.name} tags: {flag_tags}, asked tags: {tags_set}")
+            if tags_set.intersection(flag_tags):
                 filtered_flags.append(flag)
         all_flags = filtered_flags
 
-    all_ids = [f.id for f in all_flags]
+    if len(all_flags) < list_length:
+        raise HTTPException(
+            status_code=400, detail="Not enough flags to create questions"
+        )
 
-    if len(all_ids) < list_length:
-        raise HTTPException(400, "Not enough flags to create questions")
-
-    question_ids = sample(all_ids, list_length)
+    # Step 3: Choose random flags for questions
+    question_flags = sample(all_flags, list_length)
 
     questions = []
-    for qid in question_ids:
-        flag = next(f for f in all_flags if f.id == qid)
-        image = flag.image
+    for flag in question_flags:
+        # Prepare incorrect options from all_flags except the correct flag
+        incorrect_pool = [f for f in all_flags if f.id != flag.id]
 
-        incorrect_pool = [f for f in all_flags if f.id != qid]
         if len(incorrect_pool) < 6:
-            raise HTTPException(400, "Not enough flags for options")
+            raise HTTPException(status_code=400, detail="Not enough flags for options")
 
         incorrect_options = sample(incorrect_pool, 6)
-        incorrect_names = [f.name for f in incorrect_options]
-        incorrect_names.append(flag.name)
-        options = incorrect_names
+        options = [f.name for f in incorrect_options] + [flag.name]
         shuffle(options)
 
         questions.append(
             {
-                "flag_id": qid,
-                "image": image,
+                "flag_id": flag.id,
+                "image": flag.image,
                 "options": options,
                 "mode": gamemode,
                 "answer": flag.name,
@@ -135,7 +141,7 @@ async def get_match(
             match.current_question_idx += 1
             if match.current_question_idx >= match.num_questions:
                 match.completed_at = datetime.now(timezone.utc)
-                await complete_casual_match(match, user)
+                await complete_match(match, user)
                 await match.save()
                 return JSONResponse({"status": "Time expired. Match completed."})
             else:
@@ -206,7 +212,7 @@ async def answer(
 
         if match.current_question_idx >= match.num_questions:
             match.completed_at = datetime.now(timezone.utc)
-            await complete_casual_match(match, user)
+            await complete_match(match, user)
             await match.save()
             return JSONResponse(
                 {
@@ -255,7 +261,7 @@ async def answer(
 
     if match.current_question_idx >= match.num_questions:
         match.completed_at = datetime.now(timezone.utc)
-        await complete_casual_match(match, user)
+        await complete_match(match, user)
         await match.save()
         return JSONResponse(
             {
@@ -344,28 +350,36 @@ async def submit_casual_match(
     if match.completed_at:
         raise HTTPException(400, "Match already completed")
 
-    await complete_casual_match(match, user)
+    await complete_match(match, user)
 
     return JSONResponse({"message": "Match submitted successfully"})
 
 
-async def complete_casual_match(match, user) -> None:
+async def complete_match(match: Match, user) -> None:
     match.completed_at = datetime.now(timezone.utc)
 
-    # Apply multiplier
+    # Store base score and apply multiplier
     match.base_score = match.score
     multiplier = calculate_multiplier(match.gamemode, match.tags)
     match.difficulty_multiplier = multiplier
     match.score = int(match.base_score * multiplier)
 
-    user.casual_score += match.score
-    user.today_casual_score += match.score
+    # Tournament logic
+    if match.match_type == "tournament" and match.participant_id:
+        participant = await TournamentParticipant.get(id=match.participant_id)
+        participant.score += match.score
+        await participant.save()
+    else:
+        # Casual logic
+        user.casual_score += match.score
+        user.today_casual_score += match.score
 
-    # Decrease tries if score < half questions
-    if match.score < match.num_questions / 2:
-        user.tries_left -= 1
+        # Only deduct tries if the score is less than half
+        if match.score < match.num_questions / 2:
+            user.tries_left -= 1
 
-    await user.save()
+        await user.save()
+
     await match.save()
 
 

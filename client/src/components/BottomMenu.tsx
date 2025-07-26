@@ -15,7 +15,7 @@ export default function BottomMenu({
   page,
 }: BottomMenuProps) {
   return (
-    <div className="fixed bottom-0 left-0 z-51 w-full h-25 bg-background">
+    <div className="fixed bottom-0 left-0 z-50 w-full h-25 bg-background">
       <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
         <button
           type="button"

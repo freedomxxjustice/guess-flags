@@ -74,6 +74,8 @@ const App = () => {
 
   return (
     <div className="h-screen flex justify-center items-center text-white">
+      <div className="fixed top-0 left-0 w-full h-50 bg-background z-10 pointer-events-none" />
+
       {showIntro && <IntroScreen onFinish={() => setShowIntro(false)} />}
 
       <div
@@ -103,6 +105,7 @@ const App = () => {
         />
 
         {/* Top shadow */}
+
         <div
           className="pointer-events-none absolute top-0 left-0 w-full h-48 z-10"
           style={{

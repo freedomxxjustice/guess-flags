@@ -10,8 +10,6 @@ import Header from "./Header";
 import TournamentParticipantsModal from "./TournamentParticipantsModal";
 import BottomModal from "./BottomModal";
 import { FaCrown } from "react-icons/fa";
-import GameOverScreen from "./GameOverScreen";
-import GameScreen from "./GameScreen";
 
 // Props
 interface TournamentsProps {
@@ -19,6 +17,8 @@ interface TournamentsProps {
   headerStyle: string;
   headerStyleFullscreen: string;
   userId: number;
+  setTournamentGame: (game: any) => void;
+  setTournamentGameStarted: (val: boolean) => void;
 }
 
 const Tournaments = ({
@@ -26,69 +26,19 @@ const Tournaments = ({
   headerStyle,
   headerStyleFullscreen,
   userId,
+  setTournamentGame,
+  setTournamentGameStarted,
 }: TournamentsProps) => {
   const [infoModalMessage, setInfoModalMessage] = useState<string | null>(null);
   const [selectedParticipants, setSelectedParticipants] = useState<
     ITournamentParticipant[] | null
   >(null);
   const [showParticipantsModal, setShowParticipantsModal] = useState(false);
-  const [tournamentGame, setTournamentGame] = useState<any>(null);
-  const [tournamentGameStarted, setTournamentGameStarted] = useState(false);
-  const [tournamentSummary, setTournamentSummary] = useState<any>(null);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [typedAnswer, setTypedAnswer] = useState("");
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [timeLeft, setTimeLeft] = useState(15);
-  const [showExitModal, setShowExitModal] = useState(false);
+  const [tournamentGameLoading, setTournamentGameLoading] =
+    useState<boolean>(false);
   const [tournamentGameError, setTournamentGameError] = useState<string | null>(
     null
   );
-  const [tournamentGameLoading, setTournamentGameLoading] =
-    useState<boolean>(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [isAwaiting, setIsAwaiting] = useState(false);
-  const expiredSubmittedRef = useRef(false);
-  const [correctAnswer, setCorrectAnswer] = useState<string | null>(null);
-
-  useEffect(() => {
-    expiredSubmittedRef.current = false;
-
-    if (tournamentGameStarted && tournamentGame) {
-      setTimeLeft(15);
-      if (timerRef.current) clearInterval(timerRef.current);
-
-      timerRef.current = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev === null) return 15;
-          if (prev <= 1) {
-            clearInterval(timerRef.current!);
-            if (!expiredSubmittedRef.current) {
-              expiredSubmittedRef.current = true;
-              handleTournamentAnswer("Time expired");
-            }
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [tournamentGameStarted, tournamentGame]);
-
-  const {
-    data: todayTournament,
-    isLoading: loadingToday,
-    isError: errorToday,
-    refetch: refetchToday,
-  } = useQuery({
-    queryKey: ["todayTournament"],
-    queryFn: async () => (await request("tournaments/today")).data,
-    select: (data) => data as ITournament,
-    refetchOnWindowFocus: false,
-  });
 
   const {
     data: tournaments,
@@ -101,9 +51,40 @@ const Tournaments = ({
     refetchOnWindowFocus: false,
   });
 
-  if (loadingToday || loadingAll) return <div>Loading...</div>;
-  if (errorToday || errorAll || !todayTournament || !tournaments)
-    return <div>No active tournaments.</div>;
+  if (loadingAll) {
+    return (
+      <div className="h-screen flex items-center justify-center text-white">
+        <p>Loading tournaments...</p>
+      </div>
+    );
+  }
+
+  if (errorAll) {
+    return (
+      <div className="h-screen flex items-center justify-center text-red-400">
+        <p>Failed to load tournaments data.</p>
+      </div>
+    );
+  }
+
+  if (errorAll) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center text-yellow-300">
+        <p>Failed to load full tournaments list.</p>
+        <p className="text-sm text-gray-400">
+          You may still join today's tournament below.
+        </p>
+      </div>
+    );
+  }
+
+  if (!tournaments) {
+    return (
+      <div className="h-screen flex items-center justify-center text-white">
+        <p>No active tournaments available.</p>
+      </div>
+    );
+  }
 
   const handleParticipate = async (id: number) => {
     const response = await request(`tournaments/${id}/participate`, "POST");
@@ -112,19 +93,8 @@ const Tournaments = ({
     else if (response.data.invoice_link)
       invoice.open(response.data.invoice_link.replace("https://t.me/$", ""));
     else setInfoModalMessage(msg || "Participation successful!");
-    refetchToday();
     refetchAll();
   };
-  useEffect(() => {
-    if (tournamentGameStarted && tournamentGame) {
-      backButton.show();
-      backButton.onClick(() => setShowExitModal(true));
-    }
-  }, [tournamentGameStarted, tournamentGame]);
-
-  useEffect(() => {
-    if (tournamentSummary) backButton.hide();
-  }, [tournamentSummary]);
 
   const hasUserParticipated = (t: ITournament) =>
     t.participants.some((p) => p.user_id === userId);
@@ -144,10 +114,9 @@ const Tournaments = ({
         current_question: res.data.current_question,
       });
       setTournamentGameStarted(true);
+      backButton.show();
     } catch (err: any) {
       const errorMsg = err?.response?.data?.detail || "Unknown error";
-
-      // Show special modal or UI for tries error
       if (errorMsg === "No tries left in this tournament.") {
         setInfoModalMessage("You've used all your tries for this tournament.");
       } else {
@@ -155,78 +124,6 @@ const Tournaments = ({
       }
     } finally {
       setTournamentGameLoading(false);
-    }
-  };
-
-  const handleTournamentAnswer = async (answer: string) => {
-    if (!tournamentGame || isAwaiting) return;
-    setIsAwaiting(true);
-    setSelectedOption(answer);
-    if (timerRef.current) clearInterval(timerRef.current);
-
-    try {
-      const res = await request(
-        `games/tournament/match/${tournamentGame.match_id}/answer`,
-        "POST",
-        { answer }
-      );
-
-      setIsCorrect(res.data.correct);
-      setCorrectAnswer(res.data.correct_answer);
-
-      setTimeout(async () => {
-        setSelectedOption(null);
-        setIsCorrect(null);
-        setIsAwaiting(false);
-
-        if (res.data.finished) {
-          const summary = await fetchTournamentSummary(tournamentGame.match_id);
-          setTournamentSummary(summary);
-          setTournamentGame(null);
-          setTournamentGameStarted(false);
-          setTypedAnswer("");
-        } else {
-          setTournamentGame({
-            match_id: tournamentGame.match_id,
-            current_question: res.data.current_question,
-          });
-          setTypedAnswer("");
-        }
-      }, 1250);
-    } catch (err) {
-      console.error("Answer error", err);
-      setIsAwaiting(false);
-    }
-  };
-
-  const handleSubmitTournamentMatch = async () => {
-    try {
-      if (tournamentGame) {
-        await request(
-          `games/casual/match/${tournamentGame?.match_id}/submit`,
-          "POST"
-        );
-        const summary = await fetchTournamentSummary(tournamentGame.match_id);
-        setTournamentSummary(summary);
-        setTournamentGame(null);
-        setTournamentGameStarted(false);
-        setTypedAnswer("");
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchTournamentSummary = async (matchId: string) => {
-    try {
-      const res = await request(
-        `games/tournament/match/${matchId}/summary`,
-        "GET"
-      );
-      return res.data;
-    } catch (err) {
-      console.error("Summary error", err);
-      return null;
     }
   };
 
@@ -250,11 +147,38 @@ const Tournaments = ({
       >
         <div>
           <h2
-            className={`text-lg font-semibold mb-1 ${
+            className={`text-lg font-semibold relative mb-1 ${
               isDaily ? "text-green-300" : "text-white"
             }`}
           >
-            {tournament.tournament_name}
+            {tournament.tournament_name}{" "}
+            <span
+              className={`absolute top-0 right-0 text-xs px-2 py-1 rounded-md shadow-md ${
+                tournament.participation_cost === 0
+                  ? "bg-green-500 text-white"
+                  : "bg-yellow-400 text-black flex items-center gap-1"
+              }`}
+              title={
+                tournament.participation_cost === 0
+                  ? "Free to join"
+                  : "Participation cost"
+              }
+            >
+              {tournament.participation_cost === 0 ? (
+                "FREE"
+              ) : (
+                <>
+                  {tournament.participation_cost}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 fill-current"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+                  </svg>
+                </>
+              )}
+            </span>
           </h2>
 
           {tournament.started_at && (
@@ -289,12 +213,18 @@ const Tournaments = ({
             <div>{tournament.num_questions}</div>
 
             <div className="font-semibold">Gamemode</div>
-            <div>{tournament.gamemode}</div>
+            <div>
+              {tournament.gamemode.charAt(0).toUpperCase() +
+                tournament.gamemode.slice(1)}
+            </div>
 
             {tournament.category && (
               <>
                 <div className="font-semibold">Category</div>
-                <div>{tournament.category}</div>
+                <div>
+                  {tournament.category.charAt(0).toUpperCase() +
+                    tournament.category.slice(1)}
+                </div>
               </>
             )}
 
@@ -323,21 +253,43 @@ const Tournaments = ({
                         }`}
                       />
                     )}
+
                     <span className={isDaily ? "text-green-200" : "text-white"}>
-                      <strong>Place {prize.place}</strong>: {prize.type} -{" "}
-                      {prize.type.toLowerCase() === "nft" && prize.link ? (
-                        <a
-                          href={prize.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="underline text-blue-300 hover:text-blue-400"
-                        >
-                          View NFT
-                        </a>
-                      ) : prize.amount ? (
-                        <span>{prize.amount}</span>
+                      <strong>Place {prize.place}</strong>:
+                      {prize.type.toLowerCase() === "stars" && prize.amount ? (
+                        <span className="inline-flex items-center gap-1 ml-1">
+                          {prize.amount}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4 fill-current text-yellow-300"
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+                          </svg>
+                        </span>
+                      ) : prize.type.toLowerCase() === "nft" && prize.link ? (
+                        <span className="ml-1">
+                          NFT -{" "}
+                          <a
+                            href={prize.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="underline text-blue-300 hover:text-blue-400"
+                          >
+                            View NFT
+                          </a>
+                        </span>
+                      ) : prize.type.toLowerCase() === "ton" && prize.amount ? (
+                        <span className="inline-flex items-center gap-1 ml-1">
+                          {prize.amount}
+                          <img
+                            src="/ton.svg"
+                            alt="TON"
+                            className="w-4 h-4 inline-block"
+                          />
+                        </span>
                       ) : (
-                        <span>?</span>
+                        <span className="ml-1">?</span>
                       )}
                     </span>
                   </li>
@@ -397,42 +349,8 @@ const Tournaments = ({
   const dailyTournaments = tournaments.filter((t) => t.type === "casual_daily");
   const otherTournaments = tournaments.filter((t) => t.type !== "casual_daily");
 
-  if (tournamentGameStarted && tournamentGame) {
-    return (
-      <GameScreen
-        game={tournamentGame}
-        timeLeft={timeLeft}
-        selectedOption={selectedOption}
-        typedAnswer={typedAnswer}
-        setTypedAnswer={setTypedAnswer}
-        isCorrect={isCorrect}
-        correctAnswer={tournamentGame.current_question.correct_answer}
-        showExitModal={showExitModal}
-        setShowExitModal={setShowExitModal}
-        onAnswer={handleTournamentAnswer}
-        onSubmit={handleSubmitTournamentMatch}
-      />
-    );
-  }
-
-  if (tournamentSummary) {
-    return (
-      <GameOverScreen
-        title="Tournament Finished!"
-        score={tournamentSummary.score}
-        numQuestions={tournamentSummary.num_questions}
-        answers={tournamentSummary.answers}
-        onBack={() => {
-          setTournamentSummary(null);
-          refetchToday();
-          refetchAll();
-        }}
-      />
-    );
-  }
-
   return (
-    <div className="min-h-screen pb-32">
+    <div className="h-screen overflow-auto pb-32">
       <Header
         isFullscreen={isFullscreen}
         headerStyle={headerStyle}

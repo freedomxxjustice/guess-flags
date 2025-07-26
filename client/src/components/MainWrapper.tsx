@@ -52,9 +52,18 @@ const MainWrapper = () => {
   const [casualGameError, setCasualGameError] = useState<string | null>(null);
   const [casualSummary, setCasualSummary] = useState<any | null>(null);
   const [isAwaiting, setIsAwaiting] = useState(false);
+  // TOURNAMENT GAME STATES
+  const [tournamentGameStarted, setTournamentGameStarted] = useState(false);
+  const [tournamentGame, setTournamentGame] = useState<any>(null);
+  const [tournamentSummary, setTournamentSummary] = useState<any>(null);
+  const [tournamentCorrectAnswer, setTournamentCorrectAnswer] = useState<
+    string | null
+  >(null);
   // TIMER
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const expiredRef = useRef(false);
+
   // UI
   const [isFullscreenState, setIsFullscreenState] = useState<boolean>(false);
   const [showExitModal, setShowExitModal] = useState(false);
@@ -84,7 +93,7 @@ const MainWrapper = () => {
     refetchOnWindowFocus: false,
     queryFn: async () => {
       try {
-        const res = await request("games/casual/match/active");
+        const res = await request("games/match/active");
         if (res.data.status == "Match not found!") {
           return null;
         }
@@ -174,6 +183,7 @@ const MainWrapper = () => {
   useEffect(() => {
     if (casualSummary) backButton.hide();
   }, [casualSummary]);
+
   useEffect(() => {
     if (
       trainingGameStarted &&
@@ -319,7 +329,7 @@ const MainWrapper = () => {
 
     try {
       const res = await request(
-        `games/casual/match/${casualGame.match_id}/answer`,
+        `games/match/${casualGame.match_id}/answer`,
         "POST",
         { answer }
       );
@@ -356,10 +366,7 @@ const MainWrapper = () => {
   const handleSubmitCasualMatch = async () => {
     try {
       if (casualGame) {
-        await request(
-          `games/casual/match/${casualGame?.match_id}/submit`,
-          "POST"
-        );
+        await request(`games/match/${casualGame?.match_id}/submit`, "POST");
         const summary = await fetchCasualSummary(casualGame.match_id);
         setCasualSummary(summary);
         setCasualGame(null);
@@ -375,19 +382,28 @@ const MainWrapper = () => {
   };
 
   useEffect(() => {
-    expiredSubmittedRef.current = false; // reset when new question arrives
-    if (casualGameStarted && casualGame) {
+    expiredRef.current = false;
+
+    const isGameActive =
+      (casualGameStarted && casualGame) ||
+      (tournamentGameStarted && tournamentGame);
+
+    if (isGameActive) {
       setTimeLeft(15);
       if (timerRef.current) clearInterval(timerRef.current);
 
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
-          if (prev === null) return 15;
           if (prev <= 1) {
             clearInterval(timerRef.current!);
-            if (!expiredSubmittedRef.current) {
-              expiredSubmittedRef.current = true;
-              handleCasualAnswer("Time expired");
+            if (!expiredRef.current) {
+              expiredRef.current = true;
+
+              if (casualGameStarted && casualGame) {
+                handleCasualAnswer("Time expired");
+              } else if (tournamentGameStarted && tournamentGame) {
+                handleTournamentAnswer("Time expired");
+              }
             }
             return 0;
           }
@@ -395,14 +411,83 @@ const MainWrapper = () => {
         });
       }, 1000);
     }
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [casualGameStarted, casualGame]);
+  }, [casualGameStarted, casualGame, tournamentGameStarted, tournamentGame]);
 
   const fetchCasualSummary = async (matchId: string) => {
     try {
-      const res = await request(`games/casual/match/${matchId}/summary`, "GET");
+      const res = await request(`games/match/${matchId}/summary`, "GET");
+      return res.data;
+    } catch (err) {
+      console.error("Summary error", err);
+      return null;
+    }
+  };
+
+  // TOURNAMENTS
+
+  const handleTournamentAnswer = async (answer: string) => {
+    if (!tournamentGame || isAwaiting) return;
+    setIsAwaiting(true);
+    setSelectedOption(answer);
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    try {
+      const res = await request(
+        `games/match/${tournamentGame.match_id}/answer`,
+        "POST",
+        { answer }
+      );
+      setIsCorrect(res.data.correct);
+      setCorrectAnswer(res.data.correct_answer);
+      setTimeout(async () => {
+        setSelectedOption(null);
+        setIsCorrect(null);
+        setIsAwaiting(false);
+        if (res.data.finished) {
+          const summary = await fetchTournamentSummary(tournamentGame.match_id);
+          setTournamentSummary(summary);
+          setTournamentGame(null);
+          setTournamentGameStarted(false);
+          setTypedAnswer("");
+        } else {
+          setTournamentGame({
+            match_id: tournamentGame.match_id,
+            current_question: res.data.current_question,
+          });
+          setTypedAnswer("");
+        }
+      }, 1250);
+    } catch (err) {
+      console.error("Answer error", err);
+      setIsAwaiting(false);
+    }
+  };
+
+  const handleSubmitTournamentMatch = async () => {
+    try {
+      if (tournamentGame) {
+        await request(
+          `games/casual/match/${tournamentGame.match_id}/submit`,
+          "POST"
+        );
+        const summary = await fetchTournamentSummary(tournamentGame.match_id);
+        setTournamentSummary(summary);
+        setTournamentGame(null);
+        setTournamentGameStarted(false);
+        setTypedAnswer("");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchTournamentSummary = async (matchId: string) => {
+    try {
+      const res = await request(`games/match/${matchId}/summary`, "GET");
       return res.data;
     } catch (err) {
       console.error("Summary error", err);
@@ -541,6 +626,8 @@ const MainWrapper = () => {
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
         userId={user.id}
+        setTournamentGame={setTournamentGame}
+        setTournamentGameStarted={setTournamentGameStarted}
       />
     );
   };
@@ -614,7 +701,7 @@ const MainWrapper = () => {
                   } else if (isSelected) {
                     btnClass = "bg-red-600";
                   } else {
-                    btnClass = "bg-primary/10"; 
+                    btnClass = "bg-primary/10";
                   }
                 }
 
@@ -738,8 +825,7 @@ const MainWrapper = () => {
       >
         <h1 className="text-grey text-left text-xs">Note</h1>
         <p className="text-white text-xs text-justify">
-          Playing in this mode have only affected casual score. Anyway rating is
-          in development, so stay tuned.
+          Playing in this mode haven't affected anything! But you did good!
         </p>
       </div>
     </div>
@@ -880,6 +966,38 @@ const MainWrapper = () => {
 
   if (casualSummary) {
     return renderCasualGameOverScreen();
+  }
+
+  if (tournamentGameStarted && tournamentGame) {
+    return (
+      <GameScreen
+        game={tournamentGame}
+        timeLeft={timeLeft}
+        selectedOption={selectedOption}
+        typedAnswer={typedAnswer}
+        setTypedAnswer={setTypedAnswer}
+        isCorrect={isCorrect}
+        correctAnswer={tournamentGame.current_question.correct_answer}
+        showExitModal={showExitModal}
+        setShowExitModal={setShowExitModal}
+        onAnswer={handleTournamentAnswer}
+        onSubmit={handleSubmitTournamentMatch}
+      />
+    );
+  }
+
+  if (tournamentSummary) {
+    return (
+      <GameOverScreen
+        title="Tournament Finished!"
+        score={tournamentSummary.score}
+        numQuestions={tournamentSummary.num_questions}
+        answers={tournamentSummary.answers}
+        onBack={() => {
+          setTournamentSummary(null);
+        }}
+      />
+    );
   }
 
   return renderStartScreen();

@@ -1,14 +1,12 @@
+import sys
 from fastapi import Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import uvicorn
-from aiogram.methods import CreateInvoiceLink
 from aiogram.types import (
     Update,
-    LabeledPrice,
 )
 
-import secure
 
 import logging
 
@@ -44,6 +42,4 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 if __name__ == "__main__":
-    # session_close()
-    logging.basicConfig(level=logging.INFO)
     uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT)

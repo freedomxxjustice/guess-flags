@@ -28,30 +28,35 @@ const GameOverScreen = ({
       </p>
       <div className="max-w-md text-left">
         <h3 className="font-semibold mb-2">Summary of answers:</h3>
-        <ul className="list-disc pl-5 space-y-2">
-          {answers.map((ans, idx) => (
-            <li key={idx} className="flex items-center space-x-3">
-              {ans.image && (
-                <img
-                  src={ans.image}
-                  alt={`Flag for question ${ans.question_idx + 1}`}
-                  className="w-10 h-6 object-cover border rounded"
-                />
-              )}
-              <span>
-                Question #{ans.question_idx + 1}: Your answer "
-                {ans.user_answer.charAt(0).toUpperCase() +
-                  ans.user_answer.slice(1)}
-                "{" — "}
-                {ans.is_correct ? (
-                  <span className="text-green-400">Correct</span>
-                ) : (
-                  <span className="text-red-400">Incorrect</span>
+        <div
+          className="max-h-64 overflow-y-auto border border-grey-2 rounded p-2"
+          // max-h-64 is 16rem (~256px), adjust as needed
+        >
+          <ul className="list-disc pl-5 space-y-2">
+            {answers.map((ans, idx) => (
+              <li key={idx} className="flex items-center space-x-3">
+                {ans.image && (
+                  <img
+                    src={ans.image}
+                    alt={`Flag for question ${ans.question_idx + 1}`}
+                    className="w-10 h-6 object-cover border rounded"
+                  />
                 )}
-              </span>
-            </li>
-          ))}
-        </ul>
+                <span>
+                  Question #{ans.question_idx + 1}: Your answer "
+                  {ans.user_answer.charAt(0).toUpperCase() +
+                    ans.user_answer.slice(1)}
+                  "{" — "}
+                  {ans.is_correct ? (
+                    <span className="text-green-400">Correct</span>
+                  ) : (
+                    <span className="text-red-400">Incorrect</span>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
       <button
         onClick={onBack}

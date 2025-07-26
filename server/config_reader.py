@@ -1,9 +1,9 @@
+from typing import AsyncGenerator
 from contextlib import AsyncExitStack, asynccontextmanager
 from pathlib import Path
+import logging
 from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
-import logging
-from typing import AsyncGenerator
 
 from aiogram import Bot, Dispatcher
 from fastapi import FastAPI
@@ -11,6 +11,7 @@ from tortoise import Tortoise
 
 ROOT_DIR = Path(__file__).parent.parent
 
+logging.root.setLevel(logging.NOTSET)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -47,7 +48,6 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
         except Exception as e:
             logger.exception(e, "Failed to set webhook!")
             raise
-
         await Tortoise.init(TORTOISE_ORM)
         stack.push_async_callback(Tortoise.close_connections)
         logger.info("Tortoise ORM initialized.")
