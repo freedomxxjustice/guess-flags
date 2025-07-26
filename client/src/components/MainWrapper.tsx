@@ -18,6 +18,7 @@ import Header from "./Header";
 import BottomModal from "./BottomModal";
 import GameScreen from "./GameScreen";
 import GameOverScreen from "./GameOverScreen";
+import { useTranslation } from "react-i18next";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -56,9 +57,9 @@ const MainWrapper = () => {
   const [tournamentGameStarted, setTournamentGameStarted] = useState(false);
   const [tournamentGame, setTournamentGame] = useState<any>(null);
   const [tournamentSummary, setTournamentSummary] = useState<any>(null);
-  const [tournamentCorrectAnswer, setTournamentCorrectAnswer] = useState<
-    string | null
-  >(null);
+  // const [tournamentCorrectAnswer, setTournamentCorrectAnswer] = useState<
+  //   string | null
+  // >(null);
   // TIMER
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -67,6 +68,7 @@ const MainWrapper = () => {
   // UI
   const [isFullscreenState, setIsFullscreenState] = useState<boolean>(false);
   const [showExitModal, setShowExitModal] = useState(false);
+  const { t } = useTranslation();
 
   // GET USER INFO
   const {
@@ -179,6 +181,13 @@ const MainWrapper = () => {
       backButton.onClick(() => setShowExitModal(true));
     }
   }, [casualGameStarted, casualGame]);
+
+  useEffect(() => {
+    if (tournamentGameStarted && tournamentGame) {
+      backButton.show();
+      backButton.onClick(() => setShowExitModal(true));
+    }
+  }, [tournamentGameStarted, tournamentGame]);
 
   useEffect(() => {
     if (casualSummary) backButton.hide();
@@ -361,7 +370,6 @@ const MainWrapper = () => {
       setIsAwaiting(false);
     }
   };
-  const expiredSubmittedRef = useRef(false);
 
   const handleSubmitCasualMatch = async () => {
     try {
@@ -470,10 +478,7 @@ const MainWrapper = () => {
   const handleSubmitTournamentMatch = async () => {
     try {
       if (tournamentGame) {
-        await request(
-          `games/casual/match/${tournamentGame.match_id}/submit`,
-          "POST"
-        );
+        await request(`games/match/${tournamentGame.match_id}/submit`, "POST");
         const summary = await fetchTournamentSummary(tournamentGame.match_id);
         setTournamentSummary(summary);
         setTournamentGame(null);
@@ -521,90 +526,96 @@ const MainWrapper = () => {
   const headerStyle =
     "relative min-w-screen min-h-18 border-b-1 border-grey-2 bg-background top-0 flex flex-row justify-between items-center";
 
-  const renderHomeScreen = () => (
-    <div className="min-h-screen h-50 overflow-auto pb-20">
-      <Header
-        isFullscreen={isFullscreenState}
-        headerStyle={headerStyle}
-        headerStyleFullscreen={headerStyleFullscreen}
-        title="Home"
-      >
-        <p
-          className="bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs"
-          onClick={() => setShowBuyTries(true)}
+  const renderHomeScreen = () => {
+    return (
+      <div className="min-h-screen h-50 overflow-auto pb-20">
+        <Header
+          isFullscreen={isFullscreenState}
+          headerStyle={headerStyle}
+          headerStyleFullscreen={headerStyleFullscreen}
+          title={t("home")}
         >
-          Tries left: {user?.tries_left}
-        </p>
-      </Header>
-      <div className="flex flex-col justify-center items-center w-full px-4 py-6 flex-grow content-center">
-        <div className="mb-12">
-          <h1 className="text-xs font-semibold text-center mb-6">
-            {user?.name}, welcome to <br />
-            <span className="text-3xl font-bold">GuessFlags</span>
-          </h1>
-          <img
-            src="/placeholder.png"
-            className="mx-auto w-77 object-contain rounded-lg"
-            alt="Guess Flags"
+          <p
+            className="bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs"
+            onClick={() => setShowBuyTries(true)}
+          >
+            {t("tries_left")}: {user?.tries_left}
+          </p>
+        </Header>
+
+        <div className="flex flex-col justify-center items-center w-full px-4 py-6 flex-grow content-center">
+          <div className="mb-12">
+            <h1 className="text-xs font-semibold text-center mb-6">
+              {user?.name}, {t("welcome")} <br />
+              <span className="text-3xl font-bold">{t("guess_flags")}</span>
+            </h1>
+            <img
+              src="/placeholder.png"
+              className="mx-auto w-77 object-contain rounded-lg"
+              alt="Guess Flags"
+            />
+          </div>
+
+          <div className="flex flex-col items-center gap-3 mb-6 w-90">
+            <button
+              type="button"
+              disabled={!!casualGame}
+              className="btn-regular btn-big btn-click-animation"
+              onClick={() => setShowCasualFilter(true)}
+            >
+              {t("casual")}
+            </button>
+            <button
+              type="button"
+              className="btn-regular btn-big btn-click-animation"
+              onClick={() => setShowTrainingFilter(true)}
+            >
+              {t("training")}
+            </button>
+            <button
+              onClick={() => setShowModal("error")}
+              type="button"
+              className="btn-regular btn-big btn-click-animation"
+            >
+              {t("rating")}
+            </button>
+            <button
+              type="button"
+              className="btn-regular btn-big btn-click-animation"
+              onClick={openCommunity}
+            >
+              {t("community")}
+            </button>
+            <p className="text-xs text-gray-500 select-none mt-4">
+              {t("early_access")}
+            </p>
+          </div>
+        </div>
+
+        {/* Modals */}
+        {showModal === "notEnoughTries" && (
+          <BottomModal
+            title={t("not_enough_tries")}
+            text={t("not_enough_tries_text")}
+            actionLabel={t("buy_tries")}
+            onAction={() => {
+              setShowBuyTries(true);
+              setShowModal(false);
+            }}
+            onClose={() => setShowModal(false)}
           />
-        </div>
-        <div className="flex flex-col items-center gap-3 mb-6 w-90">
-          <button
-            type="button"
-            disabled={!!casualGame}
-            className={`btn-regular btn-big btn-click-animation`}
-            onClick={() => setShowCasualFilter(true)}
-          >
-            Casual
-          </button>
-          <button
-            type="button"
-            className={`btn-regular btn-big btn-click-animation`}
-            onClick={() => setShowTrainingFilter(true)}
-          >
-            Training
-          </button>
-          <button
-            onClick={() => setShowModal("error")}
-            type="button"
-            className={`btn-regular btn-big btn-click-animation`}
-          >
-            Rating
-          </button>
-          <button
-            type="button"
-            className={`btn-regular btn-big btn-click-animation`}
-            onClick={openCommunity}
-          >
-            Community
-          </button>
-          <p className="text-xs text-gray-500 select-none mt-4">Early access</p>
-        </div>
+        )}
+
+        {showModal === "error" && (
+          <BottomModal
+            title={t("error_404")}
+            text={t("error_404_text")}
+            onClose={() => setShowModal(false)}
+          />
+        )}
       </div>
-
-      {/* Modals */}
-      {showModal === "notEnoughTries" && (
-        <BottomModal
-          title="Not enough tries!"
-          text="Unfortunately you have run out of tries. You can buy more or wait 24 hours."
-          actionLabel="Buy tries"
-          onAction={() => {
-            setShowBuyTries(true);
-            setShowModal(false);
-          }}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-
-      {showModal === "error" && (
-        <BottomModal
-          title="Error 404"
-          text="Unfortunately this feature isn't available yet!"
-          onClose={() => setShowModal(false)}
-        />
-      )}
-    </div>
-  );
+    );
+  };
 
   if (!user) return null;
 
@@ -913,6 +924,7 @@ const MainWrapper = () => {
             isFullscreen={isFullscreenState}
             headerStyle={headerStyle}
             headerStyleFullscreen={headerStyleFullscreen}
+            note={t("training_note")}
           />
         </motion.div>
       </AnimatePresence>
@@ -942,6 +954,7 @@ const MainWrapper = () => {
             isFullscreen={isFullscreenState}
             headerStyle={headerStyle}
             headerStyleFullscreen={headerStyleFullscreen}
+            note={t("casual_note")}
           />
         </motion.div>
       </AnimatePresence>

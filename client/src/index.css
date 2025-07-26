@@ -77,7 +77,6 @@ html {
   font-size: 1.25rem; 
   border-radius: 0.5rem; 
   backdrop-filter: blur(4px); 
-  cursor: not-allowed;
 }
 
 /* Regular button */

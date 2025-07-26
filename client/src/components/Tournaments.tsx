@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type {
@@ -10,8 +10,8 @@ import Header from "./Header";
 import TournamentParticipantsModal from "./TournamentParticipantsModal";
 import BottomModal from "./BottomModal";
 import { FaCrown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
-// Props
 interface TournamentsProps {
   isFullscreen: boolean;
   headerStyle: string;
@@ -34,79 +34,37 @@ const Tournaments = ({
     ITournamentParticipant[] | null
   >(null);
   const [showParticipantsModal, setShowParticipantsModal] = useState(false);
-  const [tournamentGameLoading, setTournamentGameLoading] =
-    useState<boolean>(false);
+  const [tournamentGameLoading, setTournamentGameLoading] = useState(false);
   const [tournamentGameError, setTournamentGameError] = useState<string | null>(
     null
   );
+  const { t } = useTranslation();
 
   const {
     data: tournaments,
     isLoading: loadingAll,
     isError: errorAll,
-    refetch: refetchAll,
+    refetch,
   } = useQuery<ITournament[]>({
     queryKey: ["tournaments"],
     queryFn: async () => (await request("tournaments/all")).data,
     refetchOnWindowFocus: false,
   });
 
-  if (loadingAll) {
-    return (
-      <div className="h-screen flex items-center justify-center text-white">
-        <p>Loading tournaments...</p>
-      </div>
-    );
-  }
-
-  if (errorAll) {
-    return (
-      <div className="h-screen flex items-center justify-center text-red-400">
-        <p>Failed to load tournaments data.</p>
-      </div>
-    );
-  }
-
-  if (errorAll) {
-    return (
-      <div className="h-screen flex flex-col items-center justify-center text-yellow-300">
-        <p>Failed to load full tournaments list.</p>
-        <p className="text-sm text-gray-400">
-          You may still join today's tournament below.
-        </p>
-      </div>
-    );
-  }
-
-  if (!tournaments) {
-    return (
-      <div className="h-screen flex items-center justify-center text-white">
-        <p>No active tournaments available.</p>
-      </div>
-    );
-  }
-
   const handleParticipate = async (id: number) => {
     const response = await request(`tournaments/${id}/participate`, "POST");
     const msg = response.data.message;
-    if (msg === "You are already participating.") setInfoModalMessage(msg);
+    if (msg === "You are already participating.")
+      setInfoModalMessage(t("already_joined"));
     else if (response.data.invoice_link)
       invoice.open(response.data.invoice_link.replace("https://t.me/$", ""));
-    else setInfoModalMessage(msg || "Participation successful!");
-    refetchAll();
-  };
-
-  const hasUserParticipated = (t: ITournament) =>
-    t.participants.some((p) => p.user_id === userId);
-  const openParticipantsModal = (list: ITournamentParticipant[]) => {
-    setSelectedParticipants(list);
-    setShowParticipantsModal(true);
+    else setInfoModalMessage(t("participation_successful"));
+    refetch();
   };
 
   const handleStartTournamentGame = async (tournamentId: number) => {
     setTournamentGameLoading(true);
     setTournamentGameError(null);
-
     try {
       const res = await request(`tournaments/${tournamentId}/start`, "POST");
       setTournamentGame({
@@ -118,7 +76,7 @@ const Tournaments = ({
     } catch (err: any) {
       const errorMsg = err?.response?.data?.detail || "Unknown error";
       if (errorMsg === "No tries left in this tournament.") {
-        setInfoModalMessage("You've used all your tries for this tournament.");
+        setInfoModalMessage(t("no_tries"));
       } else {
         setTournamentGameError(errorMsg);
       }
@@ -127,17 +85,71 @@ const Tournaments = ({
     }
   };
 
+  const hasUserParticipated = (t: ITournament) =>
+    t.participants.some((p) => p.user_id === userId);
+
+  const openParticipantsModal = (list: ITournamentParticipant[]) => {
+    setSelectedParticipants(list);
+    setShowParticipantsModal(true);
+  };
+
+  const getCountdown = (endTime: string) => {
+    const diff = new Date(endTime).getTime() - Date.now();
+    if (diff <= 0) return t("finished");
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
+    const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+    return t("ends_in", { days, hours, minutes });
+  };
+  if (tournamentGameLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center text-white">
+        <p>{t("loading")}</p>
+      </div>
+    );
+  }
+
+  if (tournamentGameError) {
+    return (
+      <div className="h-screen flex items-center justify-center text-red-400">
+        <p>{t("error_loading")}</p>
+      </div>
+    );
+  }
+
+  if (loadingAll) {
+    return (
+      <div className="h-screen flex items-center justify-center text-white">
+        <p>{t("loading")}</p>
+      </div>
+    );
+  }
+
+  if (errorAll) {
+    return (
+      <div className="h-screen flex items-center justify-center text-red-400">
+        <p>{t("error_loading")}</p>
+      </div>
+    );
+  }
+
+  if (errorAll) {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center text-yellow-300">
+        <p>{t("error_loading")}</p>
+      </div>
+    );
+  }
+
+  if (!tournaments) {
+    return (
+      <div className="h-screen flex items-center justify-center text-white">
+        <p>{t("no_tournaments")}</p>
+      </div>
+    );
+  }
   const TournamentCard = ({ tournament }: { tournament: ITournament }) => {
     const isDaily = tournament.type === "casual_daily";
-
-    const getCountdown = (endTime: string) => {
-      const diff = new Date(endTime).getTime() - Date.now();
-      if (diff <= 0) return "Finished";
-      const minutes = Math.floor((diff / 1000 / 60) % 60);
-      const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
-      const days = Math.floor(diff / 1000 / 60 / 60 / 24);
-      return `${days}d ${hours}h ${minutes}m left`;
-    };
 
     return (
       <div
@@ -146,11 +158,7 @@ const Tournaments = ({
         } w-full max-w-sm rounded-xl p-4 shadow-md flex flex-col justify-between`}
       >
         <div>
-          <h2
-            className={`text-lg font-semibold relative mb-1 ${
-              isDaily ? "text-green-300" : "text-white"
-            }`}
-          >
+          <h2 className="text-lg font-semibold relative mb-1">
             {tournament.tournament_name}{" "}
             <span
               className={`absolute top-0 right-0 text-xs px-2 py-1 rounded-md shadow-md ${
@@ -160,12 +168,12 @@ const Tournaments = ({
               }`}
               title={
                 tournament.participation_cost === 0
-                  ? "Free to join"
-                  : "Participation cost"
+                  ? t("free_to_join")
+                  : t("participation_cost")
               }
             >
               {tournament.participation_cost === 0 ? (
-                "FREE"
+                t("free")
               ) : (
                 <>
                   {tournament.participation_cost}
@@ -182,22 +190,14 @@ const Tournaments = ({
           </h2>
 
           {tournament.started_at && (
-            <p
-              className={`text-xs mb-1 ${
-                isDaily ? "text-green-300" : "text-grey"
-              }`}
-            >
-              Started: {new Date(tournament.started_at).toLocaleString()}
+            <p className="text-xs mb-1">
+              {t("started")}: {new Date(tournament.started_at).toLocaleString()}
             </p>
           )}
 
           {tournament.will_finish_at && (
-            <p
-              className={`text-xs mb-1 ${
-                isDaily ? "text-green-300" : "text-grey"
-              }`}
-            >
-              End: {getCountdown(tournament.will_finish_at)}
+            <p className="text-xs mb-1">
+              {getCountdown(tournament.will_finish_at)}
             </p>
           )}
 
@@ -206,38 +206,32 @@ const Tournaments = ({
               isDaily ? "bg-green-950" : "bg-grey-3"
             }`}
           >
-            <div className="font-semibold">Tries</div>
+            <div className="font-semibold">{t("tries")}</div>
             <div>{tournament.tries}</div>
 
-            <div className="font-semibold">Questions</div>
+            <div className="font-semibold">{t("questions")}</div>
             <div>{tournament.num_questions}</div>
 
-            <div className="font-semibold">Gamemode</div>
-            <div>
-              {tournament.gamemode.charAt(0).toUpperCase() +
-                tournament.gamemode.slice(1)}
-            </div>
+            <div className="font-semibold">{t("gamemode")}</div>
+            <div>{t(tournament.gamemode)}</div>
 
             {tournament.category && (
               <>
-                <div className="font-semibold">Category</div>
-                <div>
-                  {tournament.category.charAt(0).toUpperCase() +
-                    tournament.category.slice(1)}
-                </div>
+                <div className="font-semibold">{t("category")}</div>
+                <div>{t(tournament.category)}</div>
               </>
             )}
 
             {tournament.tags.length > 0 && (
               <>
-                <div className="font-semibold">Tags</div>
+                <div className="font-semibold">{t("tags")}</div>
                 <div>{tournament.tags.join(", ")}</div>
               </>
             )}
           </div>
 
           <div className="mt-3 text-xs">
-            <p className="font-semibold mb-1">Prizes:</p>
+            <p className="font-semibold mb-1">{t("prizes")}:</p>
             {tournament.prizes.length > 0 ? (
               <ul className="space-y-1">
                 {tournament.prizes.map((prize, index) => (
@@ -253,33 +247,23 @@ const Tournaments = ({
                         }`}
                       />
                     )}
-
-                    <span className={isDaily ? "text-green-200" : "text-white"}>
-                      <strong>Place {prize.place}</strong>:
-                      {prize.type.toLowerCase() === "stars" && prize.amount ? (
-                        <span className="inline-flex items-center gap-1 ml-1">
-                          {prize.amount}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-4 h-4 fill-current text-yellow-300"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
-                          </svg>
-                        </span>
+                    <span>
+                      <strong>{t("place", { place: prize.place })}</strong>:
+                      {prize.type.toLowerCase() === "stars" ? (
+                        <span className="ml-1">{prize.amount}</span>
                       ) : prize.type.toLowerCase() === "nft" && prize.link ? (
                         <span className="ml-1">
-                          NFT -{" "}
+                          {t("nft")} -{" "}
                           <a
                             href={prize.link}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="underline text-blue-300 hover:text-blue-400"
                           >
-                            View NFT
+                            {t("view_nft")}
                           </a>
                         </span>
-                      ) : prize.type.toLowerCase() === "ton" && prize.amount ? (
+                      ) : prize.type.toLowerCase() === "ton" ? (
                         <span className="inline-flex items-center gap-1 ml-1">
                           {prize.amount}
                           <img
@@ -296,9 +280,7 @@ const Tournaments = ({
                 ))}
               </ul>
             ) : (
-              <p className={isDaily ? "text-green-300" : "text-grey"}>
-                No prizes listed
-              </p>
+              <p>{t("no_prizes")}</p>
             )}
           </div>
         </div>
@@ -315,7 +297,9 @@ const Tournaments = ({
                 : "bg-primary text-white hover:bg-grey-3"
             }`}
           >
-            {hasUserParticipated(tournament) ? "Already Joined" : "Participate"}
+            {hasUserParticipated(tournament)
+              ? t("already_joined")
+              : t("participate")}
           </button>
 
           {hasUserParticipated(tournament) &&
@@ -327,27 +311,25 @@ const Tournaments = ({
                 }
                 className="bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-400 transition"
               >
-                Play
+                {t("play")}
               </button>
             )}
 
           <button
             onClick={() => openParticipantsModal(tournament.participants)}
-            className={`py-2 px-4 rounded-xl transition ${
-              isDaily
-                ? "bg-green-600 text-white hover:bg-green-500"
-                : "bg-primary text-white hover:bg-grey-3"
-            }`}
+            className="py-2 px-4 rounded-xl transition bg-blue-600 text-white hover:bg-blue-500"
           >
-            Show Participants
+            {t("show_participants")}
           </button>
         </div>
       </div>
     );
   };
 
-  const dailyTournaments = tournaments.filter((t) => t.type === "casual_daily");
-  const otherTournaments = tournaments.filter((t) => t.type !== "casual_daily");
+  const dailyTournaments =
+    tournaments?.filter((t) => t.type === "casual_daily") || [];
+  const otherTournaments =
+    tournaments?.filter((t) => t.type !== "casual_daily") || [];
 
   return (
     <div className="h-screen overflow-auto pb-32">
@@ -355,14 +337,14 @@ const Tournaments = ({
         isFullscreen={isFullscreen}
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
-        title="Tournaments"
+        title={t("tournaments")}
       />
 
       <div className="p-4 space-y-8">
         {dailyTournaments.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-green-400 mb-4">
-              Daily Tournaments
+              {t("daily_tournaments")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {dailyTournaments.map((t) => (
@@ -375,7 +357,7 @@ const Tournaments = ({
         {otherTournaments.length > 0 && (
           <section>
             <h2 className="text-xl font-bold text-green-100 mb-4">
-              Casual Tournaments
+              {t("casual_tournaments")}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {otherTournaments.map((t) => (
@@ -388,16 +370,16 @@ const Tournaments = ({
 
       {infoModalMessage && (
         <BottomModal
-          title="Info"
+          title={t("info")}
           text={infoModalMessage}
           onClose={() => setInfoModalMessage(null)}
-          actionLabel="Close"
+          actionLabel={t("close")}
         />
       )}
 
       {showParticipantsModal && selectedParticipants && (
         <TournamentParticipantsModal
-          title="Tournament Participants"
+          title={t("tournament_participants")}
           participants={selectedParticipants}
           onClose={() => setShowParticipantsModal(false)}
         />

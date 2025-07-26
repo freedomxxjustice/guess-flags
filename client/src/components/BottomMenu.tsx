@@ -1,5 +1,6 @@
 import { FaHome, FaMedal } from "react-icons/fa";
 import { MdLeaderboard, MdPerson } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 type BottomMenuProps = {
   onNavigate: (
@@ -14,6 +15,8 @@ export default function BottomMenu({
   refetchLeaders,
   page,
 }: BottomMenuProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="fixed bottom-0 left-0 z-50 w-full h-25 bg-background">
       <div className="grid h-full max-w-lg grid-cols-4 mx-auto font-medium">
@@ -31,9 +34,9 @@ export default function BottomMenu({
           <span
             className={`text-sm ${
               page == "leaderboard" ? "text-primary" : ""
-            }  group-hover:text-primary`}
+            } group-hover:text-primary`}
           >
-            Leaderboard
+            {t("leaderboard")}
           </span>
         </button>
         <button
@@ -49,7 +52,7 @@ export default function BottomMenu({
               page == "home" ? "text-primary" : ""
             } group-hover:text-primary`}
           >
-            Home
+            {t("home")}
           </span>
         </button>
 
@@ -66,12 +69,12 @@ export default function BottomMenu({
               page == "profile" ? "text-primary" : ""
             } group-hover:text-primary`}
           >
-            Profile
+            {t("profile")}
           </span>
         </button>
         <button
           type="button"
-          className={`inline-flex flex-col items-center justify-center px-5${
+          className={`inline-flex flex-col items-center justify-center px-5 ${
             page == "tournaments" ? "text-primary" : ""
           } group`}
           onClick={() => onNavigate("tournaments")}
@@ -82,7 +85,7 @@ export default function BottomMenu({
               page == "tournaments" ? "text-primary" : ""
             } group-hover:text-primary`}
           >
-            Tournaments
+            {t("tournaments")}
           </span>
         </button>
       </div>

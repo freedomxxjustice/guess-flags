@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { backButton } from "@telegram-apps/sdk";
 import Header from "./Header";
 
@@ -13,6 +14,7 @@ type GameFilterProps = {
   isFullscreen: boolean;
   headerStyle: string;
   headerStyleFullscreen: string;
+  note: string;
 };
 
 const possibleNumQuestions = [5, 10, 15];
@@ -34,7 +36,10 @@ function PreGame({
   isFullscreen,
   headerStyle,
   headerStyleFullscreen,
+  note,
 }: GameFilterProps) {
+  const { t } = useTranslation();
+
   const [selectedNumQuestions, setSelectedNumQuestions] = useState<
     number | null
   >(possibleNumQuestions[0]);
@@ -54,16 +59,16 @@ function PreGame({
         isFullscreen={isFullscreen}
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
-        title="Filters"
+        title={t("filters")}
       >
         <h1 className="text-md font-bold text-center">
-          Customize your gameplay
+          {t("customize_gameplay")}
         </h1>
       </Header>
       <div className="flex justify-center items-center flex-col gap-6 p-6 text-white">
         <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-gray-700">
           <legend className="text-2xl font-bold text-center text-white">
-            Choose Number of Questions
+            {t("choose_number_of_questions")}
           </legend>
           <div className="flex justify-center gap-4 flex-wrap">
             {possibleNumQuestions.map((num) => (
@@ -82,7 +87,7 @@ function PreGame({
 
         <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-gray-700">
           <legend className="text-2xl font-bold text-center text-white">
-            Choose Category
+            {t("choose_category")}
           </legend>
           <div className="flex justify-center gap-4 flex-wrap">
             {possibleCategories.map((category) => (
@@ -93,7 +98,7 @@ function PreGame({
                   selectedCategory === category ? "btn-regular" : "btn-disabled"
                 } btn-click-animation`}
               >
-                {category.charAt(0).toUpperCase() + category.slice(1)}
+                {t(category)}
               </button>
             ))}
           </div>
@@ -101,7 +106,7 @@ function PreGame({
 
         <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-gray-700">
           <legend className="text-2xl font-bold text-center text-white">
-            Choose Gamemode
+            {t("choose_gamemode")}
           </legend>
           <div className="flex justify-center gap-4 flex-wrap">
             {possibleGamemodes.map((mode) => (
@@ -112,7 +117,7 @@ function PreGame({
                   selectedGamemode === mode ? "btn-regular" : "btn-disabled"
                 } btn-click-animation`}
               >
-                {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                {t(mode)}
               </button>
             ))}
           </div>
@@ -120,7 +125,7 @@ function PreGame({
 
         <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-gray-700">
           <legend className="text-2xl font-bold text-center text-white">
-            Append Tags
+            {t("append_tags")}
           </legend>
           <div className="flex flex-col gap-3 items-start max-h-60 overflow-y-auto">
             {possibleTags.map((tag) => {
@@ -144,11 +149,15 @@ function PreGame({
                   />
                   <div
                     className={`
-              w-5 h-5 flex items-center justify-center border-2 rounded 
-              ${checked ? "border-green-500 bg-green-100" : "border-gray-400"}
-              transition-colors
-              hover:border-green-400
-            `}
+                    w-5 h-5 flex items-center justify-center border-2 rounded 
+                    ${
+                      checked
+                        ? "border-green-500 bg-green-100"
+                        : "border-gray-400"
+                    }
+                    transition-colors
+                    hover:border-green-400
+                  `}
                     aria-hidden="true"
                   >
                     {checked && (
@@ -169,7 +178,7 @@ function PreGame({
                     )}
                   </div>
                   <span className="text-sm text-white select-none">
-                    {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                    {t(tag)}
                   </span>
                 </label>
               );
@@ -188,21 +197,17 @@ function PreGame({
             )
           }
           disabled={!selectedNumQuestions}
-          className={` ${"btn-regular"} ${"btn-big"} ${"btn-click-animation"} ${
+          className={`btn-regular btn-big btn-click-animation ${
             selectedNumQuestions && selectedCategory
               ? "btn-regular"
               : "btn-disabled"
           }`}
         >
-          Start Game
+          {t("start_game")}
         </button>
         <div id="note" className="py-3 px-4 bg-grey-2/10 backdrop-blur-md">
-          <h1 className="text-grey text-left text-xs">Note</h1>
-          <p className="text-white text-xs text-justify">
-            Playing in this mode will only affect casual score, thus to
-            participate in casual tournaments, competitions or events you should
-            go on. Anyway rating is in development, so stay tuned.
-          </p>
+          <h1 className="text-grey text-left text-xs">{t("note")}</h1>
+          <p className="text-white text-xs text-justify">{note}</p>
         </div>
       </div>
     </div>
