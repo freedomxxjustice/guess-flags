@@ -6,12 +6,19 @@ import uvicorn
 from aiogram.types import (
     Update,
 )
-
+from aiogram.utils.i18n import I18n, FSMI18nMiddleware
 
 from api import setup_routers as setup_api_routers
 from bot.handlers import setup_routers as setup_bot_routers
 
 from config_reader import config, dp, bot, app
+
+i18n = I18n(
+    path="locales",  # folder where translations live
+    default_locale="en",  # fallback if no match
+    domain="messages",  # base filename without .po/.mo
+)
+dp.message.middleware(FSMI18nMiddleware(i18n))
 
 app.add_middleware(
     CORSMiddleware,

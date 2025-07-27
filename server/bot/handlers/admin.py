@@ -3,7 +3,7 @@ from json import loads as json_loads, JSONDecodeError
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from db import Tournament, TournamentParticipant
+from db import Tournament
 from config_reader import bot
 from tortoise.exceptions import ValidationError
 

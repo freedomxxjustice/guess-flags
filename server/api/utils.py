@@ -15,8 +15,8 @@ def auth(request: Request) -> WebAppInitData:
             )
             return data
         raise HTTPException(401, {"error": "Unauthorized"})
-    except Exception:
-        raise HTTPException(401, {"error": "Unauthorized"})
+    except Exception as exc:
+        raise HTTPException(401, {"error": "Unauthorized"}) from exc
 
 
 async def check_user(user_id: int) -> User:
