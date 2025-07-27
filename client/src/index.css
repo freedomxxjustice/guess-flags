@@ -5,6 +5,11 @@
   src: url(./assets/GeistMono-VariableFont_wght.ttf);
 }
 
+@font-face {
+  font-family: "Inter";
+  src: url(./assets/Inter-VariableFont_opsz,wght.ttf);
+}
+
 @theme {
   --color-primary: #31A6ff; 
   --color-white: #FFFFFF;  
@@ -17,6 +22,7 @@
 }	
 
 body {
+  font-family: 'Inter';
   height: 100vh;
   overflow: hidden;
   background: var(--tg-bg-color);
@@ -27,6 +33,7 @@ body {
 html {
   overflow-x: hidden;
   touch-action: pan-y; 
+  
 }
 
 #mainBackground {

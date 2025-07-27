@@ -133,14 +133,6 @@ const Tournaments = ({
     );
   }
 
-  if (errorAll) {
-    return (
-      <div className="h-screen flex flex-col items-center justify-center text-yellow-300">
-        <p>{t("error_loading")}</p>
-      </div>
-    );
-  }
-
   if (!tournaments) {
     return (
       <div className="h-screen flex items-center justify-center text-white">
@@ -309,7 +301,7 @@ const Tournaments = ({
                 onClick={() =>
                   handleStartTournamentGame(tournament.tournament_id)
                 }
-                className="bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-400 transition"
+                className="bg-yellow-400 text-white py-2 px-4 rounded-xl hover:bg-yellow-400 transition"
               >
                 {t("play")}
               </button>
@@ -317,7 +309,9 @@ const Tournaments = ({
 
           <button
             onClick={() => openParticipantsModal(tournament.participants)}
-            className="py-2 px-4 rounded-xl transition bg-blue-600 text-white hover:bg-blue-500"
+            className={`py-2 px-4 rounded-xl transition ${
+              isDaily ? "bg-green-600 text-white" : "bg-primary text-white"
+            }`}
           >
             {t("show_participants")}
           </button>

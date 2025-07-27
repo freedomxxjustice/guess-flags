@@ -3,6 +3,7 @@ import ToggleSlider from "./ToggleSlider";
 import type { IUser } from "../interfaces/IUser";
 import Header from "./Header";
 import { FaCrown, FaMedal } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 type LeaderboardProps = {
   leaders: {
@@ -39,19 +40,21 @@ export default function Leaderboard({
   const [isUserVisible, setIsUserVisible] = useState(true);
   const [period, setPeriod] = useState<"Today" | "Season">("Season");
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsUserVisible(entry.isIntersecting),
       { root: listRef.current, threshold: 0.1 }
     );
 
-    const userRow = document.getElementById(`leader-${user.id}`);
+    const userRow = document.getElementById(`leader-${period}-${user.id}`);
     if (userRow && listRef.current) {
       observer.observe(userRow);
     }
 
     return () => observer.disconnect();
-  }, [leaders, user.id]);
+  }, [period, user.id, leaders, today_leaders]);
 
   // Sort entries descending by casual_score
   const entries = Object.entries(leaders).sort(
@@ -70,7 +73,7 @@ export default function Leaderboard({
         isFullscreen={isFullscreen}
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
-        title="Leaderboard"
+        title={t("leaderboard")}
       >
         <ToggleSlider
           options={["Today", "Season"]}
@@ -92,7 +95,7 @@ export default function Leaderboard({
                     return (
                       <div
                         key={id}
-                        id={`leader-${id}`}
+                        id={`leader-Season-${id}`}
                         className={`w-full flex bg-grey-2 justify-between gap-14 items-center rounded-xl px-5 py-2 border transition-colors duration-300 cursor-pointer ${
                           isCurrentUser
                             ? "bg-primary border-primary text-white shadow-lg"
@@ -123,7 +126,7 @@ export default function Leaderboard({
                             isCurrentUser ? "text-white" : "text-primary"
                           }`}
                         >
-                          {data.casual_score} pts
+                          {data.casual_score} {t("pts")}
                         </span>
                       </div>
                     );
@@ -137,19 +140,20 @@ export default function Leaderboard({
 
                 {/* Sticky user row (shows if user row not visible) */}
                 {(!isUserInAllTime || !isUserVisible) && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-grey-2 shadow-inner rounded-xl border border-grey px-6 py-3 flex flex-col items-center mx-auto w-99">
+                  <div className="absolute bottom-0 left-0 right-0 bg-grey-2 shadow-inner rounded-xl border border-grey px-6 py-3 flex flex-col items-center mx-auto max-w-4xl">
+                    {" "}
                     <div className="w-full flex justify-between items-center">
                       <p className="text-base font-semibold text-warning truncate max-w-[75%]">
                         #{userRank}
                       </p>
                       <span className="text-base font-semibold text-warning truncate max-w-[75%]">
-                        You
+                        {t("you")}
                         {user.name.length > 20
                           ? ` (${user.name.slice(0, 20)}…)`
                           : ` (${user.name})`}
                       </span>
                       <span className="text-warning font-bold text-base">
-                        {user.casual_score} pts
+                        {user.casual_score} {t("pts")}
                       </span>
                     </div>
                   </div>
@@ -169,7 +173,7 @@ export default function Leaderboard({
                     return (
                       <div
                         key={id}
-                        id={`leader-${id}`}
+                        id={`leader-Today-${id}`}
                         className={`w-full flex bg-grey-2 justify-between gap-14 items-center rounded-xl px-5 py-2 border transition-colors duration-300 cursor-pointer ${
                           isCurrentUser
                             ? "bg-primary border-primary text-white shadow-lg"
@@ -200,7 +204,7 @@ export default function Leaderboard({
                             isCurrentUser ? "text-white" : "text-primary"
                           }`}
                         >
-                          {data.today_casual_score} pts
+                          {data.today_casual_score} {t("pts")}
                         </span>
                       </div>
                     );
@@ -221,13 +225,13 @@ export default function Leaderboard({
                         #{userTodayRank}
                       </p>
                       <span className="text-base font-semibold text-warning truncate max-w-[75%]">
-                        You
+                        {t("you")}
                         {user.name.length > 20
                           ? ` (${user.name.slice(0, 20)}…)`
                           : ` (${user.name})`}
                       </span>
                       <span className="text-warning font-bold text-base">
-                        {user.today_casual_score} pts
+                        {user.today_casual_score} {t("pts")}
                       </span>
                     </div>
                   </div>
@@ -239,14 +243,12 @@ export default function Leaderboard({
 
         <div className="w-full px-4">
           <div className="bg-grey-2 rounded-xl p-4 max-w-2xl mx-auto shadow text-white flex flex-col items-center text-center gap-2">
-            <h2 className="text-3xl font-bold text-white">Pre-Season</h2>
-            <p className="text-grey text-sm">
-              Climb the leaderboard and prove your knowledge!
-            </p>
+            <h2 className="text-3xl font-bold text-white">{t("pre_season")}</h2>
+            <p className="text-grey text-sm">{t("leaderboards_note")}</p>
 
             {/* Countdown Placeholder */}
             <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
-              Not Started Yet!
+              {t("not_started_yet")}
             </div>
             {/* Prize Container */}
             <div className="flex justify-center items-end gap-4 mt-2">
@@ -258,7 +260,7 @@ export default function Leaderboard({
                   alt="1st Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
-                <span className="text-xs text-white mt-1">1st</span>
+                <span className="text-xs text-white mt-1">{t("1st")}</span>
               </div>
 
               {/* 2nd Place */}
@@ -269,7 +271,7 @@ export default function Leaderboard({
                   alt="2nd Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
-                <span className="text-xs text-white mt-1">2nd</span>
+                <span className="text-xs text-white mt-1">{t("2nd")}</span>
               </div>
 
               {/* 3rd Place */}
@@ -280,7 +282,7 @@ export default function Leaderboard({
                   alt="3rd Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
-                <span className="text-xs text-white mt-1">3rd</span>
+                <span className="text-xs text-white mt-1">{t("3rd")}</span>
               </div>
             </div>
           </div>

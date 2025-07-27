@@ -1,16 +1,12 @@
 from datetime import datetime, timezone
 from random import shuffle, sample
 from typing import List
-from db import (
-    Flag,
-    Match,
-    MatchAnswer,
-    TournamentParticipant
-)
+from db import Flag, Match, MatchAnswer, TournamentParticipant
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
-from .utils import auth, check_user, calculate_multiplier
+from .utils import auth, check_user, calculate_multiplier, answer_map
+from fuzzywuzzy import process
 
 router = APIRouter(prefix="/api/games", dependencies=[Depends(auth)])
 
@@ -72,14 +68,12 @@ async def create_casual_questions(
         all_flags = await Flag.filter(category=category).prefetch_related("tags")
     else:
         all_flags = await Flag.all().prefetch_related("tags")
-    print(tags)
     # Step 2: Filter flags by tags if any
     if tags:
         filtered_flags = []
         tags_set = set(tags)
         for flag in all_flags:
             flag_tags = {tag.name for tag in getattr(flag, "tags", [])}
-            print(f"Flag {flag.name} tags: {flag_tags}, asked tags: {tags_set}")
             if tags_set.intersection(flag_tags):
                 filtered_flags.append(flag)
         all_flags = filtered_flags
@@ -181,7 +175,16 @@ async def answer(
     if not submitted_answer.strip():
         raise HTTPException(status_code=400, detail="Empty answer")
 
-    submitted_answer = submitted_answer.strip().lower()
+    submitted_answer_raw = submitted_answer.strip().lower()
+    normalized_answer = answer_map.get(submitted_answer_raw)
+
+    # If not found, apply fuzzy search
+    if normalized_answer is None:
+        best_match, score = process.extractOne(submitted_answer_raw, answer_map.keys())
+        if score >= 80:  # adjustable threshold
+            normalized_answer = answer_map[best_match]
+        else:
+            normalized_answer = submitted_answer_raw
 
     # Load match
     match = await Match.filter(id=match_id, user_id=user_id).first()
@@ -243,7 +246,7 @@ async def answer(
             )
 
     # Process normal answer
-    is_correct = submitted_answer == correct_answer
+    is_correct = normalized_answer.strip().lower() == correct_answer.strip().lower()
 
     await MatchAnswer.create(
         match=match,

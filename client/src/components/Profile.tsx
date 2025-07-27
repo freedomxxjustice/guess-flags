@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import type { IUser } from "../interfaces/IUser";
 import Header from "./Header";
 import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
 
 type ProfileProps = {
   user: IUser;
@@ -114,6 +115,37 @@ export default function Profile({
 
       <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 gap-4 mt-6 items-center justify-center">
         <p className="text-xs text-center text-grey">{t("the_best_stats")}</p>
+      </div>
+      {/* SETTINGS */}
+      <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 flex-col gap-4 mt-6">
+        <h1 className="text-lg font-semibold">{t("settings")}</h1>
+
+        {/* Language Switcher */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm">{t("language")}</span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => i18n.changeLanguage("en")}
+              className={`px-3 py-1 rounded text-sm ${
+                i18n.language === "en"
+                  ? "bg-white text-black font-semibold"
+                  : "bg-gray-700 text-white"
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => i18n.changeLanguage("ru")}
+              className={`px-3 py-1 rounded text-sm ${
+                i18n.language === "ru"
+                  ? "bg-white text-black font-semibold"
+                  : "bg-gray-700 text-white"
+              }`}
+            >
+              RU
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

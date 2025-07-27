@@ -57,9 +57,8 @@ const MainWrapper = () => {
   const [tournamentGameStarted, setTournamentGameStarted] = useState(false);
   const [tournamentGame, setTournamentGame] = useState<any>(null);
   const [tournamentSummary, setTournamentSummary] = useState<any>(null);
-  // const [tournamentCorrectAnswer, setTournamentCorrectAnswer] = useState<
-  //   string | null
-  // >(null);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
   // TIMER
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -174,7 +173,6 @@ const MainWrapper = () => {
     retry: false,
   });
 
-  const submittedRef = useRef(false);
   useEffect(() => {
     if (casualGameStarted && casualGame) {
       backButton.show();
@@ -197,10 +195,8 @@ const MainWrapper = () => {
     if (
       trainingGameStarted &&
       game &&
-      currentQuestionIndex >= game.questions.length &&
-      !submittedRef.current
+      currentQuestionIndex >= game.questions.length
     ) {
-      submittedRef.current = true;
       request("games/training/submit-score", "POST", {
         score,
         numQuestions,
@@ -219,7 +215,6 @@ const MainWrapper = () => {
     setSelectedGamemode(gamemode);
     setSelectedTags(tags);
     setShowTrainingFilter(false);
-    submittedRef.current = false;
     setTrainingGameStarted(true);
     setCurrentQuestionIndex(0);
     setScore(0);
@@ -331,9 +326,10 @@ const MainWrapper = () => {
   };
 
   const handleCasualAnswer = async (answer: string) => {
-    if (!casualGame || isAwaiting) return; // prevent double-click
-    setIsAwaiting(true);
+    if (!casualGame || isAwaiting) return;
     setSelectedOption(answer);
+    setIsAwaiting(true);
+    setHasSubmitted(true); // NEW: Track "enter" submission
     if (timerRef.current) clearInterval(timerRef.current);
 
     try {
@@ -346,28 +342,29 @@ const MainWrapper = () => {
       setIsCorrect(res.data.correct);
       setCorrectAnswer(res.data.correct_answer);
       setTimeout(async () => {
-        setSelectedOption(null);
         setIsCorrect(null);
-        setIsAwaiting(false); // allow next answer
+        setHasSubmitted(false); // Allow next submission
+        setIsAwaiting(false);
+        setTypedAnswer("");
+        setSelectedOption(null);
 
         if (res.data.finished) {
           const summary = await fetchCasualSummary(casualGame.match_id);
           setCasualSummary(summary);
           setCasualGame(null);
           setCasualGameStarted(false);
-          setTypedAnswer("");
           refetchUser();
         } else {
           setCasualGame({
             match_id: casualGame.match_id,
             current_question: res.data.current_question,
           });
-          setTypedAnswer("");
         }
       }, 1250);
     } catch (err) {
       console.error("Answer error", err);
       setIsAwaiting(false);
+      setHasSubmitted(false);
     }
   };
 
@@ -439,8 +436,9 @@ const MainWrapper = () => {
 
   const handleTournamentAnswer = async (answer: string) => {
     if (!tournamentGame || isAwaiting) return;
-    setIsAwaiting(true);
     setSelectedOption(answer);
+    setIsAwaiting(true);
+    setHasSubmitted(true);
     if (timerRef.current) clearInterval(timerRef.current);
 
     try {
@@ -449,41 +447,48 @@ const MainWrapper = () => {
         "POST",
         { answer }
       );
+
       setIsCorrect(res.data.correct);
       setCorrectAnswer(res.data.correct_answer);
+
       setTimeout(async () => {
-        setSelectedOption(null);
         setIsCorrect(null);
+        setHasSubmitted(false);
         setIsAwaiting(false);
+        setTypedAnswer("");
+        setSelectedOption(null);
         if (res.data.finished) {
           const summary = await fetchTournamentSummary(tournamentGame.match_id);
           setTournamentSummary(summary);
           setTournamentGame(null);
           setTournamentGameStarted(false);
-          setTypedAnswer("");
+          refetchUser();
         } else {
           setTournamentGame({
             match_id: tournamentGame.match_id,
             current_question: res.data.current_question,
           });
-          setTypedAnswer("");
         }
       }, 1250);
     } catch (err) {
       console.error("Answer error", err);
       setIsAwaiting(false);
+      setHasSubmitted(false);
     }
   };
 
   const handleSubmitTournamentMatch = async () => {
     try {
       if (tournamentGame) {
-        await request(`games/match/${tournamentGame.match_id}/submit`, "POST");
+        await request(`games/match/${tournamentGame?.match_id}/submit`, "POST");
         const summary = await fetchTournamentSummary(tournamentGame.match_id);
         setTournamentSummary(summary);
         setTournamentGame(null);
         setTournamentGameStarted(false);
         setTypedAnswer("");
+        refetchUser();
+      } else {
+        return null;
       }
     } catch (err) {
       console.error(err);
@@ -689,7 +694,7 @@ const MainWrapper = () => {
       <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center">
         <div className="flex flex-col items-center justify-center text-white px-4">
           <h2 className="text-2xl font-bold mb-4">
-            Question {currentQuestionIndex + 1}
+            {t("question")} {currentQuestionIndex + 1}
           </h2>
           <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
             <img
@@ -723,7 +728,7 @@ const MainWrapper = () => {
                     onClick={() => handleTrainingAnswer(opt)}
                     className={`btn-click-animation rounded-md btn-big ${btnClass}`}
                   >
-                    {opt}
+                    {t(opt)}
                   </button>
                 );
               })}
@@ -746,7 +751,7 @@ const MainWrapper = () => {
           : "border-gray-300"
       }
     `}
-                placeholder="Type your answer..."
+                placeholder={t("type_your_answer")}
               />
 
               <button
@@ -791,6 +796,8 @@ const MainWrapper = () => {
         setShowExitModal={setShowExitModal}
         onAnswer={handleCasualAnswer}
         onSubmit={handleSubmitCasualMatch}
+        hasSubmitted={hasSubmitted}
+        setHasSubmitted={setHasSubmitted}
       />
     );
   };
@@ -798,7 +805,7 @@ const MainWrapper = () => {
   const renderCasualGameOverScreen = () => {
     return (
       <GameOverScreen
-        title="Casual Game Over!"
+        title="Game Over!"
         score={casualSummary.score}
         numQuestions={casualSummary.num_questions}
         answers={casualSummary.answers}
@@ -990,11 +997,13 @@ const MainWrapper = () => {
         typedAnswer={typedAnswer}
         setTypedAnswer={setTypedAnswer}
         isCorrect={isCorrect}
-        correctAnswer={tournamentGame.current_question.correct_answer}
+        correctAnswer={correctAnswer}
         showExitModal={showExitModal}
         setShowExitModal={setShowExitModal}
         onAnswer={handleTournamentAnswer}
         onSubmit={handleSubmitTournamentMatch}
+        hasSubmitted={hasSubmitted}
+        setHasSubmitted={setHasSubmitted}
       />
     );
   }
@@ -1002,7 +1011,7 @@ const MainWrapper = () => {
   if (tournamentSummary) {
     return (
       <GameOverScreen
-        title="Tournament Finished!"
+        title="Game Over!"
         score={tournamentSummary.score}
         numQuestions={tournamentSummary.num_questions}
         answers={tournamentSummary.answers}

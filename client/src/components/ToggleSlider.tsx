@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface ToggleSliderProps {
   options: [string, string];
   value: string;
@@ -11,6 +13,8 @@ export default function ToggleSlider({
 }: ToggleSliderProps) {
   const [leftLabel, rightLabel] = options;
   const isRight = value === rightLabel;
+
+  const { t } = useTranslation();
 
   return (
     <div className="flex items-center justify-center">
@@ -31,14 +35,14 @@ export default function ToggleSlider({
             !isRight ? "text-background" : "text-white"
           }`}
         >
-          {leftLabel}
+          {t(leftLabel)}
         </span>
         <span
           className={`flex-1 z-10 flex items-center justify-center text-center font-medium transition-colors duration-300 ${
             isRight ? "text-background" : "text-white"
           }`}
         >
-          {rightLabel}
+          {t(rightLabel)}
         </span>
       </button>
     </div>
