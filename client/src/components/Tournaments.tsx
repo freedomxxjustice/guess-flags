@@ -4,6 +4,7 @@ import request from "../utils/api";
 import type {
   ITournament,
   ITournamentParticipant,
+  ITournamentPrize,
 } from "../interfaces/ITournament";
 import { backButton, invoice } from "@telegram-apps/sdk";
 import Header from "./Header";
@@ -11,6 +12,7 @@ import TournamentParticipantsModal from "./TournamentParticipantsModal";
 import BottomModal from "./BottomModal";
 import { FaCrown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import GiftPreview from "./GiftPreview"; // Make sure the path is correct
 
 interface TournamentsProps {
   isFullscreen: boolean;
@@ -69,6 +71,7 @@ const Tournaments = ({
       const res = await request(`tournaments/${tournamentId}/start`, "POST");
       setTournamentGame({
         match_id: res.data.match_id,
+        num_questions: res.data.num_questions,
         current_question: res.data.current_question,
       });
       setTournamentGameStarted(true);
@@ -101,6 +104,7 @@ const Tournaments = ({
     const days = Math.floor(diff / 1000 / 60 / 60 / 24);
     return t("ends_in", { days, hours, minutes });
   };
+
   if (tournamentGameLoading) {
     return (
       <div className="h-screen flex items-center justify-center text-white">
@@ -133,16 +137,16 @@ const Tournaments = ({
     );
   }
 
-  if (!tournaments) {
+  if (!tournaments || tournaments.length === 0) {
     return (
       <div className="h-screen flex items-center justify-center text-white">
         <p>{t("no_tournaments")}</p>
       </div>
     );
   }
+
   const TournamentCard = ({ tournament }: { tournament: ITournament }) => {
     const isDaily = tournament.type === "casual_daily";
-
     return (
       <div
         className={`${
@@ -217,59 +221,87 @@ const Tournaments = ({
             {tournament.tags.length > 0 && (
               <>
                 <div className="font-semibold">{t("tags")}</div>
-                <div>{tournament.tags.join(", ")}</div>
+                <div>
+                  {tournament.tags.map((tag, index) => (
+                    <span key={index}>
+                      {t(tag)}
+                      {index < tournament.tags.length - 1 && ", "}
+                    </span>
+                  ))}
+                </div>
               </>
             )}
           </div>
 
-          <div className="mt-3 text-xs">
+          <div className="mt-3 text-md">
             <p className="font-semibold mb-1">{t("prizes")}:</p>
             {tournament.prizes.length > 0 ? (
               <ul className="space-y-1">
-                {tournament.prizes.map((prize, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    {index < 3 && (
-                      <FaCrown
-                        className={`w-4 h-4 ${
-                          index === 0
-                            ? "text-yellow-400"
-                            : index === 1
-                            ? "text-gray-300"
-                            : "text-amber-600"
-                        }`}
-                      />
-                    )}
-                    <span>
-                      <strong>{t("place", { place: prize.place })}</strong>:
-                      {prize.type.toLowerCase() === "stars" ? (
-                        <span className="ml-1">{prize.amount}</span>
-                      ) : prize.type.toLowerCase() === "nft" && prize.link ? (
-                        <span className="ml-1">
-                          {t("nft")} -{" "}
-                          <a
-                            href={prize.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="underline text-blue-300 hover:text-blue-400"
-                          >
-                            {t("view_nft")}
-                          </a>
-                        </span>
-                      ) : prize.type.toLowerCase() === "ton" ? (
-                        <span className="inline-flex items-center gap-1 ml-1">
-                          {prize.amount}
-                          <img
-                            src="/ton.svg"
-                            alt="TON"
-                            className="w-4 h-4 inline-block"
-                          />
-                        </span>
-                      ) : (
-                        <span className="ml-1">?</span>
+                {tournament.prizes.map((prize, index) => {
+                  const prizeAmount = prize.amount ?? prize.metadata?.amount;
+                  return (
+                    <li key={index} className="flex items-center gap-2">
+                      {index < 3 && (
+                        <FaCrown
+                          className={`w-4 h-4 ${
+                            index === 0
+                              ? "text-yellow-400"
+                              : index === 1
+                              ? "text-gray-300"
+                              : "text-amber-600"
+                          }`}
+                        />
                       )}
-                    </span>
-                  </li>
-                ))}
+                      <span>
+                        <strong>{t("place", { place: prize.place })}</strong>:
+                        {prize.type.toLowerCase() === "stars" ? (
+                          <span className="ml-1 inline-flex items-center gap-1">
+                            <span>{prizeAmount}</span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="w-4 h-4 fill-yellow-400"
+                              viewBox="0 0 20 20"
+                              aria-hidden="true"
+                            >
+                              <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.561-.955L10 0l2.951 5.955 6.561.955-4.756 4.635 1.122 6.545z" />
+                            </svg>
+                          </span>
+                        ) : prize.type.toLowerCase() === "nft" && prize.link ? (
+                          <span className="ml-1">
+                            {t("nft")} -{" "}
+                            <a
+                              href={prize.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline text-blue-300 hover:text-blue-400"
+                            >
+                              {t("view_nft")}
+                            </a>
+                          </span>
+                        ) : prize.type.toLowerCase() === "ton" ? (
+                          <span className="inline-flex items-center gap-1 ml-1">
+                            {prizeAmount}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 56 56"
+                              className="w-5 h-5"
+                            >
+                              <circle cx="28" cy="28" r="28" fill="#0098EA" />
+                              <path
+                                d="M37.6,15.6H18.4c-3.5,0-5.7,3.8-4,6.9l11.8,20.5c0.8,1.3,2.7,1.3,3.5,0l11.8-20.5
+        C43.3,19.4,41.1,15.6,37.6,15.6L37.6,15.6z M26.3,36.8l-2.6-5l-6.2-11.1c-0.4-0.7,0.1-1.6,1-1.6h7.8L26.3,36.8L26.3,36.8z
+        M38.5,20.7l-6.2,11.1l-2.6,5V19.1h7.8C38.4,19.1,38.9,20,38.5,20.7z"
+                                fill="#FFFFFF"
+                              />
+                            </svg>
+                          </span>
+                        ) : (
+                          <span className="ml-1">{prize.title || "?"}</span>
+                        )}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <p>{t("no_prizes")}</p>

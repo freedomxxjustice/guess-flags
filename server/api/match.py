@@ -47,6 +47,7 @@ async def casual_start(
     return JSONResponse(
         {
             "match_id": str(match.id),
+            "num_questions": num_questions,
             "current_question": {
                 "index": 0,
                 "flag_id": question_list[0]["flag_id"],

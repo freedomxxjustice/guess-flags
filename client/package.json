@@ -21,6 +21,8 @@
     "fuzzball": "^2.2.2",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
+    "lottie-react": "^2.4.1",
+    "lottie-web": "^5.13.0",
     "react": "^19.1.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.1.0",

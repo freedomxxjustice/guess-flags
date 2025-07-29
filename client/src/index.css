@@ -69,40 +69,37 @@ html {
 
 /* BUTTONS */
 
-/* Click animation */
-.btn-click-animation {
+button {
   transition: transform 150ms ease-in-out;
 }
-.btn-click-animation:active {
-  transform: scale(0.95);
-}
 
-/* Disabled button */
-.btn-disabled {
-  background-color: rgba(78, 78, 78, 0.1); 
-  color: #9ca3af; 
-  font-size: 1.25rem; 
-  border-radius: 0.5rem; 
-  backdrop-filter: blur(4px); 
-}
-
-/* Regular button */
-.btn-regular {
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  outline: none;
   position: relative;
-  overflow: hidden; 
-  color: white;
+  overflow: hidden;
+}
+
+.btn-regular {
   background-color: var(--color-primary);
-  font-size: 1.25rem;
-  border-radius: var(--radius-2xl);
+  color: white;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
 }
 
-/* Shine pseudo-element */
 .btn-regular::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -75%; /* start off-screen */
+  left: -75%;
   width: 50%;
   height: 100%;
   background: linear-gradient(
@@ -115,6 +112,23 @@ html {
   animation: shine 2.5s infinite;
 }
 
+button:active {
+  transform: scale(0.95);
+}
+
+.btn-disabled,
+.btn:disabled {
+  background-color: rgba(78, 78, 78, 0.1); 
+  color: #9ca3af;
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: grayscale(0.2);
+}
+
+.btn-not-selected {
+  background-color: var(--color-grey-2);
+}
+
 /* Animation keyframes */
 @keyframes shine {
   0% {
@@ -123,14 +137,6 @@ html {
   100% {
     left: 125%;
   }
-}
-/* Big button sizing */
-.btn-big {
-  max-width: 100%;
-  padding-top: 1rem; 
-  padding-bottom: 1rem;
-  width: 80%;
-  text-align: center;
 }
 
 @keyframes slideUp {
@@ -141,6 +147,7 @@ html {
     transform: translateY(0);
   }
 }
+
 .animate-slideUp {
   animation: slideUp 0.3s ease-out forwards;
 }
@@ -155,6 +162,7 @@ html {
     opacity: 0;
   }
 }
+
 .animate-slideDown {
   animation: slideDown 0.3s ease-out forwards;
 }
@@ -175,6 +183,7 @@ html {
     opacity: 0.5;
   }
 }
+
 @keyframes fadeOut {
   from {
     opacity: 0.5;

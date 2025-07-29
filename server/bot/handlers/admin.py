@@ -3,8 +3,8 @@ from json import loads as json_loads, JSONDecodeError
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
-from db import Tournament
 from config_reader import bot
+from db import Tournament, Prize, TournamentPrize
 from tortoise.exceptions import ValidationError
 
 router = Router(name="admin")
@@ -82,6 +82,37 @@ async def add_tournament(message: Message):
         await message.answer(f"❌ Error creating tournament: {e}")
         return
 
+    if prizes is not None:
+        for prize_entry in prizes:
+            try:
+                prize_obj = await Prize.get_or_none(
+                    type=prize_entry["type"],
+                    link=prize_entry.get("link"),
+                    title=prize_entry.get("title"),
+                )
+
+                # If prize doesn't exist, create it (optional behavior)
+                if not prize_obj:
+                    prize_obj = await Prize.create(
+                        type=prize_entry["type"],
+                        title=prize_entry.get(
+                            "title", f"{prize_entry['type'].title()} Prize"
+                        ),
+                        description=prize_entry.get("description"),
+                        media_url=prize_entry.get("media_url"),
+                        link=prize_entry.get("link"),
+                        metadata=prize_entry.get("metadata"),
+                    )
+
+                await TournamentPrize.create(
+                    tournament=tournament,
+                    prize=prize_obj,
+                    place=prize_entry.get("place", 1),
+                )
+            except KeyError as e:
+                await message.answer(f"❌ Missing prize field: {e}")
+                return
+
     await message.answer(
         f"✅ Tournament created!\n"
         f"ID: {tournament.id}\n"
@@ -95,6 +126,78 @@ async def add_tournament(message: Message):
         f"Tags: {tournament.tags}\n"
         f"Base score: {tournament.base_score}\n"
         f"Finish time: {tournament.will_finish_at or 'N/A'}"
+    )
+
+
+@router.message(Command("add_tournament_json"))
+async def add_tournament_json(message: Message):
+    if message.from_user.id not in ADMIN_IDS:
+        await message.answer("🚫 You are not authorized to use this command.")
+        return
+
+    try:
+        # Remove the command part and parse JSON
+        data = json_loads(
+            message.text.strip().removeprefix("/add_tournament_json").strip()
+        )
+    except JSONDecodeError as e:
+        await message.answer(f"⚠️ Invalid JSON: {e}")
+        return
+
+    try:
+        tournament = await Tournament.create(
+            name=data["name"],
+            type=data.get("type", "casual_daily"),
+            participation_cost=int(data.get("cost", 0)),
+            min_participants=int(data.get("min", 0)),
+            num_questions=int(data.get("num_questions", 10)),
+            gamemode=data.get("gamemode", "choose"),
+            category=data.get("category", "country"),
+            tags=data.get("tags", []),
+            difficulty_multiplier=float(data.get("difficulty", 1.0)),
+            base_score=int(data.get("base", 0)),
+            tries=data.get("tries", 1),
+            will_finish_at=(
+                datetime.fromisoformat(data["will_finish_at"])
+                if "will_finish_at" in data
+                else None
+            ),
+        )
+    except (ValidationError, ValueError, KeyError) as e:
+        await message.answer(f"❌ Error creating tournament: {e}")
+        return
+
+    for prize in data.get("prizes", []):
+        try:
+            prize_obj = await Prize.get_or_none(
+                type=prize["type"],
+                link=prize.get("link"),
+                title=prize.get("title"),
+            )
+            if not prize_obj:
+                prize_obj = await Prize.create(
+                    type=prize["type"],
+                    title=prize.get("title", f"{prize['type'].title()} Prize"),
+                    description=prize.get("description"),
+                    media_url=prize.get("media_url"),
+                    link=prize.get("link"),
+                    metadata=prize.get("metadata"),
+                )
+            await TournamentPrize.create(
+                tournament=tournament,
+                prize=prize_obj,
+                place=prize.get("place", 1),
+            )
+        except KeyError as e:
+            await message.answer(f"⚠️ Prize missing field: {e}")
+            return
+
+    await message.answer(
+        f"✅ Tournament '{tournament.name}' created successfully!\n"
+        f"ID: {tournament.id}\n"
+        f"Type: {tournament.type}\n"
+        f"Prizes: {len(data.get('prizes', []))}\n"
+        f"Ends: {tournament.will_finish_at or 'N/A'}"
     )
 
 

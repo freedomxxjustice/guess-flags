@@ -4,6 +4,7 @@ import type { IUser } from "../interfaces/IUser";
 import Header from "./Header";
 import { FaCrown, FaMedal } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import GiftPreview from "./GiftPreview";
 
 type LeaderboardProps = {
   leaders: {
@@ -257,7 +258,7 @@ export default function Leaderboard({
                 <FaCrown className="text-yellow-400 text-xl mb-1" />
                 <img
                   src="/prize1-first.png"
-                  alt="1st Prize"
+                  alt="2nd Prize"
                   className="w-12 h-12 object-contain rounded"
                 />
                 <span className="text-xs text-white mt-1">{t("1st")}</span>

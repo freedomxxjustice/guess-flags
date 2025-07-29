@@ -40,8 +40,17 @@ const GameScreen = ({
   const question = game.current_question;
   if (!question) return null;
   return (
-    <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center">
-      <div className="flex flex-col items-center justify-center text-white px-4">
+    <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center flex justify-center items-center">
+      <div className="flex flex-col items-center justify-center text-white px-4 bg-background w-98 py-4 border border-grey-2 rounded">
+        <div className="w-full h-2 bg-grey-2 rounded-full overflow-hidden mb-4">
+          <div
+            className="h-full bg-primary transition-all duration-300"
+            style={{
+              width: `${((question.index + 1) / game.num_questions) * 100}%`,
+            }}
+          />
+        </div>
+
         <h2 className="text-2xl font-bold mb-4">
           {t("question")} {question.index + 1}
         </h2>
@@ -61,10 +70,13 @@ const GameScreen = ({
               let btnClass = `bg-primary/10`;
 
               if (isCorrect !== null && selectedOption) {
-                const isUserPick = opt === selectedOption;
-                const isRightAnswer =
-                  opt.toLowerCase() === correctAnswer?.toLowerCase();
+                const normalizedOpt = opt.trim().toLowerCase();
+                const normalizedUserPick = selectedOption?.trim().toLowerCase();
+                const normalizedCorrect = correctAnswer?.trim().toLowerCase();
 
+                const isUserPick = normalizedOpt === normalizedUserPick;
+                const isRightAnswer = normalizedOpt === normalizedCorrect;
+                
                 if (isUserPick && isCorrect) {
                   btnClass = "bg-green-600";
                 } else if (isUserPick && !isCorrect) {
@@ -79,7 +91,7 @@ const GameScreen = ({
                   key={idx}
                   disabled={!!selectedOption}
                   onClick={() => onAnswer(opt)}
-                  className={`btn-click-animation py-4 px-2 rounded-md w-90 ${btnClass}`}
+                  className={`py-4 px-2 rounded-md w-90 ${btnClass}`}
                 >
                   {t(opt)}
                 </button>
@@ -116,7 +128,7 @@ const GameScreen = ({
               : "bg-red-600 hover:bg-red-700"
             : "bg-primary hover:bg-blue-700"
         }
-        btn-click-animation
+        btn
       `}
             >
               {hasSubmitted && isCorrect !== null
@@ -125,8 +137,13 @@ const GameScreen = ({
                   : `❌ ${t("right_answer")}: ${
                       correctAnswer
                         ? t(
-                            correctAnswer.charAt(0).toUpperCase() +
-                              correctAnswer.slice(1)
+                            correctAnswer
+                              .split(" ")
+                              .map(
+                                (word) =>
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                              )
+                              .join(" ")
                           )
                         : ""
                     }`

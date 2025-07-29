@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaCrown } from "react-icons/fa";
 
 import type { ITournamentParticipant } from "../interfaces/ITournament";
 
@@ -32,6 +33,11 @@ export default function TournamentParticipantsModal({
     }
   }, [closing, onClose]);
 
+  // Sort participants by score descending
+  const sortedParticipants = [...participants].sort(
+    (a, b) => b.score - a.score
+  );
+
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center">
       {/* Backdrop */}
@@ -47,58 +53,71 @@ export default function TournamentParticipantsModal({
         }`}
         style={{
           minHeight: "50vh",
-          maxHeight: "80vh", // keep modal scrollable but max height limited
+          maxHeight: "80vh",
         }}
       >
         <div className="flex flex-col h-full justify-between">
           <div>
             <h2 className="text-xl font-bold mb-4">{title}</h2>
-            {/* Participants list */}
-            <ul className="divide-y divide-gray-600 max-h-[60vh] overflow-auto">
-              {participants.length === 0 && (
-                <li className="text-center text-gray-400 py-4">
-                  No participants yet
-                </li>
-              )}
-              {participants.map(
-                ({ user_id, username, score, place, prize }) => (
+
+            <div className="max-h-[60vh] overflow-auto hide-scrollbar">
+              <ul className="divide-y divide-gray-600">
+                {sortedParticipants.length === 0 && (
+                  <li className="text-center text-gray-400 py-4">
+                    No participants yet
+                  </li>
+                )}
+                {sortedParticipants.map((p, index) => (
                   <li
-                    key={user_id}
-                    className="flex justify-between items-center py-2"
+                    key={p.user_id}
+                    className="flex justify-between items-center py-3"
                   >
-                    <div>
-                      <span className="font-semibold">{username}</span>
-                      {place != null && (
-                        <span className="ml-2 text-sm text-gray-400">
-                          #{place}
+                    <div className="flex items-center gap-2">
+                      {index < 3 && (
+                        <FaCrown
+                          className={`${
+                            index === 0
+                              ? "text-yellow-400"
+                              : index === 1
+                              ? "text-gray-300"
+                              : "text-amber-700"
+                          }`}
+                          title={`Place #${index + 1}`}
+                        />
+                      )}
+                      <span className="font-semibold">{p.username}</span>
+                      {typeof p.place === "number" && (
+                        <span className="ml-1 text-sm text-gray-400">
+                          #{p.place}
                         </span>
                       )}
                     </div>
-                    <div className="text-sm text-gray-300 flex gap-4 items-center">
-                      <span>Score: {score}</span>
-                      {prize && (
+                    <div className="text-sm text-gray-300 flex gap-3 items-center">
+                      <span>Score: {p.score}</span>
+                      {p.prize && (
                         <span className="bg-primary/20 text-primary rounded px-2 py-0.5 text-xs">
-                          {prize.type}
+                          {p.prize.type}
                         </span>
                       )}
                     </div>
                   </li>
-                )
-              )}
-            </ul>
+                ))}
+              </ul>
+            </div>
           </div>
+
           <div className="mt-6 flex flex-col gap-3">
             {actionLabel && onAction && (
               <button
                 onClick={onAction}
-                className="w-full py-3 px-4 rounded-xl font-semibold btn-click-animation bg-primary text-white"
+                className="w-full py-3 px-4 rounded-xl font-semibold btn bg-primary text-white"
               >
                 {actionLabel}
               </button>
             )}
             <button
               onClick={handleClose}
-              className="w-full py-3 bg-primary px-4 rounded-xl font-semibold btn-click-animation"
+              className="w-full py-3 bg-primary px-4 rounded-xl font-semibold btn"
             >
               Close
             </button>

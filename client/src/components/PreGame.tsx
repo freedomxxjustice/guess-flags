@@ -66,7 +66,7 @@ function PreGame({
         </h1>
       </Header>
       <div className="flex justify-center items-center flex-col gap-6 p-6 text-white">
-        <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-gray-700">
+        <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-grey-2">
           <legend className="text-2xl font-bold text-center text-white">
             {t("choose_number_of_questions")}
           </legend>
@@ -75,9 +75,11 @@ function PreGame({
               <button
                 key={num}
                 onClick={() => setSelectedNumQuestions(num)}
-                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                  selectedNumQuestions === num ? "btn-regular" : "btn-disabled"
-                } btn-click-animation`}
+                className={`${
+                  selectedNumQuestions === num
+                    ? "btn-regular"
+                    : "btn-not-selected"
+                } btn`}
               >
                 {num}
               </button>
@@ -85,7 +87,7 @@ function PreGame({
           </div>
         </fieldset>
 
-        <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-gray-700">
+        <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-grey-2">
           <legend className="text-2xl font-bold text-center text-white">
             {t("choose_category")}
           </legend>
@@ -94,9 +96,11 @@ function PreGame({
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                  selectedCategory === category ? "btn-regular" : "btn-disabled"
-                } btn-click-animation`}
+                className={`${
+                  selectedCategory === category
+                    ? "btn-regular"
+                    : "btn-not-selected"
+                } btn`}
               >
                 {t(category)}
               </button>
@@ -104,7 +108,7 @@ function PreGame({
           </div>
         </fieldset>
 
-        <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-gray-700">
+        <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-grey-2">
           <legend className="text-2xl font-bold text-center text-white">
             {t("choose_gamemode")}
           </legend>
@@ -113,9 +117,9 @@ function PreGame({
               <button
                 key={mode}
                 onClick={() => setSelectedGamemode(mode)}
-                className={`px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                  selectedGamemode === mode ? "btn-regular" : "btn-disabled"
-                } btn-click-animation`}
+                className={`${
+                  selectedGamemode === mode ? "btn-regular" : "btn-not-selected"
+                } btn`}
               >
                 {t(mode)}
               </button>
@@ -123,7 +127,7 @@ function PreGame({
           </div>
         </fieldset>
 
-        <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-gray-700">
+        <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-grey-2">
           <legend className="text-2xl font-bold text-center text-white">
             {t("append_tags")}
           </legend>
@@ -153,7 +157,7 @@ function PreGame({
                     ${
                       checked
                         ? "border-green-500 bg-green-100"
-                        : "border-gray-400"
+                        : "border-grey"
                     }
                     transition-colors
                     hover:border-green-400
@@ -197,11 +201,7 @@ function PreGame({
             )
           }
           disabled={!selectedNumQuestions}
-          className={`btn-regular btn-big btn-click-animation ${
-            selectedNumQuestions && selectedCategory
-              ? "btn-regular"
-              : "btn-disabled"
-          }`}
+          className={`btn btn-regular w-80`}
         >
           {t("start_game")}
         </button>

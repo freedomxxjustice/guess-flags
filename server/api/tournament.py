@@ -84,29 +84,41 @@ async def get_today_tournament() -> JSONResponse:
 
 @router.get("/all")
 async def get_all_tournaments() -> JSONResponse:
+    now = datetime.now(timezone.utc)
+
     tournaments = (
         await Tournament.all()
+        .filter(finished_at__isnull=True)
         .order_by("-created_at")
-        .prefetch_related("participants__user")
+        .prefetch_related("participants__user", "prize_slots__prize")
     )
 
-    if not tournaments:
-        raise HTTPException(status_code=404, detail="No tournaments found")
+    active_tournaments = []
+    for t in tournaments:
+        if t.will_finish_at and t.will_finish_at < now:
+            t.finished_at = now
+            await t.save()
+        else:
+            active_tournaments.append(t)
+
+    if not active_tournaments:
+        raise HTTPException(status_code=404, detail="No active tournaments found")
 
     tournaments_data = []
-    for tournament in tournaments:
-        participant_list = []
-        for p in tournament.participants:
-            participant_list.append(
-                {
-                    "id": p.id,
-                    "user_id": p.user_id,
-                    "username": p.user.name,
-                    "score": p.score,
-                    "place": p.place,
-                    "prize": p.prize,
-                }
-            )
+    for tournament in active_tournaments:
+        participant_list = [
+            {
+                "id": p.id,
+                "user_id": p.user_id,
+                "username": p.user.name,
+                "score": p.score,
+                "place": p.place,
+                "prize": p.prize,
+            }
+            for p in tournament.participants
+        ]
+
+        prize_slots = await tournament.prize_slots.all().prefetch_related("prize")
 
         tournaments_data.append(
             {
@@ -123,7 +135,18 @@ async def get_all_tournaments() -> JSONResponse:
                 ),
                 "will_finish_at": tournament.will_finish_at.isoformat(),
                 "type": tournament.type,
-                "prizes": tournament.prizes or [],
+                "prizes": [
+                    {
+                        "place": tp.place,
+                        "type": tp.prize.type,
+                        "title": tp.prize.title,
+                        "link": tp.prize.link,
+                        "media_url": tp.prize.media_url,
+                        "description": tp.prize.description,
+                        "metadata": tp.prize.metadata,
+                    }
+                    for tp in prize_slots
+                ],
                 "participants": participant_list,
                 "participation_cost": tournament.participation_cost,
                 "min_participants": tournament.min_participants,
@@ -208,6 +231,9 @@ async def start_tournament_match(
     if not tournament:
         raise HTTPException(404, detail="Tournament not found")
 
+    if tournament.finished_at or tournament.will_finish_at < datetime.now(timezone.utc):
+        raise HTTPException(400, detail="Tournament has already finished")
+
     if not tournament.started_at:
         raise HTTPException(400, detail="Tournament has not started yet")
 
@@ -268,6 +294,7 @@ async def start_tournament_match(
     return JSONResponse(
         {
             "match_id": str(match.id),
+            "num_questions": tournament.num_questions,
             "current_question": {
                 "index": 0,
                 "flag_id": question_list[0]["flag_id"],

@@ -11,6 +11,7 @@ import {
 } from "@telegram-apps/sdk";
 
 import request from "../utils/api";
+import { useTranslation } from "react-i18next";
 
 const triesOptions = [
   { tries: 1, stars: 10 },
@@ -28,6 +29,8 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
     onBack();
     mainButton.setParams({ isVisible: false });
   });
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleClick = async () => {
@@ -70,13 +73,13 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
           <button
             key={option.tries}
             onClick={() => handleSelect(option)}
-            className={`py-3 px-6 rounded-xl text-lg font-medium transition-all ${
+            className={`btn ${
               selected?.tries === option.tries
                 ? "bg-yellow-500 text-black"
                 : "bg-gray-800 hover:bg-gray-700"
             }`}
           >
-            Buy {option.tries} {option.tries === 1 ? "try" : "tries"} –{" "}
+            {t("buy")} {option.tries} {option.tries === 1 ? "try" : "tries"} –{" "}
             {option.stars}{" "}
             <FontAwesomeIcon icon={faStar} className="text-yellow-300" />
           </button>

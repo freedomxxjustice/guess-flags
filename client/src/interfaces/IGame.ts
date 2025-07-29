@@ -1,4 +1,4 @@
-export interface ICasualQuestion {
+export interface IQuestion {
   index: number;
   flag_id: number;
   image: string;
@@ -6,7 +6,8 @@ export interface ICasualQuestion {
   mode: string;
 }
 
-export interface ICasualGame {
+export interface IGame {
   match_id: string;
-  current_question: ICasualQuestion;
+  num_questions: number;
+  current_question: IQuestion;
 }

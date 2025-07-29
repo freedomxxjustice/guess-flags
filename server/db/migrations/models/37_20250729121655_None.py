@@ -37,6 +37,15 @@ CREATE TABLE IF NOT EXISTS "tag" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(64) NOT NULL UNIQUE
 );
+CREATE TABLE IF NOT EXISTS "prize" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "type" VARCHAR(50) NOT NULL,
+    "title" VARCHAR(255) NOT NULL,
+    "description" TEXT,
+    "media_url" TEXT,
+    "link" TEXT,
+    "metadata" JSONB
+);
 CREATE TABLE IF NOT EXISTS "tournament" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
@@ -49,7 +58,7 @@ CREATE TABLE IF NOT EXISTS "tournament" (
     "participation_cost" INT NOT NULL DEFAULT 0,
     "min_participants" INT NOT NULL DEFAULT 0,
     "num_questions" INT NOT NULL DEFAULT 10,
-    "gamemode" VARCHAR(10) NOT NULL DEFAULT 'CHOOSE',
+    "gamemode" VARCHAR(10) NOT NULL DEFAULT 'choose',
     "category" VARCHAR(32),
     "tags" JSONB NOT NULL,
     "difficulty_multiplier" DOUBLE PRECISION NOT NULL DEFAULT 1,
@@ -92,6 +101,12 @@ CREATE TABLE IF NOT EXISTS "matchanswer" (
     "is_correct" BOOL NOT NULL,
     "answered_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "match_id" UUID NOT NULL REFERENCES "match" ("id") ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "tournamentprize" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "place" INT NOT NULL,
+    "prize_id" INT NOT NULL REFERENCES "prize" ("id") ON DELETE CASCADE,
+    "tournament_id" INT NOT NULL REFERENCES "tournament" ("id") ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,

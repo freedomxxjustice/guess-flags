@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import request from "../utils/api";
 import type { IUser } from "../interfaces/IUser";
 import type { ITrainingGame } from "../interfaces/ITrainingGame";
-import type { ICasualGame } from "../interfaces/ICasualGame";
+import type { IGame } from "../interfaces/IGame";
 import BottomMenu from "./BottomMenu";
 import BuyTries from "./BuyTries";
 import Leaderboard from "./Leaderboard";
@@ -14,11 +14,11 @@ import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
 import { AnimatePresence, motion } from "framer-motion";
 import Tournaments from "./Tournaments";
-import Header from "./Header";
 import BottomModal from "./BottomModal";
 import GameScreen from "./GameScreen";
 import GameOverScreen from "./GameOverScreen";
 import { useTranslation } from "react-i18next";
+import HomeScreen from "./HomeScreen";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -48,14 +48,14 @@ const MainWrapper = () => {
   const [selectedTags, setSelectedTags] = useState<string[] | null>(null);
   // CASUAL GAME STATES
   const [casualGameStarted, setCasualGameStarted] = useState(false);
-  const [casualGame, setCasualGame] = useState<ICasualGame | null>(null);
+  const [casualGame, setCasualGame] = useState<IGame | null>(null);
   const [casualGameLoading, setCasualGameLoading] = useState(false);
   const [casualGameError, setCasualGameError] = useState<string | null>(null);
   const [casualSummary, setCasualSummary] = useState<any | null>(null);
   const [isAwaiting, setIsAwaiting] = useState(false);
   // TOURNAMENT GAME STATES
   const [tournamentGameStarted, setTournamentGameStarted] = useState(false);
-  const [tournamentGame, setTournamentGame] = useState<any>(null);
+  const [tournamentGame, setTournamentGame] = useState<IGame | null>(null);
   const [tournamentSummary, setTournamentSummary] = useState<any>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
@@ -89,7 +89,7 @@ const MainWrapper = () => {
     data: activeCasualMatch,
     isLoading: isActiveCasualLoading,
     error: activeCasualError,
-  } = useQuery<ICasualGame | null>({
+  } = useQuery<IGame | null>({
     queryKey: ["casual", "active-match"],
     refetchOnWindowFocus: false,
     queryFn: async () => {
@@ -314,6 +314,7 @@ const MainWrapper = () => {
       );
       setCasualGame({
         match_id: res.data.match_id,
+        num_questions: res.data.num_questions,
         current_question: res.data.current_question,
       });
       setCasualGameStarted(true);
@@ -329,7 +330,7 @@ const MainWrapper = () => {
     if (!casualGame || isAwaiting) return;
     setSelectedOption(answer);
     setIsAwaiting(true);
-    setHasSubmitted(true); // NEW: Track "enter" submission
+    setHasSubmitted(true);
     if (timerRef.current) clearInterval(timerRef.current);
 
     try {
@@ -343,7 +344,7 @@ const MainWrapper = () => {
       setCorrectAnswer(res.data.correct_answer);
       setTimeout(async () => {
         setIsCorrect(null);
-        setHasSubmitted(false); // Allow next submission
+        setHasSubmitted(false);
         setIsAwaiting(false);
         setTypedAnswer("");
         setSelectedOption(null);
@@ -357,6 +358,7 @@ const MainWrapper = () => {
         } else {
           setCasualGame({
             match_id: casualGame.match_id,
+            num_questions: casualGame.num_questions,
             current_question: res.data.current_question,
           });
         }
@@ -466,6 +468,7 @@ const MainWrapper = () => {
         } else {
           setTournamentGame({
             match_id: tournamentGame.match_id,
+            num_questions: tournamentGame.num_questions,
             current_question: res.data.current_question,
           });
         }
@@ -533,92 +536,18 @@ const MainWrapper = () => {
 
   const renderHomeScreen = () => {
     return (
-      <div className="min-h-screen h-50 overflow-auto pb-20">
-        <Header
-          isFullscreen={isFullscreenState}
-          headerStyle={headerStyle}
-          headerStyleFullscreen={headerStyleFullscreen}
-          title={t("home")}
-        >
-          <p
-            className="bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs"
-            onClick={() => setShowBuyTries(true)}
-          >
-            {t("tries_left")}: {user?.tries_left}
-          </p>
-        </Header>
-
-        <div className="flex flex-col justify-center items-center w-full px-4 py-6 flex-grow content-center">
-          <div className="mb-12">
-            <h1 className="text-xs font-semibold text-center mb-6">
-              {user?.name}, {t("welcome")} <br />
-              <span className="text-3xl font-bold">{t("guess_flags")}</span>
-            </h1>
-            <img
-              src="/placeholder.png"
-              className="mx-auto w-77 object-contain rounded-lg"
-              alt="Guess Flags"
-            />
-          </div>
-
-          <div className="flex flex-col items-center gap-3 mb-6 w-90">
-            <button
-              type="button"
-              disabled={!!casualGame}
-              className="btn-regular btn-big btn-click-animation"
-              onClick={() => setShowCasualFilter(true)}
-            >
-              {t("casual")}
-            </button>
-            <button
-              type="button"
-              className="btn-regular btn-big btn-click-animation"
-              onClick={() => setShowTrainingFilter(true)}
-            >
-              {t("training")}
-            </button>
-            <button
-              onClick={() => setShowModal("error")}
-              type="button"
-              className="btn-regular btn-big btn-click-animation"
-            >
-              {t("rating")}
-            </button>
-            <button
-              type="button"
-              className="btn-regular btn-big btn-click-animation"
-              onClick={openCommunity}
-            >
-              {t("community")}
-            </button>
-            <p className="text-xs text-gray-500 select-none mt-4">
-              {t("early_access")}
-            </p>
-          </div>
-        </div>
-
-        {/* Modals */}
-        {showModal === "notEnoughTries" && (
-          <BottomModal
-            title={t("not_enough_tries")}
-            text={t("not_enough_tries_text")}
-            actionLabel={t("buy_tries")}
-            onAction={() => {
-              setShowBuyTries(true);
-              setShowModal(false);
-            }}
-            onClose={() => setShowModal(false)}
-          />
-        )}
-
-        {showModal === "error" && (
-          <BottomModal
-            title={t("error_404")}
-            text={t("error_404_text")}
-            onClose={() => setShowModal(false)}
-          />
-        )}
-      </div>
+      <HomeScreen
+        user={user}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setShowBuyTries={setShowBuyTries}
+        setShowCasualFilter={setShowCasualFilter}
+        setShowTrainingFilter={setShowTrainingFilter}
+        openCommunity={openCommunity}
+        isFullscreenState={isFullscreenState}
+        headerStyle={headerStyle}
+        headerStyleFullscreen={headerStyleFullscreen}
+      />
     );
   };
 
@@ -710,7 +639,7 @@ const MainWrapper = () => {
                 const isCorrectAnswer = opt === question.answer;
                 const isSelected = selectedOption === opt;
 
-                let btnClass = `btn-big bg-primary/10`;
+                let btnClass = `bg-primary/10`;
                 if (selectedOption) {
                   if (isCorrectAnswer) {
                     btnClass = "bg-green-600";
@@ -726,7 +655,7 @@ const MainWrapper = () => {
                     key={idx}
                     disabled={!!selectedOption}
                     onClick={() => handleTrainingAnswer(opt)}
-                    className={`btn-click-animation rounded-md btn-big ${btnClass}`}
+                    className={`btn rounded-md  ${btnClass}`}
                   >
                     {t(opt)}
                   </button>
@@ -766,7 +695,7 @@ const MainWrapper = () => {
             : "bg-red-600 hover:bg-red-700"
           : "bg-primary hover:bg-blue-700"
       }
-      btn-click-animation
+      btn
     `}
               >
                 {selectedOption

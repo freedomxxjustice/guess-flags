@@ -43,5 +43,24 @@ class TournamentParticipant(Model):
     tries_left = fields.IntField()
 
 
+class Prize(Model):
+    id = fields.IntField(pk=True)
+    type = fields.CharField(max_length=50)  # e.g. 'telegram_gift', 'coin', 'link'
+    title = fields.CharField(max_length=255)  # e.g. 'Swag Bag', '100 Coins'
+    description = fields.TextField(null=True)
+    media_url = fields.TextField(null=True)  # tgs/gif/image
+    link = fields.TextField(null=True)  # e.g. https://t.me/nft/SwagBag-2
+    metadata = fields.JSONField(null=True)  # anything else like token IDs
+
+
+class TournamentPrize(Model):
+    id = fields.IntField(pk=True)
+    tournament = fields.ForeignKeyField("models.Tournament", related_name="prize_slots")
+    prize = fields.ForeignKeyField("models.Prize", related_name="prize_awards")
+    place = fields.IntField()  # 1, 2, 3...
+
+
+TournamentPrizeSchema = pydantic_model_creator(TournamentPrize)
+PrizeSchema = pydantic_model_creator(Prize)
 TournamentSchema = pydantic_model_creator(Tournament)
 TournamentParticipantSchema = pydantic_model_creator(TournamentParticipant)

@@ -56,14 +56,14 @@ export default function BottomModal({
             {actionLabel && onAction && (
               <button
                 onClick={onAction}
-                className="w-full py-3 px-4 rounded-xl font-semibold btn-click-animation bg-primary text-white"
+                className="btn btn-regular"
               >
                 {t(actionLabel)}
               </button>
             )}
             <button
               onClick={handleClose}
-              className="w-full py-3 bg-primary px-4 rounded-xl font-semibold btn-click-animation"
+              className="btn btn-regular"
             >
               {t("close")}
             </button>

@@ -6,4 +6,8 @@ from .models.tournament import (
     TournamentSchema,
     TournamentParticipant,
     TournamentParticipantSchema,
+    Prize,
+    PrizeSchema,
+    TournamentPrize,
+    TournamentPrizeSchema,
 )
