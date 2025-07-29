@@ -378,7 +378,6 @@ async def complete_match(match: Match, user) -> None:
         user.casual_score += match.score
         user.today_casual_score += match.score
 
-        # Only deduct tries if the score is less than half
         if match.score < match.num_questions / 2:
             user.tries_left -= 1
 
