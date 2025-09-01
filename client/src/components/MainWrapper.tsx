@@ -8,12 +8,14 @@ import BottomMenu from "./BottomMenu";
 import BuyTries from "./BuyTries";
 import Leaderboard from "./Leaderboard";
 import Profile from "./Profile";
-import PreGame from "./PreGame";
+// import PreGame from "./PreGame";
+import PreTrainingGame from "./PreTrainingGame";
+import PreCasualGame from "./PreCasualGame";
 import { backButton, isFullscreen } from "@telegram-apps/sdk";
 import LoadingSpinner from "./LoadingSpinner";
 import * as fuzzball from "fuzzball";
 import { AnimatePresence, motion } from "framer-motion";
-import Tournaments from "./Tournaments";
+// import Tournaments from "./Tournaments";
 import BottomModal from "./BottomModal";
 import GameScreen from "./GameScreen";
 import GameOverScreen from "./GameOverScreen";
@@ -296,8 +298,7 @@ const MainWrapper = () => {
   const handleStartCasualGame = async (
     numQuestions: number,
     category: string,
-    gamemode: string,
-    tags: string[]
+    gamemode: string
   ) => {
     if (!user || user.tries_left <= 0) {
       setShowModal("notEnoughTries");
@@ -306,10 +307,8 @@ const MainWrapper = () => {
     setCasualGameLoading(true);
     setCasualGameError(null);
     try {
-      const tagQuery = tags.length > 0 ? `&tags=${tags.join(",")}` : "";
-
       const res = await request(
-        `games/casual/start?num_questions=${numQuestions}&category=${category}&gamemode=${gamemode}${tagQuery}`,
+        `games/casual/start?num_questions=${numQuestions}&category=${category}&gamemode=${gamemode}`,
         "POST"
       );
       setCasualGame({
@@ -522,8 +521,8 @@ const MainWrapper = () => {
         return renderProfileScreen();
       case "leaderboard":
         return renderLeaderboardScreen();
-      case "tournaments":
-        return renderTournamentsScreen();
+      // case "tournaments":
+      //   return renderTournamentsScreen();
       default:
         return renderHomeScreen();
     }
@@ -564,18 +563,18 @@ const MainWrapper = () => {
     );
   };
 
-  const renderTournamentsScreen = () => {
-    return (
-      <Tournaments
-        isFullscreen={isFullscreenState}
-        headerStyle={headerStyle}
-        headerStyleFullscreen={headerStyleFullscreen}
-        userId={user.id}
-        setTournamentGame={setTournamentGame}
-        setTournamentGameStarted={setTournamentGameStarted}
-      />
-    );
-  };
+  // const renderTournamentsScreen = () => {
+  //   return (
+  //     <Tournaments
+  //       isFullscreen={isFullscreenState}
+  //       headerStyle={headerStyle}
+  //       headerStyleFullscreen={headerStyleFullscreen}
+  //       userId={user.id}
+  //       setTournamentGame={setTournamentGame}
+  //       setTournamentGameStarted={setTournamentGameStarted}
+  //     />
+  //   );
+  // };
 
   const renderLeaderboardScreen = () => {
     return (
@@ -736,6 +735,8 @@ const MainWrapper = () => {
       <GameOverScreen
         title="Game Over!"
         score={casualSummary.score}
+        baseScore={casualSummary.base_score}
+        difficultyMultiplier={casualSummary.difficulty_multiplier}
         numQuestions={casualSummary.num_questions}
         answers={casualSummary.answers}
         onBack={() => {
@@ -850,7 +851,7 @@ const MainWrapper = () => {
           transition={{ duration: TRANSITION_DURATION }}
           className="w-full h-full"
         >
-          <PreGame
+          <PreTrainingGame
             onStart={handleStartTrainingGame}
             onBack={() => {
               setShowTrainingFilter(false);
@@ -880,7 +881,7 @@ const MainWrapper = () => {
           transition={{ duration: TRANSITION_DURATION }}
           className="w-full h-full"
         >
-          <PreGame
+          <PreCasualGame
             onStart={handleStartCasualGame}
             onBack={() => {
               setShowCasualFilter(false);
@@ -942,6 +943,8 @@ const MainWrapper = () => {
       <GameOverScreen
         title="Game Over!"
         score={tournamentSummary.score}
+        baseScore={tournamentSummary.base_score}
+        difficultyMultiplier={tournamentSummary.difficulty_multiplier}
         numQuestions={tournamentSummary.num_questions}
         answers={tournamentSummary.answers}
         onBack={() => {

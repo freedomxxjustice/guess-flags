@@ -30,7 +30,7 @@ const possibleTags = [
   "South America",
 ];
 
-function PreGame({
+function PreTrainingGame({
   onBack,
   onStart,
   isFullscreen,
@@ -215,16 +215,6 @@ function PreGame({
           </div>
         </fieldset>
 
-        <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-grey-2">
-          <legend className="text-2xl font-bold text-center text-white">
-            {t("multiplier")}
-          </legend>
-          <div className="flex justify-center gap-4 flex-wrap">
-            <p className="text-7xl giest-mono">x{multiplierTotal}</p>
-          </div>
-        </fieldset>
-        <p className="text-xs text-grey text-center">{t("multiplier_description")}</p>
-
         <button
           onClick={() =>
             selectedNumQuestions &&
@@ -249,4 +239,4 @@ function PreGame({
   );
 }
 
-export default PreGame;
+export default PreTrainingGame;

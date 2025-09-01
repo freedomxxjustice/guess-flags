@@ -10,6 +10,8 @@ interface AnswerSummary {
 interface GameOverScreenProps {
   title?: string;
   score: number;
+  baseScore: number;
+  difficultyMultiplier: number;
   numQuestions: number;
   answers: AnswerSummary[];
   onBack: () => void;
@@ -18,6 +20,8 @@ interface GameOverScreenProps {
 const GameOverScreen = ({
   title = "Game Over!",
   score,
+  baseScore,
+  difficultyMultiplier,
   numQuestions,
   answers,
   onBack,
@@ -29,6 +33,9 @@ const GameOverScreen = ({
       <h2 className="text-2xl font-bold mb-4">{t(title)}</h2>
       <p className="text-lg mb-2">
         {t("your_score")}: {score} / {numQuestions}
+      </p>
+      <p className="text-md mb-2 text-gray-300">
+        {t("base_score")}: {baseScore} × {difficultyMultiplier} = {score}
       </p>
       <div className="max-w-md text-left">
         <h3 className="font-semibold mb-2">{t("summary")}</h3>

@@ -105,7 +105,11 @@
     "no_tries": "No tries left for this tournament!",
     "right_answer": "Right answer",
     "participation_successful": "Participated successfully!",
-
+    "multiplier": "Multiplier",
+    "multiplier_description": "The score multiplier depends on the specific tags you choose. Common or easy tags decrease the multiplier, while rare or harder ones increase it. Selecting all or none keeps the multiplier at x1. Each combination has its own balanced score.",
+    "base_score": "Base score", 
+    "casual_mode_rules": "Each game contains questions of different difficulty, chosen in equal proportion for every player",
+    "casual_mode_rules_note": "Rules note",
     "Game Over!": "Game Over!",
 
 

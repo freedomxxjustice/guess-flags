@@ -12,6 +12,7 @@ import {
   mainButton,
   hapticFeedback,
 } from "@telegram-apps/sdk";
+import "@ncdai/react-wheel-picker/style.css";
 
 // TELEGRAM INITIATION
 init();

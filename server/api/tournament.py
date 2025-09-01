@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from random import sample, shuffle
 from typing import List
 from db import Tournament, TournamentParticipant, Match, Flag
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from aiogram.methods import CreateInvoiceLink

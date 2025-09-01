@@ -22,12 +22,30 @@ async def casual_start(
     user = await check_user(auth_data.user.id)
     tags = [tag.strip() for tag in tags.split(",") if tag.strip()] if tags else []
 
+    tag_weights = {
+        "UN": 0.8,
+        "Europe": 0.9,
+        "Asia": 1.0,
+        "Africa": 1.3,
+        "North America": 1.0,
+        "South America": 1.3,
+        "landlocked": 1.2,
+    }
+
+    def calculate_difficulty_multiplier(selected_tags: List[str]) -> float:
+        if not selected_tags or set(selected_tags) == set(tag_weights.keys()):
+            return 1.0
+        total = sum(tag_weights.get(tag, 1.0) for tag in selected_tags)
+        avg = total / len(selected_tags)
+        return round(avg, 2)
+
     if user.tries_left <= 0:
         raise HTTPException(status_code=403, detail="No tries left")
 
     question_list = await create_casual_questions(
         num_questions, category, gamemode, tags
     )
+    difficulty_multiplier = calculate_difficulty_multiplier(tags)
 
     match = await Match.create(
         user=user,
@@ -39,6 +57,8 @@ async def casual_start(
         ),  # <-- start first question timer
         gamemode=gamemode,
         tags=tags,
+        difficulty_multiplier=difficulty_multiplier,
+        base_score=0,
     )
 
     user.casual_games_played += 1
@@ -246,7 +266,6 @@ async def answer(
                 }
             )
 
-    # Process normal answer
     is_correct = normalized_answer.strip().lower() == correct_answer.strip().lower()
 
     await MatchAnswer.create(
@@ -259,7 +278,8 @@ async def answer(
     await update_flag_stats(question["flag_id"], is_correct)
 
     if is_correct:
-        match.score += 1
+        match.base_score += 1
+        match.score = round(match.base_score * match.difficulty_multiplier)
 
     match.current_question_idx += 1
 
@@ -336,6 +356,8 @@ async def get_summary(
         {
             "match_id": str(match.id),
             "score": match.score,
+            "base_score": match.base_score,
+            "difficulty_multiplier": match.difficulty_multiplier,
             "num_questions": match.num_questions,
             "completed_at": str(match.completed_at.isoformat()),
             "answers": answers,
