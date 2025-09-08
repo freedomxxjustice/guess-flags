@@ -1,0 +1,246 @@
+id,name,description,difficulty,image,emoji,created_at,total_shown,total_correct,category
+1,Afghanistan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_the_Taliban.svg/40px-Flag_of_the_Taliban.svg.png,,2025-09-07 15:57:35,0,0,country
+2,Albania,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/40px-Flag_of_Albania.svg.png,,2025-09-07 15:57:35,0,0,country
+3,Algeria,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/40px-Flag_of_Algeria.svg.png,,2025-09-07 15:57:35,0,0,country
+4,American Samoa,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Flag_of_American_Samoa.svg/40px-Flag_of_American_Samoa.svg.png,,2025-09-07 15:57:35,0,0,country
+5,Andorra,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Andorra.svg/40px-Flag_of_Andorra.svg.png,,2025-09-07 15:57:35,0,0,country
+6,Angola,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/40px-Flag_of_Angola.svg.png,,2025-09-07 15:57:35,0,0,country
+7,Anguilla,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Anguilla.svg/40px-Flag_of_Anguilla.svg.png,,2025-09-07 15:57:35,0,0,country
+8,Antigua and Barbuda,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Antigua_and_Barbuda.svg/40px-Flag_of_Antigua_and_Barbuda.svg.png,,2025-09-07 15:57:35,0,0,country
+9,Argentina,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/40px-Flag_of_Argentina.svg.png,,2025-09-07 15:57:35,0,0,country
+10,Armenia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Armenia.svg/40px-Flag_of_Armenia.svg.png,,2025-09-07 15:57:35,0,0,country
+11,Aruba,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Aruba.svg/40px-Flag_of_Aruba.svg.png,,2025-09-07 15:57:35,0,0,country
+12,Australia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Australia_%28converted%29.svg/40px-Flag_of_Australia_%28converted%29.svg.png,,2025-09-07 15:57:35,0,0,country
+13,Austria,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/40px-Flag_of_Austria.svg.png,,2025-09-07 15:57:35,0,0,country
+14,Åland,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_%C3%85land.svg/40px-Flag_of_%C3%85land.svg.png,,2025-09-07 15:57:35,0,0,country
+15,Azerbaijan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Azerbaijan.svg/40px-Flag_of_Azerbaijan.svg.png,,2025-09-07 15:57:35,0,0,country
+16,The Bahamas,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/250px-Flag_of_the_Bahamas.svg.png,,2025-09-07 15:57:35,0,0,country
+17,Bahrain,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/40px-Flag_of_Bahrain.svg.png,,2025-09-07 15:57:35,0,0,country
+18,Bangladesh,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/40px-Flag_of_Bangladesh.svg.png,,2025-09-07 15:57:35,0,0,country
+19,Barbados,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Barbados.svg/40px-Flag_of_Barbados.svg.png,,2025-09-07 15:57:35,0,0,country
+20,Belarus,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Belarus.svg/40px-Flag_of_Belarus.svg.png,,2025-09-07 15:57:35,0,0,country
+21,Belgium,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Belgium_%28civil%29.svg/40px-Flag_of_Belgium_%28civil%29.svg.png,,2025-09-07 15:57:35,0,0,country
+22,Belize,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Belize.svg/40px-Flag_of_Belize.svg.png,,2025-09-07 15:57:35,0,0,country
+23,Benin,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Benin.svg/40px-Flag_of_Benin.svg.png,,2025-09-07 15:57:35,0,0,country
+24,Bermuda,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bermuda.svg/40px-Flag_of_Bermuda.svg.png,,2025-09-07 15:57:35,0,0,country
+25,Bhutan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Flag_of_Bhutan.svg/40px-Flag_of_Bhutan.svg.png,,2025-09-07 15:57:35,0,0,country
+26,Bolivia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/40px-Flag_of_Bolivia.svg.png,,2025-09-07 15:57:35,0,0,country
+27,Bonaire,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_Bonaire.svg/40px-Flag_of_Bonaire.svg.png,,2025-09-07 15:57:35,0,0,country
+28,Bosnia and Herzegovina,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/40px-Flag_of_Bosnia_and_Herzegovina.svg.png,,2025-09-07 15:57:35,0,0,country
+29,Botswana,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Botswana.svg/40px-Flag_of_Botswana.svg.png,,2025-09-07 15:57:35,0,0,country
+30,Brazil,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/40px-Flag_of_Brazil.svg.png,,2025-09-07 15:57:35,0,0,country
+31,British Virgin Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Flag_of_the_British_Virgin_Islands.svg/40px-Flag_of_the_British_Virgin_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+32,Brunei,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Brunei.svg/40px-Flag_of_Brunei.svg.png,,2025-09-07 15:57:35,0,0,country
+33,Bulgaria,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Bulgaria.svg/40px-Flag_of_Bulgaria.svg.png,,2025-09-07 15:57:35,0,0,country
+34,Burkina Faso,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Burkina_Faso.svg/40px-Flag_of_Burkina_Faso.svg.png,,2025-09-07 15:57:35,0,0,country
+35,Burundi,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Burundi.svg/40px-Flag_of_Burundi.svg.png,,2025-09-07 15:57:35,0,0,country
+36,Cambodia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Cambodia.svg/250px-Flag_of_Cambodia.svg.png,,2025-09-07 15:57:35,0,0,country
+37,Cameroon,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/40px-Flag_of_Cameroon.svg.png,,2025-09-07 15:57:35,0,0,country
+38,Canada,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/40px-Flag_of_Canada_%28Pantone%29.svg.png,,2025-09-07 15:57:35,0,0,country
+39,Cape Verde,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Cape_Verde.svg/40px-Flag_of_Cape_Verde.svg.png,,2025-09-07 15:57:35,0,0,country
+40,Cayman Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_the_Cayman_Islands.svg/40px-Flag_of_the_Cayman_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+41,Central African Republic,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Central_African_Republic.svg/40px-Flag_of_the_Central_African_Republic.svg.png,,2025-09-07 15:57:35,0,0,country
+42,Chad,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Chad.svg/40px-Flag_of_Chad.svg.png,,2025-09-07 15:57:35,0,0,country
+43,Chile,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/40px-Flag_of_Chile.svg.png,,2025-09-07 15:57:35,0,0,country
+44,China (People's Republic of),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png,,2025-09-07 15:57:35,0,0,country
+45,Christmas Island,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Flag_of_Christmas_Island.svg/40px-Flag_of_Christmas_Island.svg.png,,2025-09-07 15:57:35,0,0,country
+46,Cocos Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Cocos_%28Keeling%29_Islands.svg/40px-Flag_of_the_Cocos_%28Keeling%29_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+47,Colombia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/40px-Flag_of_Colombia.svg.png,,2025-09-07 15:57:35,0,0,country
+48,Comoros,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Flag_of_the_Comoros.svg/40px-Flag_of_the_Comoros.svg.png,,2025-09-07 15:57:35,0,0,country
+49,Republic of the Congo,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_the_Republic_of_the_Congo.svg/40px-Flag_of_the_Republic_of_the_Congo.svg.png,,2025-09-07 15:57:35,0,0,country
+50,Democratic Republic of the Congo,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/20px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png,,2025-09-07 15:57:35,0,0,country
+51,Cook Islands,partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_the_Cook_Islands.svg/40px-Flag_of_the_Cook_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+52,Costa Rica,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Costa_Rica.svg/40px-Flag_of_Costa_Rica.svg.png,,2025-09-07 15:57:35,0,0,country
+53,Côte d'Ivoire(formerly Ivory Coast),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/40px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,,2025-09-07 15:57:35,0,0,country
+54,Croatia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/40px-Flag_of_Croatia.svg.png,,2025-09-07 15:57:35,0,0,country
+55,Cuba,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/40px-Flag_of_Cuba.svg.png,,2025-09-07 15:57:35,0,0,country
+56,Curaçao,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_Cura%C3%A7ao.svg/40px-Flag_of_Cura%C3%A7ao.svg.png,,2025-09-07 15:57:35,0,0,country
+57,Cyprus,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Cyprus.svg/40px-Flag_of_Cyprus.svg.png,,2025-09-07 15:57:35,0,0,country
+58,Czech Republic,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/40px-Flag_of_the_Czech_Republic.svg.png,,2025-09-07 15:57:35,0,0,country
+59,Denmark,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Denmark.svg/20px-Flag_of_Denmark.svg.png,,2025-09-07 15:57:35,0,0,country
+60,Djibouti,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_Djibouti.svg/40px-Flag_of_Djibouti.svg.png,,2025-09-07 15:57:35,0,0,country
+61,Dominica,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Dominica.svg/40px-Flag_of_Dominica.svg.png,,2025-09-07 15:57:35,0,0,country
+62,Dominican Republic,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_the_Dominican_Republic.svg/40px-Flag_of_the_Dominican_Republic.svg.png,,2025-09-07 15:57:35,0,0,country
+63,East Timor,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/40px-Flag_of_East_Timor.svg.png,,2025-09-07 15:57:35,0,0,country
+64,Ecuador,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Flag_of_Ecuador.svg/250px-Flag_of_Ecuador.svg.png,,2025-09-07 15:57:35,0,0,country
+65,Egypt,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/40px-Flag_of_Egypt.svg.png,,2025-09-07 15:57:35,0,0,country
+66,El Salvador,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_El_Salvador.svg/40px-Flag_of_El_Salvador.svg.png,,2025-09-07 15:57:35,0,0,country
+67,Equatorial Guinea,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Equatorial_Guinea.svg/40px-Flag_of_Equatorial_Guinea.svg.png,,2025-09-07 15:57:35,0,0,country
+68,Eritrea,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Eritrea.svg/40px-Flag_of_Eritrea.svg.png,,2025-09-07 15:57:35,0,0,country
+69,Estonia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flag_of_Estonia.svg/40px-Flag_of_Estonia.svg.png,,2025-09-07 15:57:35,0,0,country
+70,Eswatini(formerly Swaziland),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_Eswatini.svg/40px-Flag_of_Eswatini.svg.png,,2025-09-07 15:57:35,0,0,country
+71,Ethiopia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_Ethiopia.svg/40px-Flag_of_Ethiopia.svg.png,,2025-09-07 15:57:35,0,0,country
+72,Falkland Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_Falkland_Islands.svg/40px-Flag_of_the_Falkland_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+73,Faroe Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_the_Faroe_Islands.svg/40px-Flag_of_the_Faroe_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+74,Fiji,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Fiji.svg/250px-Flag_of_Fiji.svg.png,,2025-09-07 15:57:35,0,0,country
+75,Finland,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/40px-Flag_of_Finland.svg.png,,2025-09-07 15:57:35,0,0,country
+76,France,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/40px-Flag_of_France.svg.png,,2025-09-07 15:57:35,0,0,country
+77,French Guiana,dependent,0,https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/40px-Flag_of_France.svg.png,,2025-09-07 15:57:35,0,0,country
+78,French Polynesia,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Flag_of_French_Polynesia.svg/40px-Flag_of_French_Polynesia.svg.png,,2025-09-07 15:57:35,0,0,country
+79,Gabon,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Flag_of_Gabon.svg/250px-Flag_of_Gabon.svg.png,,2025-09-07 15:57:35,0,0,country
+80,The Gambia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_The_Gambia.svg/40px-Flag_of_The_Gambia.svg.png,,2025-09-07 15:57:35,0,0,country
+81,Georgia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Georgia.svg/40px-Flag_of_Georgia.svg.png,,2025-09-07 15:57:35,0,0,country
+82,Germany,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/40px-Flag_of_Germany.svg.png,,2025-09-07 15:57:35,0,0,country
+83,Ghana,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Ghana.svg/40px-Flag_of_Ghana.svg.png,,2025-09-07 15:57:35,0,0,country
+84,Gibraltar,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Flag_of_Gibraltar.svg/40px-Flag_of_Gibraltar.svg.png,,2025-09-07 15:57:35,0,0,country
+85,Greece,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/40px-Flag_of_Greece.svg.png,,2025-09-07 15:57:35,0,0,country
+86,Greenland,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_Greenland.svg/40px-Flag_of_Greenland.svg.png,,2025-09-07 15:57:35,0,0,country
+87,Grenada,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Grenada.svg/40px-Flag_of_Grenada.svg.png,,2025-09-07 15:57:35,0,0,country
+88,Guadeloupe,dependent,0,https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/40px-Flag_of_France.svg.png,,2025-09-07 15:57:35,0,0,country
+89,Guam,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Flag_of_Guam.svg/40px-Flag_of_Guam.svg.png,,2025-09-07 15:57:35,0,0,country
+90,Guatemala,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/40px-Flag_of_Guatemala.svg.png,,2025-09-07 15:57:35,0,0,country
+91,Guernsey,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Guernsey.svg/40px-Flag_of_Guernsey.svg.png,,2025-09-07 15:57:35,0,0,country
+92,Guinea,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_Guinea.svg/40px-Flag_of_Guinea.svg.png,,2025-09-07 15:57:35,0,0,country
+93,Guinea-Bissau,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Guinea-Bissau.svg/40px-Flag_of_Guinea-Bissau.svg.png,,2025-09-07 15:57:35,0,0,country
+94,Guyana,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_Guyana.svg/40px-Flag_of_Guyana.svg.png,,2025-09-07 15:57:35,0,0,country
+95,Haiti,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Haiti.svg/250px-Flag_of_Haiti.svg.png,,2025-09-07 15:57:35,0,0,country
+96,Honduras,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Honduras_%282022%E2%80%93present%29.svg/40px-Flag_of_Honduras_%282022%E2%80%93present%29.svg.png,,2025-09-07 15:57:35,0,0,country
+97,Hong Kong,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Hong_Kong.svg/40px-Flag_of_Hong_Kong.svg.png,,2025-09-07 15:57:35,0,0,country
+98,Hungary,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/40px-Flag_of_Hungary.svg.png,,2025-09-07 15:57:35,0,0,country
+99,Iceland,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Iceland.svg/250px-Flag_of_Iceland.svg.png,,2025-09-07 15:57:35,0,0,country
+100,India,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/40px-Flag_of_India.svg.png,,2025-09-07 15:57:35,0,0,country
+101,Indonesia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/40px-Flag_of_Indonesia.svg.png,,2025-09-07 15:57:35,0,0,country
+102,Iran,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Iran.svg/40px-Flag_of_Iran.svg.png,,2025-09-07 15:57:35,0,0,country
+103,Iraq,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/40px-Flag_of_Iraq.svg.png,,2025-09-07 15:57:35,0,0,country
+104,Ireland,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/40px-Flag_of_Ireland.svg.png,,2025-09-07 15:57:35,0,0,country
+105,Isle of Man,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_the_Isle_of_Man.svg/40px-Flag_of_the_Isle_of_Man.svg.png,,2025-09-07 15:57:35,0,0,country
+106,Israel,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Israel.svg/40px-Flag_of_Israel.svg.png,,2025-09-07 15:57:35,0,0,country
+107,Italy,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/40px-Flag_of_Italy.svg.png,,2025-09-07 15:57:35,0,0,country
+108,Jamaica,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Jamaica.svg/250px-Flag_of_Jamaica.svg.png,,2025-09-07 15:57:35,0,0,country
+109,Japan,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/40px-Flag_of_Japan.svg.png,,2025-09-07 15:57:35,0,0,country
+110,Jersey,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Flag_of_Jersey.svg/40px-Flag_of_Jersey.svg.png,,2025-09-07 15:57:35,0,0,country
+111,Jordan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Jordan.svg/40px-Flag_of_Jordan.svg.png,,2025-09-07 15:57:35,0,0,country
+112,Kazakhstan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kazakhstan.svg/250px-Flag_of_Kazakhstan.svg.png,,2025-09-07 15:57:35,0,0,country
+113,Kenya,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/40px-Flag_of_Kenya.svg.png,,2025-09-07 15:57:35,0,0,country
+114,Kiribati,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kiribati.svg/40px-Flag_of_Kiribati.svg.png,,2025-09-07 15:57:35,0,0,country
+115,North Korea,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/40px-Flag_of_North_Korea.svg.png,,2025-09-07 15:57:35,0,0,country
+116,South Korea,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/40px-Flag_of_South_Korea.svg.png,,2025-09-07 15:57:35,0,0,country
+117,Kosovo,partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/40px-Flag_of_Kosovo.svg.png,,2025-09-07 15:57:35,0,0,country
+118,Kuwait,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/40px-Flag_of_Kuwait.svg.png,,2025-09-07 15:57:35,0,0,country
+119,Kyrgyzstan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Kyrgyzstan.svg/40px-Flag_of_Kyrgyzstan.svg.png,,2025-09-07 15:57:35,0,0,country
+120,Laos,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Laos.svg/250px-Flag_of_Laos.svg.png,,2025-09-07 15:57:35,0,0,country
+121,Latvia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Latvia.svg/40px-Flag_of_Latvia.svg.png,,2025-09-07 15:57:35,0,0,country
+122,Lebanon,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Lebanon.svg/40px-Flag_of_Lebanon.svg.png,,2025-09-07 15:57:35,0,0,country
+123,Lesotho,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Flag_of_Lesotho.svg/40px-Flag_of_Lesotho.svg.png,,2025-09-07 15:57:35,0,0,country
+124,Liberia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Liberia.svg/40px-Flag_of_Liberia.svg.png,,2025-09-07 15:57:35,0,0,country
+125,Libya,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Libya.svg/40px-Flag_of_Libya.svg.png,,2025-09-07 15:57:35,0,0,country
+126,Liechtenstein,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Flag_of_Liechtenstein.svg/40px-Flag_of_Liechtenstein.svg.png,,2025-09-07 15:57:35,0,0,country
+127,Lithuania,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Lithuania.svg/40px-Flag_of_Lithuania.svg.png,,2025-09-07 15:57:35,0,0,country
+128,Luxembourg,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/40px-Flag_of_Luxembourg.svg.png,,2025-09-07 15:57:35,0,0,country
+129,Macau,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Flag_of_Macau.svg/40px-Flag_of_Macau.svg.png,,2025-09-07 15:57:35,0,0,country
+130,Madagascar,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Madagascar.svg/250px-Flag_of_Madagascar.svg.png,,2025-09-07 15:57:35,0,0,country
+131,Malawi,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Flag_of_Malawi.svg/40px-Flag_of_Malawi.svg.png,,2025-09-07 15:57:35,0,0,country
+132,Malaysia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/40px-Flag_of_Malaysia.svg.png,,2025-09-07 15:57:35,0,0,country
+133,Maldives,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Maldives.svg/40px-Flag_of_Maldives.svg.png,,2025-09-07 15:57:35,0,0,country
+134,Mali,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Mali.svg/40px-Flag_of_Mali.svg.png,,2025-09-07 15:57:35,0,0,country
+135,Malta,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/40px-Flag_of_Malta.svg.png,,2025-09-07 15:57:35,0,0,country
+136,Marshall Islands,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/40px-Flag_of_the_Marshall_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+137,Martinique,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag-of-Martinique.svg/40px-Flag-of-Martinique.svg.png,,2025-09-07 15:57:35,0,0,country
+138,Mauritania,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flag_of_Mauritania.svg/40px-Flag_of_Mauritania.svg.png,,2025-09-07 15:57:35,0,0,country
+139,Mauritius,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Mauritius.svg/40px-Flag_of_Mauritius.svg.png,,2025-09-07 15:57:35,0,0,country
+140,Mayotte,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Mayotte_%28Local%29.svg/40px-Flag_of_Mayotte_%28Local%29.svg.png,,2025-09-07 15:57:35,0,0,country
+141,Mexico,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/40px-Flag_of_Mexico.svg.png,,2025-09-07 15:57:35,0,0,country
+142,Federated States of Micronesia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg/40px-Flag_of_the_Federated_States_of_Micronesia.svg.png,,2025-09-07 15:57:35,0,0,country
+143,Moldova,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Moldova.svg/40px-Flag_of_Moldova.svg.png,,2025-09-07 15:57:35,0,0,country
+144,Monaco,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Monaco.svg/20px-Flag_of_Monaco.svg.png,,2025-09-07 15:57:35,0,0,country
+145,Mongolia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Mongolia.svg/40px-Flag_of_Mongolia.svg.png,,2025-09-07 15:57:35,0,0,country
+146,Montenegro,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Montenegro.svg/40px-Flag_of_Montenegro.svg.png,,2025-09-07 15:57:35,0,0,country
+147,Montserrat,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Montserrat.svg/40px-Flag_of_Montserrat.svg.png,,2025-09-07 15:57:35,0,0,country
+148,Morocco,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Morocco.svg/40px-Flag_of_Morocco.svg.png,,2025-09-07 15:57:35,0,0,country
+149,Mozambique,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Mozambique.svg/40px-Flag_of_Mozambique.svg.png,,2025-09-07 15:57:35,0,0,country
+150,Myanmar (or Burma),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/40px-Flag_of_Myanmar.svg.png,,2025-09-07 15:57:35,0,0,country
+151,Namibia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Namibia.svg/250px-Flag_of_Namibia.svg.png,,2025-09-07 15:57:35,0,0,country
+152,Nauru,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Nauru.svg/40px-Flag_of_Nauru.svg.png,,2025-09-07 15:57:35,0,0,country
+153,Nepal,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Nepal.svg/20px-Flag_of_Nepal.svg.png,,2025-09-07 15:57:35,0,0,country
+154,Netherlands,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/40px-Flag_of_the_Netherlands.svg.png,,2025-09-07 15:57:35,0,0,country
+155,New Caledonia,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_FLNKS.svg/40px-Flag_of_FLNKS.svg.png,,2025-09-07 15:57:35,0,0,country
+156,New Zealand,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_New_Zealand.svg/40px-Flag_of_New_Zealand.svg.png,,2025-09-07 15:57:35,0,0,country
+157,Nicaragua,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Nicaragua.svg/40px-Flag_of_Nicaragua.svg.png,,2025-09-07 15:57:35,0,0,country
+158,Niger,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Niger.svg/20px-Flag_of_Niger.svg.png,,2025-09-07 15:57:35,0,0,country
+159,Nigeria,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/40px-Flag_of_Nigeria.svg.png,,2025-09-07 15:57:35,0,0,country
+160,Niue,partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Niue.svg/40px-Flag_of_Niue.svg.png,,2025-09-07 15:57:35,0,0,country
+161,Norfolk Island,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Norfolk_Island.svg/40px-Flag_of_Norfolk_Island.svg.png,,2025-09-07 15:57:35,0,0,country
+162,North Macedonia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_North_Macedonia.svg/40px-Flag_of_North_Macedonia.svg.png,,2025-09-07 15:57:35,0,0,country
+163,Northern Mariana Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Flag_of_the_Northern_Mariana_Islands.svg/40px-Flag_of_the_Northern_Mariana_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+164,Norway,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/40px-Flag_of_Norway.svg.png,,2025-09-07 15:57:35,0,0,country
+165,Oman,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/250px-Flag_of_Oman.svg.png,,2025-09-07 15:57:35,0,0,country
+166,Pakistan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/250px-Flag_of_Pakistan.svg.png,,2025-09-07 15:57:35,0,0,country
+167,Palau,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Palau.svg/40px-Flag_of_Palau.svg.png,,2025-09-07 15:57:35,0,0,country
+168,Palestine,partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Palestine.svg/40px-Flag_of_Palestine.svg.png,,2025-09-07 15:57:35,0,0,country
+169,Panama,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Flag_of_Panama.svg/40px-Flag_of_Panama.svg.png,,2025-09-07 15:57:35,0,0,country
+170,Papua New Guinea,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Papua_New_Guinea.svg/20px-Flag_of_Papua_New_Guinea.svg.png,,2025-09-07 15:57:35,0,0,country
+171,Paraguay,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Paraguay.svg/40px-Flag_of_Paraguay.svg.png,,2025-09-07 15:57:35,0,0,country
+172,Peru,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Peru.svg/40px-Flag_of_Peru.svg.png,,2025-09-07 15:57:35,0,0,country
+173,Philippines,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/40px-Flag_of_the_Philippines.svg.png,,2025-09-07 15:57:35,0,0,country
+174,Pitcairn Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_the_Pitcairn_Islands.svg/40px-Flag_of_the_Pitcairn_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+175,Poland,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/40px-Flag_of_Poland.svg.png,,2025-09-07 15:57:35,0,0,country
+176,Portugal,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Flag_of_Portugal_%28official%29.svg/40px-Flag_of_Portugal_%28official%29.svg.png,,2025-09-07 15:57:35,0,0,country
+177,Puerto Rico,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_Puerto_Rico.svg/40px-Flag_of_Puerto_Rico.svg.png,,2025-09-07 15:57:35,0,0,country
+178,Qatar,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/250px-Flag_of_Qatar.svg.png,,2025-09-07 15:57:35,0,0,country
+179,Réunion,dependent,0,https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/40px-Flag_of_France.svg.png,,2025-09-07 15:57:35,0,0,country
+180,Romania,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/250px-Flag_of_Romania.svg.png,,2025-09-07 15:57:35,0,0,country
+181,Russia,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/40px-Flag_of_Russia.svg.png,,2025-09-07 15:57:35,0,0,country
+182,Rwanda,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Rwanda.svg/40px-Flag_of_Rwanda.svg.png,,2025-09-07 15:57:35,0,0,country
+183,Saba,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Flag_of_Saba.svg/40px-Flag_of_Saba.svg.png,,2025-09-07 15:57:35,0,0,country
+184,Sahrawi Arab Democratic Republic,partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg/40px-Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg.png,,2025-09-07 15:57:35,0,0,country
+185,Saint Barthélemy,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Saint_Barth%C3%A9lemy_%28Local%29.svg/40px-Flag_of_Saint_Barth%C3%A9lemy_%28Local%29.svg.png,,2025-09-07 15:57:35,0,0,country
+186,"Saint Helena, Ascension and Tristan da Cunha",dependent,0,https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/40px-Flag_of_the_United_Kingdom.svg.png,,2025-09-07 15:57:35,0,0,country
+187,Saint Kitts and Nevis,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Saint_Kitts_and_Nevis.svg/250px-Flag_of_Saint_Kitts_and_Nevis.svg.png,,2025-09-07 15:57:35,0,0,country
+188,Saint Martin,dependent,0,https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/40px-Flag_of_France.svg.png,,2025-09-07 15:57:35,0,0,country
+189,Saint Lucia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Saint_Lucia.svg/40px-Flag_of_Saint_Lucia.svg.png,,2025-09-07 15:57:35,0,0,country
+190,Saint Pierre and Miquelon,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_Saint-Pierre_and_Miquelon.svg/40px-Flag_of_Saint-Pierre_and_Miquelon.svg.png,,2025-09-07 15:57:35,0,0,country
+191,Saint Vincent and the Grenadines,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg/40px-Flag_of_Saint_Vincent_and_the_Grenadines.svg.png,,2025-09-07 15:57:35,0,0,country
+192,Samoa,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Samoa.svg/40px-Flag_of_Samoa.svg.png,,2025-09-07 15:57:35,0,0,country
+193,San Marino,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_San_Marino.svg/20px-Flag_of_San_Marino.svg.png,,2025-09-07 15:57:35,0,0,country
+194,São Tomé and Príncipe,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe.svg/40px-Flag_of_S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe.svg.png,,2025-09-07 15:57:35,0,0,country
+195,Saudi Arabia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/40px-Flag_of_Saudi_Arabia.svg.png,,2025-09-07 15:57:35,0,0,country
+196,Senegal,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_of_Senegal.svg/40px-Flag_of_Senegal.svg.png,,2025-09-07 15:57:35,0,0,country
+197,Serbia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Serbia.svg/40px-Flag_of_Serbia.svg.png,,2025-09-07 15:57:35,0,0,country
+198,Seychelles,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Seychelles.svg/40px-Flag_of_Seychelles.svg.png,,2025-09-07 15:57:35,0,0,country
+199,Sierra Leone,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/40px-Flag_of_Sierra_Leone.svg.png,,2025-09-07 15:57:35,0,0,country
+200,Singapore,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/40px-Flag_of_Singapore.svg.png,,2025-09-07 15:57:35,0,0,country
+201,Sint Maarten,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Sint_Maarten.svg/40px-Flag_of_Sint_Maarten.svg.png,,2025-09-07 15:57:35,0,0,country
+202,Slovakia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/40px-Flag_of_Slovakia.svg.png,,2025-09-07 15:57:35,0,0,country
+203,Slovenia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/40px-Flag_of_Slovenia.svg.png,,2025-09-07 15:57:35,0,0,country
+204,Solomon Islands,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Solomon_Islands.svg/40px-Flag_of_the_Solomon_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+205,Somalia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Somalia.svg/40px-Flag_of_Somalia.svg.png,,2025-09-07 15:57:35,0,0,country
+206,South Africa,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_South_Africa.svg/40px-Flag_of_South_Africa.svg.png,,2025-09-07 15:57:35,0,0,country
+207,South Sudan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_South_Sudan.svg/40px-Flag_of_South_Sudan.svg.png,,2025-09-07 15:57:35,0,0,country
+208,Spain,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Flag_of_Spain.svg/40px-Flag_of_Spain.svg.png,,2025-09-07 15:57:35,0,0,country
+209,Sri Lanka,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Sri_Lanka.svg/40px-Flag_of_Sri_Lanka.svg.png,,2025-09-07 15:57:35,0,0,country
+210,Sint Eustatius,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Sint_Eustatius.svg/40px-Flag_of_Sint_Eustatius.svg.png,,2025-09-07 15:57:35,0,0,country
+211,Sudan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Sudan.svg/40px-Flag_of_Sudan.svg.png,,2025-09-07 15:57:35,0,0,country
+212,Suriname,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Suriname.svg/40px-Flag_of_Suriname.svg.png,,2025-09-07 15:57:35,0,0,country
+213,Svalbard,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/40px-Flag_of_Norway.svg.png,,2025-09-07 15:57:35,0,0,country
+214,Sweden,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/40px-Flag_of_Sweden.svg.png,,2025-09-07 15:57:35,0,0,country
+215,Switzerland,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Switzerland_%28Pantone%29.svg/20px-Flag_of_Switzerland_%28Pantone%29.svg.png,,2025-09-07 15:57:35,0,0,country
+216,Syria,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/40px-Flag_of_Syria_%282025-%29.svg.png,,2025-09-07 15:57:35,0,0,country
+217,Taiwan (Republic of China),partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/40px-Flag_of_the_Republic_of_China.svg.png,,2025-09-07 15:57:35,0,0,country
+218,Tajikistan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Tajikistan.svg/40px-Flag_of_Tajikistan.svg.png,,2025-09-07 15:57:35,0,0,country
+219,Tanzania,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tanzania.svg/40px-Flag_of_Tanzania.svg.png,,2025-09-07 15:57:35,0,0,country
+220,Thailand,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/40px-Flag_of_Thailand.svg.png,,2025-09-07 15:57:35,0,0,country
+221,Togo,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_Togo_%283-2%29.svg/40px-Flag_of_Togo_%283-2%29.svg.png,,2025-09-07 15:57:35,0,0,country
+222,Tokelau,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Flag_of_Tokelau.svg/40px-Flag_of_Tokelau.svg.png,,2025-09-07 15:57:35,0,0,country
+223,Tonga,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Tonga.svg/40px-Flag_of_Tonga.svg.png,,2025-09-07 15:57:35,0,0,country
+224,Trinidad and Tobago,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Trinidad_and_Tobago.svg/40px-Flag_of_Trinidad_and_Tobago.svg.png,,2025-09-07 15:57:35,0,0,country
+225,Tunisia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/40px-Flag_of_Tunisia.svg.png,,2025-09-07 15:57:35,0,0,country
+226,Turkey,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/40px-Flag_of_Turkey.svg.png,,2025-09-07 15:57:35,0,0,country
+227,Turkmenistan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Turkmenistan.svg/40px-Flag_of_Turkmenistan.svg.png,,2025-09-07 15:57:35,0,0,country
+228,Turks and Caicos Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_the_Turks_and_Caicos_Islands.svg/40px-Flag_of_the_Turks_and_Caicos_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+229,Tuvalu,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tuvalu.svg/40px-Flag_of_Tuvalu.svg.png,,2025-09-07 15:57:35,0,0,country
+230,Uganda,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Uganda.svg/250px-Flag_of_Uganda.svg.png,,2025-09-07 15:57:35,0,0,country
+231,Ukraine,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/40px-Flag_of_Ukraine.svg.png,,2025-09-07 15:57:35,0,0,country
+232,United Arab Emirates,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/40px-Flag_of_the_United_Arab_Emirates.svg.png,,2025-09-07 15:57:35,0,0,country
+233,United Kingdom,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/40px-Flag_of_the_United_Kingdom.svg.png,,2025-09-07 15:57:35,0,0,country
+234,United States,UN,0,https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/40px-Flag_of_the_United_States.svg.png,,2025-09-07 15:57:35,0,0,country
+235,United States Virgin Islands,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_the_United_States_Virgin_Islands.svg/40px-Flag_of_the_United_States_Virgin_Islands.svg.png,,2025-09-07 15:57:35,0,0,country
+236,Uruguay,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Uruguay.svg/40px-Flag_of_Uruguay.svg.png,,2025-09-07 15:57:35,0,0,country
+237,Uzbekistan,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Uzbekistan.svg/40px-Flag_of_Uzbekistan.svg.png,,2025-09-07 15:57:35,0,0,country
+238,Vanuatu,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Vanuatu.svg/250px-Flag_of_Vanuatu.svg.png,,2025-09-07 15:57:35,0,0,country
+239,Vatican City,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Flag_of_Vatican_City_%282023%E2%80%93present%29.svg/20px-Flag_of_Vatican_City_%282023%E2%80%93present%29.svg.png,,2025-09-07 15:57:35,0,0,country
+240,Venezuela,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Venezuela.svg/40px-Flag_of_Venezuela.svg.png,,2025-09-07 15:57:35,0,0,country
+241,Vietnam,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/40px-Flag_of_Vietnam.svg.png,,2025-09-07 15:57:35,0,0,country
+242,Wallis and Futuna,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Flag_of_Wallis_and_Futuna.svg/40px-Flag_of_Wallis_and_Futuna.svg.png,,2025-09-07 15:57:35,0,0,country
+243,Yemen,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Yemen.svg/250px-Flag_of_Yemen.svg.png,,2025-09-07 15:57:35,0,0,country
+244,Zambia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Zambia.svg/250px-Flag_of_Zambia.svg.png,,2025-09-07 15:57:35,0,0,country
+245,Zimbabwe,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Zimbabwe.svg/250px-Flag_of_Zimbabwe.svg.png,,2025-09-07 15:57:35,0,0,country

@@ -144,6 +144,27 @@ const MainWrapper = () => {
     }),
   });
 
+  const {
+    data: seasonData,
+    isLoading: isSeasonLoading,
+    refetch: refetchSeason,
+    error: seasonError,
+  } = useQuery({
+    queryKey: ["currentSeason"],
+    refetchOnWindowFocus: false,
+    queryFn: async () => {
+      const res = await request("seasons/current");
+      return res.data;
+    },
+    select: (data) => ({
+      id: data.id,
+      title: data.title,
+      start_date: data.start_date,
+      end_date: data.end_date,
+      prizes: data.prizes,
+    }),
+  });
+
   // TRAINING GAME
   const {
     data: game,
@@ -289,7 +310,8 @@ const MainWrapper = () => {
       } else {
         setShowModal("error");
       }
-      setTrainingGameStarted(false); // prevent UI from progressing if error occurs
+      setTrainingGameStarted(false);
+      setCasualGameStarted(false);
     }
   }, [gameError]);
 
@@ -587,6 +609,9 @@ const MainWrapper = () => {
         isFullscreen={isFullscreenState}
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
+        season={seasonData}
+        isSeasonLoading={isSeasonLoading}
+        seasonError={seasonError}
       />
     );
   };
@@ -614,26 +639,39 @@ const MainWrapper = () => {
     </div>
   );
 
-  // RENDER: Game Screenr
+  // RENDER: Training Game Screen
   const renderTrainingGameScreen = () => {
     const question = game?.questions[currentQuestionIndex];
     if (!question) return null;
+
     return (
-      <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center">
-        <div className="flex flex-col items-center justify-center text-white px-4">
+      <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center flex justify-center items-center">
+        <div className="flex flex-col items-center justify-center text-white px-4 bg-background w-98 py-4 border border-grey-2 rounded">
+          <div className="w-full h-2 bg-grey-2 rounded-full overflow-hidden mb-4">
+            <div
+              className="h-full bg-primary transition-all duration-300"
+              style={{
+                width: `${
+                  ((currentQuestionIndex + 1) / game.questions.length) * 100
+                }%`,
+              }}
+            />
+          </div>
+
           <h2 className="text-2xl font-bold mb-4">
             {t("question")} {currentQuestionIndex + 1}
           </h2>
-          <div className="w-44 h-22 flex flex-col items-center justify-center my-4.5">
+
+          <div className="w-44 h-22 flex flex-col items-center justify-center my-12">
             <img
               src={question.image}
               alt="Flag"
               className="w-full h-full object-contain mb-4"
             />
           </div>
+
           {selectedGamemode === "choose" ? (
-            // buttons
-            <div className="flex flex-col gap-2 w-90 justify-center items-center">
+            <div className="flex flex-col gap-2 w-full justify-center items-center">
               {question.options.map((opt: string, idx: number) => {
                 const isCorrectAnswer = opt === question.answer;
                 const isSelected = selectedOption === opt;
@@ -644,8 +682,6 @@ const MainWrapper = () => {
                     btnClass = "bg-green-600";
                   } else if (isSelected) {
                     btnClass = "bg-red-600";
-                  } else {
-                    btnClass = "bg-primary/10";
                   }
                 }
 
@@ -654,7 +690,7 @@ const MainWrapper = () => {
                     key={idx}
                     disabled={!!selectedOption}
                     onClick={() => handleTrainingAnswer(opt)}
-                    className={`btn rounded-md  ${btnClass}`}
+                    className={`py-4 px-2 rounded-md w-90 ${btnClass}`}
                   >
                     {t(opt)}
                   </button>
@@ -662,46 +698,40 @@ const MainWrapper = () => {
               })}
             </div>
           ) : (
-            // input
             <div className="flex flex-col gap-4 w-full max-w-xs">
               <input
                 type="text"
                 value={typedAnswer}
                 onChange={(e) => setTypedAnswer(e.target.value)}
                 disabled={!!selectedOption}
-                className={`
-      px-4 py-3 rounded-lg w-full transition-all bg-primary/10
-      ${
-        selectedOption
-          ? isCorrect
-            ? "border-green-500 bg-green-100 text-black"
-            : "border-red-500 bg-red-100 text-black"
-          : "border-gray-300"
-      }
-    `}
+                className={`px-4 py-3 rounded-lg w-full transition-all bg-primary/10
+                ${
+                  selectedOption
+                    ? isCorrect
+                      ? "border-green-500 bg-green-100 text-black"
+                      : "border-red-500 bg-red-100 text-black"
+                    : "border-gray-300"
+                }`}
                 placeholder={t("type_your_answer")}
               />
 
               <button
                 onClick={() => handleTrainingAnswer(typedAnswer.trim())}
                 disabled={!!selectedOption || !typedAnswer.trim()}
-                className={`
-      font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
-      ${
-        selectedOption
-          ? isCorrect
-            ? "bg-green-600 hover:bg-green-700"
-            : "bg-red-600 hover:bg-red-700"
-          : "bg-primary hover:bg-blue-700"
-      }
-      btn
-    `}
+                className={`font-medium rounded-lg text-sm px-6 py-3 text-center transition-all
+                ${
+                  selectedOption
+                    ? isCorrect
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-red-600 hover:bg-red-700"
+                    : "bg-primary hover:bg-blue-700"
+                } btn`}
               >
                 {selectedOption
                   ? isCorrect
                     ? "✅ Correct!"
                     : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
-                  : "Submit"}
+                  : t("submit")}
               </button>
             </div>
           )}
@@ -892,6 +922,9 @@ const MainWrapper = () => {
             headerStyle={headerStyle}
             headerStyleFullscreen={headerStyleFullscreen}
             note={t("casual_note")}
+            showModal={showModal}
+            setShowModal={setShowModal}
+            setShowBuyTries={setShowBuyTries}
           />
         </motion.div>
       </AnimatePresence>

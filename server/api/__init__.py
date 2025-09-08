@@ -7,6 +7,7 @@ from . import (
     training_results,
     users,
     payment,
+    season,
 )
 
 
@@ -20,4 +21,5 @@ def setup_routers() -> APIRouter:
     router.include_router(match.router)
     router.include_router(payment.router)
     router.include_router(tournament.router)
+    router.include_router(season.router)
     return router

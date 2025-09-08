@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user, calculate_multiplier, answer_map
 from fuzzywuzzy import process
+from math import ceil
 
 router = APIRouter(prefix="/api/games", dependencies=[Depends(auth)])
 
@@ -16,47 +17,24 @@ async def casual_start(
     num_questions: int = Query(..., gt=0),
     category: str = Query(None),
     gamemode: str = Query(None),
-    tags: str = Query(""),
     auth_data: WebAppInitData = Depends(auth),
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
-    tags = [tag.strip() for tag in tags.split(",") if tag.strip()] if tags else []
-
-    tag_weights = {
-        "UN": 0.8,
-        "Europe": 0.9,
-        "Asia": 1.0,
-        "Africa": 1.3,
-        "North America": 1.0,
-        "South America": 1.3,
-        "landlocked": 1.2,
-    }
-
-    def calculate_difficulty_multiplier(selected_tags: List[str]) -> float:
-        if not selected_tags or set(selected_tags) == set(tag_weights.keys()):
-            return 1.0
-        total = sum(tag_weights.get(tag, 1.0) for tag in selected_tags)
-        avg = total / len(selected_tags)
-        return round(avg, 2)
 
     if user.tries_left <= 0:
         raise HTTPException(status_code=403, detail="No tries left")
 
-    question_list = await create_casual_questions(
-        num_questions, category, gamemode, tags
-    )
-    difficulty_multiplier = calculate_difficulty_multiplier(tags)
-
+    question_list = await create_casual_questions(num_questions, category, gamemode)
+    difficulty_multiplier = 1 if gamemode == "choose" else 1.5
+    print(question_list)
     match = await Match.create(
         user=user,
         num_questions=num_questions,
         questions=question_list,
         started_at=datetime.now(timezone.utc),
-        current_question_started_at=datetime.now(
-            timezone.utc
-        ),  # <-- start first question timer
+        current_question_started_at=datetime.now(timezone.utc),
         gamemode=gamemode,
-        tags=tags,
+        tags=[""],
         difficulty_multiplier=difficulty_multiplier,
         base_score=0,
     )
@@ -80,41 +58,55 @@ async def casual_start(
 
 
 async def create_casual_questions(
-    num_questions: int, category: str, gamemode: str, tags: List[str]
+    num_questions: int, category: str, gamemode: str
 ) -> List[dict]:
     list_length = int(num_questions)
-
-    # Step 1: Get flags by category or all flags
-    if category and category != "frenzy":
-        all_flags = await Flag.filter(category=category).prefetch_related("tags")
+    if category == "cis":
+        all_flags = await Flag.filter(
+            category__in=["ru_regions", "ua_regions", "by_regions"]
+        )
+    elif category and category != "frenzy":
+        all_flags = await Flag.filter(category=category)
     else:
-        all_flags = await Flag.all().prefetch_related("tags")
-    # Step 2: Filter flags by tags if any
-    if tags:
-        filtered_flags = []
-        tags_set = set(tags)
-        for flag in all_flags:
-            flag_tags = {tag.name for tag in getattr(flag, "tags", [])}
-            if tags_set.intersection(flag_tags):
-                filtered_flags.append(flag)
-        all_flags = filtered_flags
-
+        all_flags = await Flag.all()
+        
     if len(all_flags) < list_length:
         raise HTTPException(
             status_code=400, detail="Not enough flags to create questions"
         )
 
-    # Step 3: Choose random flags for questions
-    question_flags = sample(all_flags, list_length)
+    # Step 2: Разделяем флаги по сложности
+    easy_flags = [f for f in all_flags if f.difficulty <= 0.33]
+    medium_flags = [f for f in all_flags if 0.34 <= f.difficulty <= 0.66]
+    hard_flags = [f for f in all_flags if f.difficulty > 0.66]
 
+    # Step 3: Рассчитываем количество вопросов каждого типа
+    num_easy = ceil(list_length * 0.33)
+    num_medium = ceil(list_length * 0.33)
+    num_hard = list_length - num_easy - num_medium  # остаток
+
+    def sample_flags(pool, count):
+        if len(pool) >= count:
+            return sample(pool, count)
+        else:
+            # если не хватает, добираем случайными из всех флагов
+            needed = count - len(pool)
+            extra = sample([f for f in all_flags if f not in pool], needed)
+            return pool + extra
+
+    selected_flags = []
+    selected_flags += sample_flags(easy_flags, num_easy)
+    selected_flags += sample_flags(medium_flags, num_medium)
+    selected_flags += sample_flags(hard_flags, num_hard)
+
+    shuffle(selected_flags)
+
+    # Step 4: Формируем вопросы
     questions = []
-    for flag in question_flags:
-        # Prepare incorrect options from all_flags except the correct flag
+    for flag in selected_flags:
         incorrect_pool = [f for f in all_flags if f.id != flag.id]
-
         if len(incorrect_pool) < 6:
             raise HTTPException(status_code=400, detail="Not enough flags for options")
-
         incorrect_options = sample(incorrect_pool, 6)
         options = [f.name for f in incorrect_options] + [flag.name]
         shuffle(options)
@@ -126,9 +118,9 @@ async def create_casual_questions(
                 "options": options,
                 "mode": gamemode,
                 "answer": flag.name,
+                "difficulty": flag.difficulty,
             }
         )
-
     return questions
 
 
@@ -278,8 +270,13 @@ async def answer(
     await update_flag_stats(question["flag_id"], is_correct)
 
     if is_correct:
-        match.base_score += 1
-        match.score = round(match.base_score * match.difficulty_multiplier)
+        difficulty = question.get("difficulty", 0.33)
+        points = ceil(difficulty * 3)  # 1–3 очка
+    else:
+        points = 0
+
+    match.base_score += points
+    match.score = round(match.base_score * match.difficulty_multiplier)
 
     match.current_question_idx += 1
 

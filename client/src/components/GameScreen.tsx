@@ -76,7 +76,7 @@ const GameScreen = ({
 
                 const isUserPick = normalizedOpt === normalizedUserPick;
                 const isRightAnswer = normalizedOpt === normalizedCorrect;
-                
+
                 if (isUserPick && isCorrect) {
                   btnClass = "bg-green-600";
                 } else if (isUserPick && !isCorrect) {

@@ -2,6 +2,8 @@ import Header from "./Header";
 import { useTranslation } from "react-i18next";
 import BottomModal from "./BottomModal";
 import type { IUser } from "../interfaces/IUser";
+import { FaBolt } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 interface HomeScreenProps {
   user: IUser | undefined;
@@ -14,6 +16,28 @@ interface HomeScreenProps {
   isFullscreenState: boolean;
   headerStyle: string;
   headerStyleFullscreen: string;
+}
+
+function AttemptsDisplay({ attempts }: { attempts: number }) {
+  const maxFree = 5;
+
+  const filled = Math.min(attempts, maxFree);
+  const empty = maxFree - filled;
+  const extra = Math.max(0, attempts - maxFree);
+
+  return (
+    <div className="flex items-center gap-1">
+      {[...Array(filled)].map((_, i) => (
+        <FaBolt key={`f-${i}`} className="text-blue-400 w-4 h-4" />
+      ))}
+      {[...Array(empty)].map((_, i) => (
+        <FaBolt key={`e-${i}`} className="text-gray-500 w-4 h-4" />
+      ))}
+      {[...Array(extra)].map((_, i) => (
+        <FaBolt key={`x-${i}`} className="text-green-400 w-4 h-4" />
+      ))}
+    </div>
+  );
 }
 
 export default function HomeScreen({
@@ -38,29 +62,88 @@ export default function HomeScreen({
         headerStyleFullscreen={headerStyleFullscreen}
         title={t("home")}
       >
-        <p
-          className="bg-primary border-0 rounded-2xl py-1.5 px-3 text-xs"
+        <button
+          className="border border-primary rounded-2xl py-1 px-3 flex items-center gap-2"
           onClick={() => setShowBuyTries(true)}
         >
-          {t("tries_left")}: {user?.tries_left}
-        </p>
+          <motion.div
+            className=""
+            style={{ transformOrigin: "right" }}
+            animate={{
+              y: [0, -0.1, 0, 0.2, 0],
+              x: [0, -0.2, 0, 0.1, 0],
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+            }}
+          >
+            <AttemptsDisplay attempts={user?.tries_left ?? 0} />
+          </motion.div>
+        </button>
       </Header>
 
       <div className="flex flex-col justify-center items-center w-full px-4 py-6 flex-grow content-center">
         <div className="mb-12">
           <h1 className="text-center mb-6">
             <div className="text-xs font-semibold mb-2">
-              {user?.name}, {t("welcome")}
+              <motion.div
+                className=""
+                style={{ transformOrigin: "right" }}
+                animate={{
+                  y: [0, -5, 0, 5, 0],
+                  scale: [1, 1.05, 1, 1.05, 1],
+                  rotate: [0, -2, 0, 2, 0],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                {user?.name}, {t("welcome")}
+              </motion.div>
             </div>
-            <div className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg py-5">
-              Guess Flags
+
+            <div className="flex justify-center">
+              <motion.div
+                className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight drop-shadow-lg py-5"
+                style={{ transformOrigin: "right" }}
+                animate={{
+                  y: [0, -5, 0, 5, 0],
+                  scale: [1, 1.05, 1, 1.05, 1],
+                  rotate: [0, -2, 0, 2, 0],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              >
+                Guess Flags
+              </motion.div>
             </div>
           </h1>
-          <img
-            src="/placeholder.png"
-            className="mx-auto w-77 object-contain rounded-lg"
-            alt="Guess Flags"
-          />
+          <motion.div
+            className=""
+            style={{ transformOrigin: "center" }}
+            animate={{
+              y: [0, -7, 0, 7, 0],
+              scale: [1, 1.07, 1, 1.07, 1],
+              rotate: [0, -2, 0, 2, 0],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <img
+              src="/placeholder.png"
+              className="mx-auto w-77 object-contain rounded-lg"
+              alt="Guess Flags"
+            />
+          </motion.div>
         </div>
 
         <div className="flex flex-col items-center gap-3 mb-6 w-90">
@@ -81,7 +164,7 @@ export default function HomeScreen({
           <button
             onClick={() => setShowModal("error")}
             type="button"
-            className="btn btn-regular w-full"
+            className="btn btn-regular w-full btn-disabled"
           >
             {t("rating")}
           </button>

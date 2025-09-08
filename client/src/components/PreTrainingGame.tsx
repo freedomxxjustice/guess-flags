@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { backButton } from "@telegram-apps/sdk";
 import Header from "./Header";
+import {
+  WheelPicker,
+  WheelPickerWrapper,
+  type WheelPickerOption,
+} from "@ncdai/react-wheel-picker";
 
 type GameFilterProps = {
   onStart: (
@@ -17,7 +22,7 @@ type GameFilterProps = {
   note: string;
 };
 
-const possibleNumQuestions = [5, 10, 15];
+const possibleNumQuestions = ["5", "10", "15"];
 const possibleCategories = ["country", "frenzy"];
 const possibleGamemodes = ["choose", "enter"];
 const possibleTags = [
@@ -40,9 +45,9 @@ function PreTrainingGame({
 }: GameFilterProps) {
   const { t } = useTranslation();
 
-  const [selectedNumQuestions, setSelectedNumQuestions] = useState<
-    number | null
-  >(possibleNumQuestions[0]);
+  const [selectedNumQuestions, setSelectedNumQuestions] = useState<string>(
+    possibleNumQuestions[0]
+  );
   const [selectedCategory, setSelectedCategory] = useState<string>(
     possibleCategories[0]
   );
@@ -50,36 +55,42 @@ function PreTrainingGame({
     possibleGamemodes[0]
   );
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [multiplierTotal, setMultiplierTotal] = useState<number>(1.2);
+
+  const numQuestionsOptions: WheelPickerOption[] = [
+    {
+      label: "5",
+      value: "5",
+    },
+    {
+      label: "10",
+      value: "10",
+    },
+    {
+      label: "15",
+      value: "15",
+    },
+  ];
+  const categoryOptions: WheelPickerOption[] = [
+    {
+      label: t("country"),
+      value: "countries",
+    },
+    {
+      label: t("frenzy"),
+      value: "frenzy",
+    },
+  ];
+  const gamemodeOptions: WheelPickerOption[] = [
+    {
+      label: t("choose"),
+      value: "choose",
+    },
+    {
+      label: t("enter"),
+      value: "enter",
+    },
+  ];
   backButton.onClick(onBack);
-
-  const tagWeights: Record<string, number> = {
-    UN: 0.8,
-    Europe: 0.9,
-    Asia: 1.0,
-    Africa: 1.3,
-    "North America": 1.0,
-    "South America": 1.3,
-    landlocked: 1.1,
-  };
-
-  useEffect(() => {
-    const newMultiplier = calculateMultiplier(selectedTags);
-    setMultiplierTotal(newMultiplier);
-  }, [selectedTags]);
-
-  const calculateMultiplier = (selectedTags: string[]): number => {
-    if (
-      selectedTags.length === 0 ||
-      selectedTags.length === possibleTags.length
-    ) {
-      return 1.2;
-    }
-
-    const total = selectedTags.reduce((acc, tag) => acc + tagWeights[tag], 0);
-    const avg = total / selectedTags.length;
-    return parseFloat(avg.toFixed(2));
-  };
 
   return (
     <div className="min-h-screen h-50 overflow-auto">
@@ -98,61 +109,49 @@ function PreTrainingGame({
           <legend className="text-2xl font-bold text-center text-white">
             {t("choose_number_of_questions")}
           </legend>
-          <div className="flex justify-center gap-4 flex-wrap">
-            {possibleNumQuestions.map((num) => (
-              <button
-                key={num}
-                onClick={() => setSelectedNumQuestions(num)}
-                className={`${
-                  selectedNumQuestions === num
-                    ? "btn-regular"
-                    : "btn-not-selected"
-                } btn`}
-              >
-                {num}
-              </button>
-            ))}
-          </div>
+          <WheelPickerWrapper className="w-16 rounded-md bg-background">
+            <WheelPicker
+              options={numQuestionsOptions}
+              value={selectedNumQuestions}
+              onValueChange={setSelectedNumQuestions}
+              classNames={{
+                optionItem: "text-zinc-400 dark:text-zinc-500",
+                highlightWrapper: "bg-primary",
+              }}
+            />
+          </WheelPickerWrapper>
         </fieldset>
-
         <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-grey-2">
           <legend className="text-2xl font-bold text-center text-white">
             {t("choose_category")}
           </legend>
-          <div className="flex justify-center gap-4 flex-wrap">
-            {possibleCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`${
-                  selectedCategory === category
-                    ? "btn-regular"
-                    : "btn-not-selected"
-                } btn`}
-              >
-                {t(category)}
-              </button>
-            ))}
-          </div>
+          <WheelPickerWrapper className="w-16 rounded-md bg-background">
+            <WheelPicker
+              options={categoryOptions}
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+              classNames={{
+                optionItem: "text-zinc-400 dark:text-zinc-500",
+                highlightWrapper: "bg-primary",
+              }}
+            />
+          </WheelPickerWrapper>
         </fieldset>
-
         <fieldset className="w-full max-w-md px-6 py-2 bg-background rounded-md border border-grey-2">
           <legend className="text-2xl font-bold text-center text-white">
             {t("choose_gamemode")}
           </legend>
-          <div className="flex justify-center gap-4 flex-wrap">
-            {possibleGamemodes.map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setSelectedGamemode(mode)}
-                className={`${
-                  selectedGamemode === mode ? "btn-regular" : "btn-not-selected"
-                } btn`}
-              >
-                {t(mode)}
-              </button>
-            ))}
-          </div>
+          <WheelPickerWrapper className="w-16 rounded-md bg-background">
+            <WheelPicker
+              options={gamemodeOptions}
+              value={selectedGamemode}
+              onValueChange={setSelectedGamemode}
+              classNames={{
+                optionItem: "text-zinc-400 dark:text-zinc-500",
+                highlightWrapper: "bg-primary",
+              }}
+            />
+          </WheelPickerWrapper>
         </fieldset>
 
         <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-grey-2">
@@ -183,7 +182,7 @@ function PreTrainingGame({
                   <div
                     className={`
                     w-5 h-5 flex items-center justify-center border-2 rounded 
-                    ${checked ? "border-green-500 bg-green-100" : "border-grey"}
+                    ${checked ? "bg-primary/10" : "border-grey"}
                     transition-colors
                     hover:border-green-400
                   `}
@@ -192,7 +191,7 @@ function PreTrainingGame({
                     {checked && (
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4 text-green-600"
+                        className="w-4 h-4 text-primary"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -214,12 +213,17 @@ function PreTrainingGame({
             })}
           </div>
         </fieldset>
-
+        <div id="note" className="py-3 px-4 bg-grey-2/10 backdrop-blur-md">
+          <h1 className="text-grey text-left text-xs">{t("note")}</h1>
+          <p className="text-white text-xs text-justify">
+            {t("casual_mode_rules")}
+          </p>
+        </div>
         <button
           onClick={() =>
             selectedNumQuestions &&
             onStart(
-              selectedNumQuestions,
+              Number(selectedNumQuestions),
               selectedCategory,
               selectedGamemode,
               selectedTags

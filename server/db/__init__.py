@@ -11,3 +11,9 @@ from .models.tournament import (
     TournamentPrize,
     TournamentPrizeSchema,
 )
+from .models.season import (
+    Season,
+    SeasonSchema,
+    SeasonPrize,
+    SeasonPrizeSchema
+)

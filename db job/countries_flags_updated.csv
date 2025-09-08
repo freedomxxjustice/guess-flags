@@ -1,0 +1,246 @@
+id,name,description,difficulty,image,emoji,created_at,total_shown,total_correct,category
+1,Afghanistan,UN,0,"""https://flagpedia.net/data/flags/h80/af.png?v=un""",,2025-09-07 15:57:35,0,0,country
+2,Albania,UN,0,"""https://flagpedia.net/data/flags/h80/al.png""",,2025-09-07 15:57:35,0,0,country
+3,Algeria,UN,0,"""https://flagpedia.net/data/flags/h80/dz.png""",,2025-09-07 15:57:35,0,0,country
+4,American Samoa,dependent,0,"""https://flagpedia.net/data/flags/h80/as.png""",,2025-09-07 15:57:35,0,0,country
+5,Andorra,UN,0,"""https://flagpedia.net/data/flags/h80/ad.png""",,2025-09-07 15:57:35,0,0,country
+6,Angola,UN,0,"""https://flagpedia.net/data/flags/h80/ao.png""",,2025-09-07 15:57:35,0,0,country
+7,Anguilla,dependent,0,"""https://flagpedia.net/data/flags/h80/ai.png""",,2025-09-07 15:57:35,0,0,country
+8,Antigua and Barbuda,UN,0,"""https://flagpedia.net/data/flags/h80/ag.png""",,2025-09-07 15:57:35,0,0,country
+9,Argentina,UN,0,"""https://flagpedia.net/data/flags/h80/ar.png""",,2025-09-07 15:57:35,0,0,country
+10,Armenia,UN,0,"""https://flagpedia.net/data/flags/h80/am.png""",,2025-09-07 15:57:35,0,0,country
+11,Aruba,dependent,0,"""https://flagpedia.net/data/flags/h80/aw.png""",,2025-09-07 15:57:35,0,0,country
+12,Australia,UN,0,"""https://flagpedia.net/data/flags/h80/au.png""",,2025-09-07 15:57:35,0,0,country
+13,Austria,UN,0,"""https://flagpedia.net/data/flags/h80/at.png""",,2025-09-07 15:57:35,0,0,country
+14,Åland,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Flag_of_%C3%85land.svg/40px-Flag_of_%C3%85land.svg.png,,2025-09-07 15:57:35,0,0,country
+15,Azerbaijan,UN,0,"""https://flagpedia.net/data/flags/h80/az.png""",,2025-09-07 15:57:35,0,0,country
+16,The Bahamas,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/40px-Flag_of_the_Bahamas.svg.png,,2025-09-07 15:57:35,0,0,country
+17,Bahrain,UN,0,"""https://flagpedia.net/data/flags/h80/bh.png""",,2025-09-07 15:57:35,0,0,country
+18,Bangladesh,UN,0,"""https://flagpedia.net/data/flags/h80/bd.png""",,2025-09-07 15:57:35,0,0,country
+19,Barbados,UN,0,"""https://flagpedia.net/data/flags/h80/bb.png""",,2025-09-07 15:57:35,0,0,country
+20,Belarus,UN,0,"""https://flagpedia.net/data/flags/h80/by.png""",,2025-09-07 15:57:35,0,0,country
+21,Belgium,UN,0,"""https://flagpedia.net/data/flags/h80/be.png""",,2025-09-07 15:57:35,0,0,country
+22,Belize,UN,0,"""https://flagpedia.net/data/flags/h80/bz.png""",,2025-09-07 15:57:35,0,0,country
+23,Benin,UN,0,"""https://flagpedia.net/data/flags/h80/bj.png""",,2025-09-07 15:57:35,0,0,country
+24,Bermuda,dependent,0,"""https://flagpedia.net/data/flags/h80/bm.png""",,2025-09-07 15:57:35,0,0,country
+25,Bhutan,UN,0,"""https://flagpedia.net/data/flags/h80/bt.png""",,2025-09-07 15:57:35,0,0,country
+26,Bolivia,UN,0,"""https://flagpedia.net/data/flags/h80/bo.png""",,2025-09-07 15:57:35,0,0,country
+27,Bonaire,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_Bonaire.svg/40px-Flag_of_Bonaire.svg.png,,2025-09-07 15:57:35,0,0,country
+28,Bosnia and Herzegovina,UN,0,"""https://flagpedia.net/data/flags/h80/ba.png""",,2025-09-07 15:57:35,0,0,country
+29,Botswana,UN,0,"""https://flagpedia.net/data/flags/h80/bw.png""",,2025-09-07 15:57:35,0,0,country
+30,Brazil,UN,0,"""https://flagpedia.net/data/flags/h80/br.png""",,2025-09-07 15:57:35,0,0,country
+31,British Virgin Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/vg.png""",,2025-09-07 15:57:35,0,0,country
+32,Brunei,UN,0,"""https://flagpedia.net/data/flags/h80/bn.png""",,2025-09-07 15:57:35,0,0,country
+33,Bulgaria,UN,0,"""https://flagpedia.net/data/flags/h80/bg.png""",,2025-09-07 15:57:35,0,0,country
+34,Burkina Faso,UN,0,"""https://flagpedia.net/data/flags/h80/bf.png""",,2025-09-07 15:57:35,0,0,country
+35,Burundi,UN,0,"""https://flagpedia.net/data/flags/h80/bi.png""",,2025-09-07 15:57:35,0,0,country
+36,Cambodia,UN,0,"""https://flagpedia.net/data/flags/h80/kh.png""",,2025-09-07 15:57:35,0,0,country
+37,Cameroon,UN,0,"""https://flagpedia.net/data/flags/h80/cm.png""",,2025-09-07 15:57:35,0,0,country
+38,Canada,UN,0,"""https://flagpedia.net/data/flags/h80/ca.png""",,2025-09-07 15:57:35,0,0,country
+39,Cape Verde,UN,0,"""https://flagpedia.net/data/flags/h80/cv.png""",,2025-09-07 15:57:35,0,0,country
+40,Cayman Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/ky.png""",,2025-09-07 15:57:35,0,0,country
+41,Central African Republic,UN,0,"""https://flagpedia.net/data/flags/h80/cf.png""",,2025-09-07 15:57:35,0,0,country
+42,Chad,UN,0,"""https://flagpedia.net/data/flags/h80/td.png""",,2025-09-07 15:57:35,0,0,country
+43,Chile,UN,0,"""https://flagpedia.net/data/flags/h80/cl.png""",,2025-09-07 15:57:35,0,0,country
+44,China (People's Republic of),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/40px-Flag_of_the_People%27s_Republic_of_China.svg.png,,2025-09-07 15:57:35,0,0,country
+45,Christmas Island,dependent,0,"""https://flagpedia.net/data/flags/h80/cx.png""",,2025-09-07 15:57:35,0,0,country
+46,Cocos Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/cc.png""",,2025-09-07 15:57:35,0,0,country
+47,Colombia,UN,0,"""https://flagpedia.net/data/flags/h80/co.png""",,2025-09-07 15:57:35,0,0,country
+48,Comoros,UN,0,"""https://flagpedia.net/data/flags/h80/km.png""",,2025-09-07 15:57:35,0,0,country
+49,Republic of the Congo,UN,0,"""https://flagpedia.net/data/flags/h80/cg.png""",,2025-09-07 15:57:35,0,0,country
+50,Democratic Republic of the Congo,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/20px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png,,2025-09-07 15:57:35,0,0,country
+51,Cook Islands,partial-recognition,0,"""https://flagpedia.net/data/flags/h80/ck.png""",,2025-09-07 15:57:35,0,0,country
+52,Costa Rica,UN,0,"""https://flagpedia.net/data/flags/h80/cr.png""",,2025-09-07 15:57:35,0,0,country
+53,Côte d'Ivoire(formerly Ivory Coast),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/40px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,,2025-09-07 15:57:35,0,0,country
+54,Croatia,UN,0,"""https://flagpedia.net/data/flags/h80/hr.png""",,2025-09-07 15:57:35,0,0,country
+55,Cuba,UN,0,"""https://flagpedia.net/data/flags/h80/cu.png""",,2025-09-07 15:57:35,0,0,country
+56,Curaçao,dependent,0,"""https://flagpedia.net/data/flags/h80/cw.png""",,2025-09-07 15:57:35,0,0,country
+57,Cyprus,UN,0,"""https://flagpedia.net/data/flags/h80/cy.png""",,2025-09-07 15:57:35,0,0,country
+58,Czech Republic,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/40px-Flag_of_the_Czech_Republic.svg.png,,2025-09-07 15:57:35,0,0,country
+59,Denmark,UN,0,"""https://flagpedia.net/data/flags/h80/dk.png""",,2025-09-07 15:57:35,0,0,country
+60,Djibouti,UN,0,"""https://flagpedia.net/data/flags/h80/dj.png""",,2025-09-07 15:57:35,0,0,country
+61,Dominica,UN,0,"""https://flagpedia.net/data/flags/h80/dm.png""",,2025-09-07 15:57:35,0,0,country
+62,Dominican Republic,UN,0,"""https://flagpedia.net/data/flags/h80/do.png""",,2025-09-07 15:57:35,0,0,country
+63,East Timor,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/40px-Flag_of_East_Timor.svg.png,,2025-09-07 15:57:35,0,0,country
+64,Ecuador,UN,0,"""https://flagpedia.net/data/flags/h80/ec.png""",,2025-09-07 15:57:35,0,0,country
+65,Egypt,UN,0,"""https://flagpedia.net/data/flags/h80/eg.png""",,2025-09-07 15:57:35,0,0,country
+66,El Salvador,UN,0,"""https://flagpedia.net/data/flags/h80/sv.png""",,2025-09-07 15:57:35,0,0,country
+67,Equatorial Guinea,UN,0,"""https://flagpedia.net/data/flags/h80/gq.png""",,2025-09-07 15:57:35,0,0,country
+68,Eritrea,UN,0,"""https://flagpedia.net/data/flags/h80/er.png""",,2025-09-07 15:57:35,0,0,country
+69,Estonia,UN,0,"""https://flagpedia.net/data/flags/h80/ee.png""",,2025-09-07 15:57:35,0,0,country
+70,Eswatini(formerly Swaziland),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_Eswatini.svg/40px-Flag_of_Eswatini.svg.png,,2025-09-07 15:57:35,0,0,country
+71,Ethiopia,UN,0,"""https://flagpedia.net/data/flags/h80/et.png""",,2025-09-07 15:57:35,0,0,country
+72,Falkland Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/fk.png""",,2025-09-07 15:57:35,0,0,country
+73,Faroe Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/fo.png""",,2025-09-07 15:57:35,0,0,country
+74,Fiji,UN,0,"""https://flagpedia.net/data/flags/h80/fj.png""",,2025-09-07 15:57:35,0,0,country
+75,Finland,UN,0,"""https://flagpedia.net/data/flags/h80/fi.png""",,2025-09-07 15:57:35,0,0,country
+76,France,UN,0,"""https://flagpedia.net/data/flags/h80/fr.png""",,2025-09-07 15:57:35,0,0,country
+77,French Guiana,dependent,0,"""https://flagpedia.net/data/flags/h80/gf.png""",,2025-09-07 15:57:35,0,0,country
+78,French Polynesia,dependent,0,"""https://flagpedia.net/data/flags/h80/pf.png""",,2025-09-07 15:57:35,0,0,country
+79,Gabon,UN,0,"""https://flagpedia.net/data/flags/h80/ga.png""",,2025-09-07 15:57:35,0,0,country
+80,The Gambia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_The_Gambia.svg/40px-Flag_of_The_Gambia.svg.png,,2025-09-07 15:57:35,0,0,country
+81,Georgia,UN,0,"""https://flagpedia.net/data/flags/h80/ge.png""",,2025-09-07 15:57:35,0,0,country
+82,Germany,UN,0,"""https://flagpedia.net/data/flags/h80/de.png""",,2025-09-07 15:57:35,0,0,country
+83,Ghana,UN,0,"""https://flagpedia.net/data/flags/h80/gh.png""",,2025-09-07 15:57:35,0,0,country
+84,Gibraltar,dependent,0,"""https://flagpedia.net/data/flags/h80/gi.png""",,2025-09-07 15:57:35,0,0,country
+85,Greece,UN,0,"""https://flagpedia.net/data/flags/h80/gr.png""",,2025-09-07 15:57:35,0,0,country
+86,Greenland,dependent,0,"""https://flagpedia.net/data/flags/h80/gl.png""",,2025-09-07 15:57:35,0,0,country
+87,Grenada,UN,0,"""https://flagpedia.net/data/flags/h80/gd.png""",,2025-09-07 15:57:35,0,0,country
+88,Guadeloupe,dependent,0,"""https://flagpedia.net/data/flags/h80/gp.png""",,2025-09-07 15:57:35,0,0,country
+89,Guam,dependent,0,"""https://flagpedia.net/data/flags/h80/gu.png""",,2025-09-07 15:57:35,0,0,country
+90,Guatemala,UN,0,"""https://flagpedia.net/data/flags/h80/gt.png""",,2025-09-07 15:57:35,0,0,country
+91,Guernsey,dependent,0,"""https://flagpedia.net/data/flags/h80/gg.png""",,2025-09-07 15:57:35,0,0,country
+92,Guinea,UN,0,"""https://flagpedia.net/data/flags/h80/gn.png""",,2025-09-07 15:57:35,0,0,country
+93,Guinea-Bissau,UN,0,"""https://flagpedia.net/data/flags/h80/gw.png""",,2025-09-07 15:57:35,0,0,country
+94,Guyana,UN,0,"""https://flagpedia.net/data/flags/h80/gy.png""",,2025-09-07 15:57:35,0,0,country
+95,Haiti,UN,0,"""https://flagpedia.net/data/flags/h80/ht.png""",,2025-09-07 15:57:35,0,0,country
+96,Honduras,UN,0,"""https://flagpedia.net/data/flags/h80/hn.png""",,2025-09-07 15:57:35,0,0,country
+97,Hong Kong,dependent,0,"""https://flagpedia.net/data/flags/h80/hk.png""",,2025-09-07 15:57:35,0,0,country
+98,Hungary,UN,0,"""https://flagpedia.net/data/flags/h80/hu.png""",,2025-09-07 15:57:35,0,0,country
+99,Iceland,UN,0,"""https://flagpedia.net/data/flags/h80/is.png""",,2025-09-07 15:57:35,0,0,country
+100,India,UN,0,"""https://flagpedia.net/data/flags/h80/in.png""",,2025-09-07 15:57:35,0,0,country
+101,Indonesia,UN,0,"""https://flagpedia.net/data/flags/h80/id.png""",,2025-09-07 15:57:35,0,0,country
+102,Iran,UN,0,"""https://flagpedia.net/data/flags/h80/ir.png""",,2025-09-07 15:57:35,0,0,country
+103,Iraq,UN,0,"""https://flagpedia.net/data/flags/h80/iq.png""",,2025-09-07 15:57:35,0,0,country
+104,Ireland,UN,0,"""https://flagpedia.net/data/flags/h80/ie.png""",,2025-09-07 15:57:35,0,0,country
+105,Isle of Man,dependent,0,"""https://flagpedia.net/data/flags/h80/im.png""",,2025-09-07 15:57:35,0,0,country
+106,Israel,UN,0,"""https://flagpedia.net/data/flags/h80/il.png""",,2025-09-07 15:57:35,0,0,country
+107,Italy,UN,0,"""https://flagpedia.net/data/flags/h80/it.png""",,2025-09-07 15:57:35,0,0,country
+108,Jamaica,UN,0,"""https://flagpedia.net/data/flags/h80/jm.png""",,2025-09-07 15:57:35,0,0,country
+109,Japan,UN,0,"""https://flagpedia.net/data/flags/h80/jp.png""",,2025-09-07 15:57:35,0,0,country
+110,Jersey,dependent,0,"""https://flagpedia.net/data/flags/h80/je.png""",,2025-09-07 15:57:35,0,0,country
+111,Jordan,UN,0,"""https://flagpedia.net/data/flags/h80/jo.png""",,2025-09-07 15:57:35,0,0,country
+112,Kazakhstan,UN,0,"""https://flagpedia.net/data/flags/h80/kz.png""",,2025-09-07 15:57:35,0,0,country
+113,Kenya,UN,0,"""https://flagpedia.net/data/flags/h80/ke.png""",,2025-09-07 15:57:35,0,0,country
+114,Kiribati,UN,0,"""https://flagpedia.net/data/flags/h80/ki.png""",,2025-09-07 15:57:35,0,0,country
+115,North Korea,UN,0,"""https://flagpedia.net/data/flags/h80/kp.png""",,2025-09-07 15:57:35,0,0,country
+116,South Korea,UN,0,"""https://flagpedia.net/data/flags/h80/kr.png""",,2025-09-07 15:57:35,0,0,country
+117,Kosovo,partial-recognition,0,"""https://flagpedia.net/data/flags/h80/xk.png""",,2025-09-07 15:57:35,0,0,country
+118,Kuwait,UN,0,"""https://flagpedia.net/data/flags/h80/kw.png""",,2025-09-07 15:57:35,0,0,country
+119,Kyrgyzstan,UN,0,"""https://flagpedia.net/data/flags/h80/kg.png""",,2025-09-07 15:57:35,0,0,country
+120,Laos,UN,0,"""https://flagpedia.net/data/flags/h80/la.png""",,2025-09-07 15:57:35,0,0,country
+121,Latvia,UN,0,"""https://flagpedia.net/data/flags/h80/lv.png""",,2025-09-07 15:57:35,0,0,country
+122,Lebanon,UN,0,"""https://flagpedia.net/data/flags/h80/lb.png""",,2025-09-07 15:57:35,0,0,country
+123,Lesotho,UN,0,"""https://flagpedia.net/data/flags/h80/ls.png""",,2025-09-07 15:57:35,0,0,country
+124,Liberia,UN,0,"""https://flagpedia.net/data/flags/h80/lr.png""",,2025-09-07 15:57:35,0,0,country
+125,Libya,UN,0,"""https://flagpedia.net/data/flags/h80/ly.png""",,2025-09-07 15:57:35,0,0,country
+126,Liechtenstein,UN,0,"""https://flagpedia.net/data/flags/h80/li.png""",,2025-09-07 15:57:35,0,0,country
+127,Lithuania,UN,0,"""https://flagpedia.net/data/flags/h80/lt.png""",,2025-09-07 15:57:35,0,0,country
+128,Luxembourg,UN,0,"""https://flagpedia.net/data/flags/h80/lu.png""",,2025-09-07 15:57:35,0,0,country
+129,Macau,dependent,0,"""https://flagpedia.net/data/flags/h80/mo.png""",,2025-09-07 15:57:35,0,0,country
+130,Madagascar,UN,0,"""https://flagpedia.net/data/flags/h80/mg.png""",,2025-09-07 15:57:35,0,0,country
+131,Malawi,UN,0,"""https://flagpedia.net/data/flags/h80/mw.png""",,2025-09-07 15:57:35,0,0,country
+132,Malaysia,UN,0,"""https://flagpedia.net/data/flags/h80/my.png""",,2025-09-07 15:57:35,0,0,country
+133,Maldives,UN,0,"""https://flagpedia.net/data/flags/h80/mv.png""",,2025-09-07 15:57:35,0,0,country
+134,Mali,UN,0,"""https://flagpedia.net/data/flags/h80/ml.png""",,2025-09-07 15:57:35,0,0,country
+135,Malta,UN,0,"""https://flagpedia.net/data/flags/h80/mt.png""",,2025-09-07 15:57:35,0,0,country
+136,Marshall Islands,UN,0,"""https://flagpedia.net/data/flags/h80/mh.png""",,2025-09-07 15:57:35,0,0,country
+137,Martinique,dependent,0,"""https://flagpedia.net/data/flags/h80/mq.png""",,2025-09-07 15:57:35,0,0,country
+138,Mauritania,UN,0,"""https://flagpedia.net/data/flags/h80/mr.png""",,2025-09-07 15:57:35,0,0,country
+139,Mauritius,UN,0,"""https://flagpedia.net/data/flags/h80/mu.png""",,2025-09-07 15:57:35,0,0,country
+140,Mayotte,dependent,0,"""https://flagpedia.net/data/flags/h80/yt.png""",,2025-09-07 15:57:35,0,0,country
+141,Mexico,UN,0,"""https://flagpedia.net/data/flags/h80/mx.png""",,2025-09-07 15:57:35,0,0,country
+142,Federated States of Micronesia,UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg/40px-Flag_of_the_Federated_States_of_Micronesia.svg.png,,2025-09-07 15:57:35,0,0,country
+143,Moldova,UN,0,"""https://flagpedia.net/data/flags/h80/md.png""",,2025-09-07 15:57:35,0,0,country
+144,Monaco,UN,0,"""https://flagpedia.net/data/flags/h80/mc.png""",,2025-09-07 15:57:35,0,0,country
+145,Mongolia,UN,0,"""https://flagpedia.net/data/flags/h80/mn.png""",,2025-09-07 15:57:35,0,0,country
+146,Montenegro,UN,0,"""https://flagpedia.net/data/flags/h80/me.png""",,2025-09-07 15:57:35,0,0,country
+147,Montserrat,dependent,0,"""https://flagpedia.net/data/flags/h80/ms.png""",,2025-09-07 15:57:35,0,0,country
+148,Morocco,UN,0,"""https://flagpedia.net/data/flags/h80/ma.png""",,2025-09-07 15:57:35,0,0,country
+149,Mozambique,UN,0,"""https://flagpedia.net/data/flags/h80/mz.png""",,2025-09-07 15:57:35,0,0,country
+150,Myanmar (or Burma),UN,0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/40px-Flag_of_Myanmar.svg.png,,2025-09-07 15:57:35,0,0,country
+151,Namibia,UN,0,"""https://flagpedia.net/data/flags/h80/na.png""",,2025-09-07 15:57:35,0,0,country
+152,Nauru,UN,0,"""https://flagpedia.net/data/flags/h80/nr.png""",,2025-09-07 15:57:35,0,0,country
+153,Nepal,UN,0,"""https://flagpedia.net/data/flags/h80/np.png""",,2025-09-07 15:57:35,0,0,country
+154,Netherlands,UN,0,"""https://flagpedia.net/data/flags/h80/nl.png""",,2025-09-07 15:57:35,0,0,country
+155,New Caledonia,dependent,0,"""https://flagpedia.net/data/flags/h80/nc.png""",,2025-09-07 15:57:35,0,0,country
+156,New Zealand,UN,0,"""https://flagpedia.net/data/flags/h80/nz.png""",,2025-09-07 15:57:35,0,0,country
+157,Nicaragua,UN,0,"""https://flagpedia.net/data/flags/h80/ni.png""",,2025-09-07 15:57:35,0,0,country
+158,Niger,UN,0,"""https://flagpedia.net/data/flags/h80/ne.png""",,2025-09-07 15:57:35,0,0,country
+159,Nigeria,UN,0,"""https://flagpedia.net/data/flags/h80/ng.png""",,2025-09-07 15:57:35,0,0,country
+160,Niue,partial-recognition,0,"""https://flagpedia.net/data/flags/h80/nu.png""",,2025-09-07 15:57:35,0,0,country
+161,Norfolk Island,dependent,0,"""https://flagpedia.net/data/flags/h80/nf.png""",,2025-09-07 15:57:35,0,0,country
+162,North Macedonia,UN,0,"""https://flagpedia.net/data/flags/h80/mk.png""",,2025-09-07 15:57:35,0,0,country
+163,Northern Mariana Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/mp.png""",,2025-09-07 15:57:35,0,0,country
+164,Norway,UN,0,"""https://flagpedia.net/data/flags/h80/no.png""",,2025-09-07 15:57:35,0,0,country
+165,Oman,UN,0,"""https://flagpedia.net/data/flags/h80/om.png""",,2025-09-07 15:57:35,0,0,country
+166,Pakistan,UN,0,"""https://flagpedia.net/data/flags/h80/pk.png""",,2025-09-07 15:57:35,0,0,country
+167,Palau,UN,0,"""https://flagpedia.net/data/flags/h80/pw.png""",,2025-09-07 15:57:35,0,0,country
+168,Palestine,partial-recognition,0,"""https://flagpedia.net/data/flags/h80/ps.png""",,2025-09-07 15:57:35,0,0,country
+169,Panama,UN,0,"""https://flagpedia.net/data/flags/h80/pa.png""",,2025-09-07 15:57:35,0,0,country
+170,Papua New Guinea,UN,0,"""https://flagpedia.net/data/flags/h80/pg.png""",,2025-09-07 15:57:35,0,0,country
+171,Paraguay,UN,0,"""https://flagpedia.net/data/flags/h80/py.png""",,2025-09-07 15:57:35,0,0,country
+172,Peru,UN,0,"""https://flagpedia.net/data/flags/h80/pe.png""",,2025-09-07 15:57:35,0,0,country
+173,Philippines,UN,0,"""https://flagpedia.net/data/flags/h80/ph.png""",,2025-09-07 15:57:35,0,0,country
+174,Pitcairn Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/pn.png""",,2025-09-07 15:57:35,0,0,country
+175,Poland,UN,0,"""https://flagpedia.net/data/flags/h80/pl.png""",,2025-09-07 15:57:35,0,0,country
+176,Portugal,UN,0,"""https://flagpedia.net/data/flags/h80/pt.png""",,2025-09-07 15:57:35,0,0,country
+177,Puerto Rico,dependent,0,"""https://flagpedia.net/data/flags/h80/pr.png""",,2025-09-07 15:57:35,0,0,country
+178,Qatar,UN,0,"""https://flagpedia.net/data/flags/h80/qa.png""",,2025-09-07 15:57:35,0,0,country
+179,Réunion,dependent,0,"""https://flagpedia.net/data/flags/h80/re.png""",,2025-09-07 15:57:35,0,0,country
+180,Romania,UN,0,"""https://flagpedia.net/data/flags/h80/ro.png""",,2025-09-07 15:57:35,0,0,country
+181,Russia,UN,0,"""https://flagpedia.net/data/flags/h80/ru.png""",,2025-09-07 15:57:35,0,0,country
+182,Rwanda,UN,0,"""https://flagpedia.net/data/flags/h80/rw.png""",,2025-09-07 15:57:35,0,0,country
+183,Saba,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Flag_of_Saba.svg/40px-Flag_of_Saba.svg.png,,2025-09-07 15:57:35,0,0,country
+184,Sahrawi Arab Democratic Republic,partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg/40px-Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg.png,,2025-09-07 15:57:35,0,0,country
+185,Saint Barthélemy,dependent,0,"""https://flagpedia.net/data/flags/h80/bl.png""",,2025-09-07 15:57:35,0,0,country
+186,"Saint Helena, Ascension and Tristan da Cunha",dependent,0,"""https://flagpedia.net/data/flags/h80/sh.png""",,2025-09-07 15:57:35,0,0,country
+187,Saint Kitts and Nevis,UN,0,"""https://flagpedia.net/data/flags/h80/kn.png""",,2025-09-07 15:57:35,0,0,country
+188,Saint Martin,dependent,0,"""https://flagpedia.net/data/flags/h80/mf.png""",,2025-09-07 15:57:35,0,0,country
+189,Saint Lucia,UN,0,"""https://flagpedia.net/data/flags/h80/lc.png""",,2025-09-07 15:57:35,0,0,country
+190,Saint Pierre and Miquelon,dependent,0,"""https://flagpedia.net/data/flags/h80/pm.png""",,2025-09-07 15:57:35,0,0,country
+191,Saint Vincent and the Grenadines,UN,0,"""https://flagpedia.net/data/flags/h80/vc.png""",,2025-09-07 15:57:35,0,0,country
+192,Samoa,UN,0,"""https://flagpedia.net/data/flags/h80/ws.png""",,2025-09-07 15:57:35,0,0,country
+193,San Marino,UN,0,"""https://flagpedia.net/data/flags/h80/sm.png""",,2025-09-07 15:57:35,0,0,country
+194,São Tomé and Príncipe,UN,0,"""https://flagpedia.net/data/flags/h80/st.png""",,2025-09-07 15:57:35,0,0,country
+195,Saudi Arabia,UN,0,"""https://flagpedia.net/data/flags/h80/sa.png""",,2025-09-07 15:57:35,0,0,country
+196,Senegal,UN,0,"""https://flagpedia.net/data/flags/h80/sn.png""",,2025-09-07 15:57:35,0,0,country
+197,Serbia,UN,0,"""https://flagpedia.net/data/flags/h80/rs.png""",,2025-09-07 15:57:35,0,0,country
+198,Seychelles,UN,0,"""https://flagpedia.net/data/flags/h80/sc.png""",,2025-09-07 15:57:35,0,0,country
+199,Sierra Leone,UN,0,"""https://flagpedia.net/data/flags/h80/sl.png""",,2025-09-07 15:57:35,0,0,country
+200,Singapore,UN,0,"""https://flagpedia.net/data/flags/h80/sg.png""",,2025-09-07 15:57:35,0,0,country
+201,Sint Maarten,dependent,0,"""https://flagpedia.net/data/flags/h80/sx.png""",,2025-09-07 15:57:35,0,0,country
+202,Slovakia,UN,0,"""https://flagpedia.net/data/flags/h80/sk.png""",,2025-09-07 15:57:35,0,0,country
+203,Slovenia,UN,0,"""https://flagpedia.net/data/flags/h80/si.png""",,2025-09-07 15:57:35,0,0,country
+204,Solomon Islands,UN,0,"""https://flagpedia.net/data/flags/h80/sb.png""",,2025-09-07 15:57:35,0,0,country
+205,Somalia,UN,0,"""https://flagpedia.net/data/flags/h80/so.png""",,2025-09-07 15:57:35,0,0,country
+206,South Africa,UN,0,"""https://flagpedia.net/data/flags/h80/za.png""",,2025-09-07 15:57:35,0,0,country
+207,South Sudan,UN,0,"""https://flagpedia.net/data/flags/h80/ss.png""",,2025-09-07 15:57:35,0,0,country
+208,Spain,UN,0,"""https://flagpedia.net/data/flags/h80/es.png""",,2025-09-07 15:57:35,0,0,country
+209,Sri Lanka,UN,0,"""https://flagpedia.net/data/flags/h80/lk.png""",,2025-09-07 15:57:35,0,0,country
+210,Sint Eustatius,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_Sint_Eustatius.svg/40px-Flag_of_Sint_Eustatius.svg.png,,2025-09-07 15:57:35,0,0,country
+211,Sudan,UN,0,"""https://flagpedia.net/data/flags/h80/sd.png""",,2025-09-07 15:57:35,0,0,country
+212,Suriname,UN,0,"""https://flagpedia.net/data/flags/h80/sr.png""",,2025-09-07 15:57:35,0,0,country
+213,Svalbard,dependent,0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/40px-Flag_of_Norway.svg.png,,2025-09-07 15:57:35,0,0,country
+214,Sweden,UN,0,"""https://flagpedia.net/data/flags/h80/se.png""",,2025-09-07 15:57:35,0,0,country
+215,Switzerland,UN,0,"""https://flagpedia.net/data/flags/h80/ch.png""",,2025-09-07 15:57:35,0,0,country
+216,Syria,UN,0,"""https://flagpedia.net/data/flags/h80/sy.png""",,2025-09-07 15:57:35,0,0,country
+217,Taiwan (Republic of China),partial-recognition,0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/40px-Flag_of_the_Republic_of_China.svg.png,,2025-09-07 15:57:35,0,0,country
+218,Tajikistan,UN,0,"""https://flagpedia.net/data/flags/h80/tj.png""",,2025-09-07 15:57:35,0,0,country
+219,Tanzania,UN,0,"""https://flagpedia.net/data/flags/h80/tz.png""",,2025-09-07 15:57:35,0,0,country
+220,Thailand,UN,0,"""https://flagpedia.net/data/flags/h80/th.png""",,2025-09-07 15:57:35,0,0,country
+221,Togo,UN,0,"""https://flagpedia.net/data/flags/h80/tg.png""",,2025-09-07 15:57:35,0,0,country
+222,Tokelau,dependent,0,"""https://flagpedia.net/data/flags/h80/tk.png""",,2025-09-07 15:57:35,0,0,country
+223,Tonga,UN,0,"""https://flagpedia.net/data/flags/h80/to.png""",,2025-09-07 15:57:35,0,0,country
+224,Trinidad and Tobago,UN,0,"""https://flagpedia.net/data/flags/h80/tt.png""",,2025-09-07 15:57:35,0,0,country
+225,Tunisia,UN,0,"""https://flagpedia.net/data/flags/h80/tn.png""",,2025-09-07 15:57:35,0,0,country
+226,Turkey,UN,0,"""https://flagpedia.net/data/flags/h80/tr.png""",,2025-09-07 15:57:35,0,0,country
+227,Turkmenistan,UN,0,"""https://flagpedia.net/data/flags/h80/tm.png""",,2025-09-07 15:57:35,0,0,country
+228,Turks and Caicos Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/tc.png""",,2025-09-07 15:57:35,0,0,country
+229,Tuvalu,UN,0,"""https://flagpedia.net/data/flags/h80/tv.png""",,2025-09-07 15:57:35,0,0,country
+230,Uganda,UN,0,"""https://flagpedia.net/data/flags/h80/ug.png""",,2025-09-07 15:57:35,0,0,country
+231,Ukraine,UN,0,"""https://flagpedia.net/data/flags/h80/ua.png""",,2025-09-07 15:57:35,0,0,country
+232,United Arab Emirates,UN,0,"""https://flagpedia.net/data/flags/h80/ae.png""",,2025-09-07 15:57:35,0,0,country
+233,United Kingdom,UN,0,"""https://flagpedia.net/data/flags/h80/gb.png""",,2025-09-07 15:57:35,0,0,country
+234,United States,UN,0,"""https://flagpedia.net/data/flags/h80/us.png""",,2025-09-07 15:57:35,0,0,country
+235,United States Virgin Islands,dependent,0,"""https://flagpedia.net/data/flags/h80/vi.png""",,2025-09-07 15:57:35,0,0,country
+236,Uruguay,UN,0,"""https://flagpedia.net/data/flags/h80/uy.png""",,2025-09-07 15:57:35,0,0,country
+237,Uzbekistan,UN,0,"""https://flagpedia.net/data/flags/h80/uz.png""",,2025-09-07 15:57:35,0,0,country
+238,Vanuatu,UN,0,"""https://flagpedia.net/data/flags/h80/vu.png""",,2025-09-07 15:57:35,0,0,country
+239,Vatican City,UN,0,"""https://flagpedia.net/data/flags/h80/va.png""",,2025-09-07 15:57:35,0,0,country
+240,Venezuela,UN,0,"""https://flagpedia.net/data/flags/h80/ve.png""",,2025-09-07 15:57:35,0,0,country
+241,Vietnam,UN,0,"""https://flagpedia.net/data/flags/h80/vn.png""",,2025-09-07 15:57:35,0,0,country
+242,Wallis and Futuna,dependent,0,"""https://flagpedia.net/data/flags/h80/wf.png""",,2025-09-07 15:57:35,0,0,country
+243,Yemen,UN,0,"""https://flagpedia.net/data/flags/h80/ye.png""",,2025-09-07 15:57:35,0,0,country
+244,Zambia,UN,0,"""https://flagpedia.net/data/flags/h80/zm.png""",,2025-09-07 15:57:35,0,0,country
+245,Zimbabwe,UN,0,"""https://flagpedia.net/data/flags/h80/zw.png""",,2025-09-07 15:57:35,0,0,country

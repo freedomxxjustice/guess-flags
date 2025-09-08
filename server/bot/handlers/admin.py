@@ -1,10 +1,11 @@
 from datetime import datetime, timezone
 from json import loads as json_loads, JSONDecodeError
+import json
 from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from config_reader import bot
-from db import Tournament, Prize, TournamentPrize
+from db import Tournament, SeasonPrize, TournamentPrize, Season, Prize
 from tortoise.exceptions import ValidationError
 
 router = Router(name="admin")
@@ -273,4 +274,60 @@ async def finish_tournament(message: Message):
     await message.answer(
         f"✅ Tournament '{tournament.name}' (ID {tournament.id}) finished.\n"
         f"Participants have been notified."
+    )
+
+
+@router.message(Command("add_season"))
+async def add_season(message: Message):
+    if message.from_user.id not in ADMIN_IDS:
+        await message.answer("🚫 You are not authorized to use this command.")
+        return
+
+    args_text = message.text.strip()
+    if args_text.startswith("/add_season"):
+        args_text = args_text[len("/add_season") :].strip()
+
+    if not args_text:
+        await message.answer(
+            '⚠️ Usage example:\n/add_season \'{"title":"Summer2025","start_date":"2025-08-01","end_date":"2025-08-31","prizes":[]}\''
+        )
+        return
+
+    try:
+        data = json.loads(args_text)
+        title = data["title"]
+        start_date = datetime.fromisoformat(data["start_date"]).date()
+        end_date = datetime.fromisoformat(data["end_date"]).date()
+        prizes = data.get("prizes", [])
+    except (KeyError, ValueError, JSONDecodeError) as e:
+        await message.answer(f"⚠️ Invalid JSON or missing fields: {e}")
+        return
+
+    try:
+        season = await Season.create(
+            title=title, start_date=start_date, end_date=end_date
+        )
+    except (ValidationError, ValueError) as e:
+        await message.answer(f"❌ Error creating season: {e}")
+        return
+
+    for prize_entry in prizes:
+        try:
+            await SeasonPrize.create(
+                season=season,
+                title=prize_entry.get("title", "Season Prize"),
+                link=prize_entry.get("link"),
+                place=prize_entry.get("place", 1),
+                quantity=prize_entry.get("quantity", 1),
+            )
+        except (KeyError, ValidationError) as e:
+            await message.answer(f"⚠️ Prize missing or invalid field: {e}")
+            return
+
+    await message.answer(
+        f"✅ Season '{season.title}' created!\n"
+        f"ID: {season.id}\n"
+        f"Start: {season.start_date}\n"
+        f"End: {season.end_date}\n"
+        f"Prizes: {len(prizes)}"
     )

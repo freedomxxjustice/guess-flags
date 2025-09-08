@@ -14,9 +14,9 @@ from bot.handlers import setup_routers as setup_bot_routers
 from config_reader import config, dp, bot, app
 
 i18n = I18n(
-    path="locales",  # folder where translations live
-    default_locale="en",  # fallback if no match
-    domain="messages",  # base filename without .po/.mo
+    path="locales", 
+    default_locale="en", 
+    domain="messages", 
 )
 dp.message.middleware(FSMI18nMiddleware(i18n))
 

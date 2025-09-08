@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CountUp from "react-countup";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar, faBolt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
@@ -45,7 +45,6 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
           amount: selected.stars,
           tries: selected.tries,
         });
-        console.log(response);
         invoice.open(response.data.invoice_link.replace("https://t.me/$", ""));
       } catch (error) {
         console.error("Donation error", error);
@@ -63,7 +62,7 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
 
   return (
     <div className="flex justify-center items-center h-screen flex-col gap-8 mt-14 text-white">
-      <h1 className="text-blue-500 text-4xl font-semibold">
+      <h1 className="text-primary text-4xl font-semibold giest-mono">
         <CountUp end={selected?.stars || 0} />{" "}
         <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
       </h1>
@@ -73,15 +72,23 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
           <button
             key={option.tries}
             onClick={() => handleSelect(option)}
-            className={`btn ${
+            className={`btn flex justify-center items-center gap-3 ${
               selected?.tries === option.tries
-                ? "bg-yellow-500 text-black"
-                : "bg-gray-800 hover:bg-gray-700"
+                ? "btn-regular text-white"
+                : "btn-not-selected text-white hover:bg-grey"
             }`}
           >
-            {t("buy")} {option.tries} {option.tries === 1 ? "try" : "tries"} –{" "}
-            {option.stars}{" "}
-            <FontAwesomeIcon icon={faStar} className="text-yellow-300" />
+            <span className="flex items-center gap-1">
+              <FontAwesomeIcon icon={faBolt} className="text-blue-400" />
+              {option.tries}
+            </span>
+
+            <span className="text-lg font-bold">=</span>
+
+            <span className="flex items-center gap-1">
+              {option.stars}
+              <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
+            </span>
           </button>
         ))}
       </div>

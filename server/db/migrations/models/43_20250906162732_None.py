@@ -108,6 +108,20 @@ CREATE TABLE IF NOT EXISTS "tournamentprize" (
     "prize_id" INT NOT NULL REFERENCES "prize" ("id") ON DELETE CASCADE,
     "tournament_id" INT NOT NULL REFERENCES "tournament" ("id") ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS "seasons" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "title" VARCHAR(100) NOT NULL,
+    "start_date" DATE NOT NULL,
+    "end_date" DATE NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "season_prizes" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "title" VARCHAR(100) NOT NULL,
+    "link" VARCHAR(255),
+    "place" INT NOT NULL,
+    "quantity" INT NOT NULL DEFAULT 1,
+    "season_id" INT NOT NULL REFERENCES "seasons" ("id") ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "version" VARCHAR(255) NOT NULL,
