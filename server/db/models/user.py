@@ -28,4 +28,14 @@ class User(Model):
         return f"{self.name} ({self.rating})"
 
 
+class UserAchievement(Model):
+    id = fields.IntField(pk=True)
+    user = fields.ForeignKeyField("models.User", related_name="achievements")
+    achievement = fields.ForeignKeyField("models.Achievement", related_name="users")
+    earned_at = fields.DatetimeField(auto_now_add=True)
+
+    class Meta:
+        table = "user_achievements"
+
+
 UserSchema = pydantic_model_creator(User)

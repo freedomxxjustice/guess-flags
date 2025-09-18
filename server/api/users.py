@@ -2,7 +2,7 @@ from datetime import date
 from fastapi import APIRouter, Request, Depends, Query
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
-from db import UserSchema, User
+from db import UserSchema, User, UserAchievement, Achievement
 from .utils import auth, check_user
 
 router = APIRouter(prefix="/api/users", dependencies=[Depends(auth)])
@@ -21,6 +21,43 @@ async def get_user(
     user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
 
     return JSONResponse({"user": user_obj})
+
+
+from tortoise.contrib.pydantic import pydantic_model_creator
+
+
+@router.get("/achievements")
+async def get_user_achievements(
+    auth_data: WebAppInitData = Depends(auth),
+) -> JSONResponse:
+    user = await check_user(auth_data.user.id)
+
+    # все ачивки
+    all_achievements = await Achievement.all()
+
+    # ачивки пользователя
+    user_achievements = await UserAchievement.filter(user_id=user.id).prefetch_related(
+        "achievement"
+    )
+    user_achievements_map = {ua.achievement.id: ua for ua in user_achievements}
+
+    result = []
+    for a in all_achievements:
+        ua = user_achievements_map.get(a.id)
+        result.append(
+            {
+                "id": a.id,
+                "title": a.title,
+                "category": a.category,
+                "image": a.image,
+                "description": a.description,
+                "progress": ua.progress if ua else 0,
+                "target": a.target,
+                "achieved": bool(ua),
+            }
+        )
+    
+    return JSONResponse({"achievements": result})
 
 
 @router.get("/get-casual-leaders")

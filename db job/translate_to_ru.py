@@ -16,3 +16,4 @@ for key, value in en_translations.items():
 
 with open("ru2.json", "w", encoding="utf-8") as f:
     json.dump(ru_translations, f, ensure_ascii=False, indent=2)
+ 

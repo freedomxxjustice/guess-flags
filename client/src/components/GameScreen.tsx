@@ -1,6 +1,10 @@
 import Timer from "./Timer";
 import BottomModal from "./BottomModal";
 import { useTranslation } from "react-i18next";
+import { useState, useRef, useEffect } from "react";
+import Toast from "./Toast";
+import { useCallback } from "react";
+import confetti from "canvas-confetti";
 
 interface GameScreenProps {
   game: any;
@@ -34,14 +38,52 @@ const GameScreen = ({
   setHasSubmitted,
 }: GameScreenProps) => {
   const { t } = useTranslation();
-
   if (!game) return null;
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [showToast, setShowToast] = useState<boolean>(false);
   const question = game.current_question;
+  useEffect(() => {
+    if (question.index == 0) {
+      setShowToast(true);
+    } else {
+      setShowToast(false);
+    }
+  }, [question.index]);
+  const glowColor =
+    isCorrect === null
+      ? "transparent"
+      : isCorrect
+      ? "rgba(0,255,0,0.3)"
+      : "rgba(255,0,0,0.3)";
+
+  function AnswerFeedback({ isCorrect }: { isCorrect: boolean | null }) {
+    useEffect(() => {
+      if (isCorrect) {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 },
+        });
+      }
+    }, [isCorrect]);
+
+    return null;
+  }
+
   if (!question) return null;
   return (
-    <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center flex justify-center items-center">
-      <div className="flex flex-col items-center justify-center text-white px-4 bg-background w-98 py-4 border border-grey-2 rounded">
+    <div className="min-h-screen w-full overflow-auto py-6 content-center flex justify-center items-center">
+      <div
+        className="absolute top-0 left-0 w-full h-full pointer-events-none rounded"
+        style={{
+          boxShadow: `0 0 50px 20px ${glowColor} inset`,
+          transition: "box-shadow 0.3s ease",
+        }}
+      />
+      <div
+        className={`flex flex-col items-center justify-center text-white px-4 bg-background w-98 py-4 border border-grey-2 rounded
+  ${isCorrect === false ? "error-shake" : ""}`}
+      >
         <div className="w-full h-2 bg-grey-2 rounded-full overflow-hidden mb-4">
           <div
             className="h-full bg-primary transition-all duration-300"
@@ -50,6 +92,7 @@ const GameScreen = ({
             }}
           />
         </div>
+        <AnswerFeedback isCorrect={isCorrect} />
 
         <h2 className="text-2xl font-bold mb-4">
           {t("question")} {question.index + 1}
@@ -101,21 +144,33 @@ const GameScreen = ({
         )}
 
         {question.mode === "enter" && (
-          <div className="flex flex-col gap-4 w-full max-w-xs">
+          <div className="fixed bottom-0 left-0 w-full bg-background border-t border-grey-2 p-4 flex flex-col gap-3">
             <input
+              ref={inputRef}
+              autoFocus
               type="text"
               value={typedAnswer}
               onChange={(e) => setTypedAnswer(e.target.value)}
               disabled={hasSubmitted}
-              className={`px-4 py-3 rounded-lg w-full transition-all bg-primary/10 border-gray-300`}
+              className={`px-4 py-3 rounded-lg w-full border 
+  ${
+    hasSubmitted
+      ? isCorrect
+        ? "border-green-600"
+        : "border-red-600 animate-shake"
+      : "border-gray-300"
+  }`}
               placeholder={t("type_your_answer") || "Type your answer..."}
+              onFocus={() =>
+                inputRef.current?.scrollIntoView({ behavior: "smooth" })
+              }
             />
 
             <button
               onClick={() => {
                 if (!hasSubmitted && typedAnswer.trim()) {
                   onAnswer(typedAnswer.trim());
-                  setHasSubmitted(true); // Prevent double-submit here
+                  setHasSubmitted(true);
                 }
               }}
               disabled={hasSubmitted || !typedAnswer.trim()}
@@ -166,6 +221,13 @@ const GameScreen = ({
             onClose={() => setShowExitModal(false)}
           />
         </div>
+      )}
+      {showToast && (
+        <Toast
+          message={t("attempt_consumed")}
+          duration={4000}
+          onClose={() => setShowToast(false)}
+        />
       )}
     </div>
   );

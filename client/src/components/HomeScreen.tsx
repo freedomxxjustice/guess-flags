@@ -4,6 +4,8 @@ import BottomModal from "./BottomModal";
 import type { IUser } from "../interfaces/IUser";
 import { FaBolt } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import WelcomeScreen from "./WelcomeScreen";
 
 interface HomeScreenProps {
   user: IUser | undefined;
@@ -19,23 +21,33 @@ interface HomeScreenProps {
 }
 
 function AttemptsDisplay({ attempts }: { attempts: number }) {
-  const maxFree = 5;
+  const maxDisplay = 9;
+  const freeTries = 5;
 
-  const filled = Math.min(attempts, maxFree);
-  const empty = maxFree - filled;
-  const extra = Math.max(0, attempts - maxFree);
+  const displayCount = Math.min(attempts, maxDisplay);
+  const remaining = Math.max(0, attempts - maxDisplay);
+
+  const filledBlue = Math.min(displayCount, freeTries);
+  const filledGreen = Math.max(0, displayCount - freeTries);
 
   return (
     <div className="flex items-center gap-1">
-      {[...Array(filled)].map((_, i) => (
-        <FaBolt key={`f-${i}`} className="text-blue-400 w-4 h-4" />
+      {/* Бесплатные синие */}
+      {[...Array(filledBlue)].map((_, i) => (
+        <FaBolt key={`b-${i}`} className="text-blue-400 w-4 h-4" />
       ))}
-      {[...Array(empty)].map((_, i) => (
-        <FaBolt key={`e-${i}`} className="text-gray-500 w-4 h-4" />
+
+      {/* Купленные зеленые */}
+      {[...Array(filledGreen)].map((_, i) => (
+        <FaBolt key={`g-${i}`} className="text-green-400 w-4 h-4" />
       ))}
-      {[...Array(extra)].map((_, i) => (
-        <FaBolt key={`x-${i}`} className="text-green-400 w-4 h-4" />
-      ))}
+
+      {/* Остаток +N */}
+      {remaining > 0 && (
+        <span className="text-xs font-semibold text-white ml-1">
+          +{remaining}
+        </span>
+      )}
     </div>
   );
 }
@@ -53,9 +65,15 @@ export default function HomeScreen({
   headerStyleFullscreen,
 }: HomeScreenProps) {
   const { t } = useTranslation();
+  const [showWelcomeScreen, setShowWelcomeScreen] = useState<boolean>(false);
 
   return (
     <div className="min-h-screen h-50 overflow-auto pb-20">
+      {showWelcomeScreen && (
+        <WelcomeScreen
+          onFinish={() => setShowWelcomeScreen(false)}
+        ></WelcomeScreen>
+      )}
       <Header
         isFullscreen={isFullscreenState}
         headerStyle={headerStyle}
@@ -139,7 +157,8 @@ export default function HomeScreen({
             }}
           >
             <img
-              src="/placeholder.png"
+              onClick={() => setShowWelcomeScreen(true)}
+              src="/slide.png"
               className="mx-auto w-77 object-contain rounded-lg"
               alt="Guess Flags"
             />

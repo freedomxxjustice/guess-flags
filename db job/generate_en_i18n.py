@@ -2,7 +2,7 @@ import pandas as pd
 import json
 
 # путь к твоему CSV
-csv_file = "flags080925.csv"
+csv_file = "flags110925.csv"
 json_file = "en2.json"
 
 # читаем CSV

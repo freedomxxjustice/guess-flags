@@ -13,6 +13,7 @@ import {
   hapticFeedback,
 } from "@telegram-apps/sdk";
 import "@ncdai/react-wheel-picker/style.css";
+import WelcomeScreen from "./WelcomeScreen";
 
 // TELEGRAM INITIATION
 init();
@@ -44,7 +45,20 @@ if (viewport.expand.isAvailable()) {
 
 const App = () => {
   const [showIntro, setShowIntro] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
 
+  useEffect(() => {
+    const seen = localStorage.getItem("seenWelcome");
+    if (!seen) {
+      setShowWelcome(true);
+    }
+  }, []);
+
+  const finishWelcome = () => {
+    localStorage.setItem("seenWelcome", "true");
+    setShowWelcome(false);
+  };
+  
   useEffect(() => {
     function handleClick(e: any) {
       if (e.target.tagName === "BUTTON") {
@@ -75,6 +89,8 @@ const App = () => {
 
   return (
     <div className="h-screen flex justify-center items-center text-white">
+      {showWelcome && <WelcomeScreen onFinish={finishWelcome} />}
+
       <div className="fixed top-0 left-0 w-full h-50 bg-background z-10 pointer-events-none" />
 
       {showIntro && <IntroScreen onFinish={() => setShowIntro(false)} />}

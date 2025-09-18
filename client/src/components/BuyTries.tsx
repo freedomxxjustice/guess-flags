@@ -3,12 +3,7 @@ import CountUp from "react-countup";
 import { faStar, faBolt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import {
-  mainButton,
-  hapticFeedback,
-  invoice,
-  backButton,
-} from "@telegram-apps/sdk";
+import { hapticFeedback, invoice, backButton } from "@telegram-apps/sdk";
 
 import request from "../utils/api";
 import { useTranslation } from "react-i18next";
@@ -24,74 +19,74 @@ const BuyTries = ({ onBack }: { onBack: () => void }) => {
     tries: number;
     stars: number;
   } | null>(null);
+  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   backButton.onClick(() => {
     onBack();
-    mainButton.setParams({ isVisible: false });
   });
 
-  const { t } = useTranslation();
+  const handleBuy = async () => {
+    if (!selected) return;
+    if (hapticFeedback.isSupported()) {
+      hapticFeedback.impactOccurred("soft");
+    }
 
-  useEffect(() => {
-    const handleClick = async () => {
-      if (!selected) return;
-
-      if (hapticFeedback.isSupported()) {
-        hapticFeedback.impactOccurred("soft");
-      }
-
-      try {
-        const response = await request("payment", "post", {
-          amount: selected.stars,
-          tries: selected.tries,
-        });
-        invoice.open(response.data.invoice_link.replace("https://t.me/$", ""));
-      } catch (error) {
-        console.error("Donation error", error);
-      }
-    };
-
-    mainButton.onClick(handleClick);
-    return () => mainButton.offClick(handleClick);
-  }, [selected]);
-
-  const handleSelect = (option: { tries: number; stars: number }) => {
-    setSelected(option);
-    mainButton.setParams({ ...mainButton.state(), isVisible: true });
+    try {
+      setLoading(true);
+      const response = await request("payment", "post", {
+        amount: selected.stars,
+        tries: selected.tries,
+      });
+      invoice.open(response.data.invoice_link.replace("https://t.me/$", ""));
+    } catch (error) {
+      console.error("Donation error", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen flex-col gap-8 mt-14 text-white">
-      <h1 className="text-primary text-4xl font-semibold giest-mono">
-        <CountUp end={selected?.stars || 0} />{" "}
-        <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
-      </h1>
+    <div className="flex justify-center items-center h-screen flex-col gap-8 text-white px-6">
+      <h1 className="text-white text-4xl font-extrabold">{t("buy_tries")}</h1>
 
-      <div className="flex flex-col gap-4 w-[80%]">
-        {triesOptions.map((option) => (
-          <button
-            key={option.tries}
-            onClick={() => handleSelect(option)}
-            className={`btn flex justify-center items-center gap-3 ${
-              selected?.tries === option.tries
-                ? "btn-regular text-white"
-                : "btn-not-selected text-white hover:bg-grey"
-            }`}
-          >
-            <span className="flex items-center gap-1">
-              <FontAwesomeIcon icon={faBolt} className="text-blue-400" />
-              {option.tries}
-            </span>
-
-            <span className="text-lg font-bold">=</span>
-
-            <span className="flex items-center gap-1">
-              {option.stars}
-              <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
-            </span>
-          </button>
-        ))}
+      <div className="flex flex-col gap-4 w-full max-w-md">
+        {triesOptions.map((option) => {
+          const isSelected = selected?.tries === option.tries;
+          return (
+            <button
+              key={option.tries}
+              onClick={() => setSelected(option)}
+              className={`btn flex justify-between items-center px-6 py-4 text-lg font-semibold transition-all
+                ${
+                  isSelected
+                    ? "btn-regular text-white"
+                    : "btn-not-selected text-primary hover:bg-[var(--color-grey)]"
+                }`}
+            >
+              <span className="flex items-center gap-2">
+                <FontAwesomeIcon icon={faBolt} className="" />
+                {option.tries}
+              </span>
+              <span className="flex items-center gap-2 m-4">=</span>
+              <span className="flex items-center gap-1 text-yellow-400">
+                {option.stars}
+                <FontAwesomeIcon icon={faStar} />
+              </span>
+            </button>
+          );
+        })}
       </div>
+
+      <button
+        onClick={handleBuy}
+        disabled={!selected || loading}
+        className={`btn btn-regular w-full max-w-md text-lg font-bold mt-6 ${
+          !selected || loading ? "btn-disabled" : ""
+        }`}
+      >
+        {loading ? t("loading") : t("buy_now")}
+      </button>
     </div>
   );
 };

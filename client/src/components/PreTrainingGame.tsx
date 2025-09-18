@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState,  } from "react";
 import { useTranslation } from "react-i18next";
 import { backButton } from "@telegram-apps/sdk";
 import Header from "./Header";
@@ -23,17 +23,23 @@ type GameFilterProps = {
 };
 
 const possibleNumQuestions = ["5", "10", "15"];
-const possibleCategories = ["country", "frenzy"];
-const possibleGamemodes = ["choose", "enter"];
-const possibleTags = [
-  "UN",
-  "Europe",
-  "Asia",
-  "landlocked",
-  "Africa",
-  "North America",
-  "South America",
+const possibleCategories = [
+  "country",
+  "ru_regions",
+  "cis",
+  "us_state",
+  "frenzy",
 ];
+const possibleGamemodes = ["choose", "enter"];
+// const possibleTags = [
+//   "UN",
+//   "Europe",
+//   "Asia",
+//   "landlocked",
+//   "Africa",
+//   "North America",
+//   "South America",
+// ];
 
 function PreTrainingGame({
   onBack,
@@ -54,7 +60,7 @@ function PreTrainingGame({
   const [selectedGamemode, setSelectedGamemode] = useState<string>(
     possibleGamemodes[0]
   );
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, _] = useState<string[]>([]);
 
   const numQuestionsOptions: WheelPickerOption[] = [
     {
@@ -73,11 +79,23 @@ function PreTrainingGame({
   const categoryOptions: WheelPickerOption[] = [
     {
       label: t("country"),
-      value: "countries",
+      value: "country",
     },
     {
       label: t("frenzy"),
       value: "frenzy",
+    },
+    {
+      label: t("ru_regions"),
+      value: "ru_regions",
+    },
+    {
+      label: t("cis"),
+      value: "cis",
+    },
+    {
+      label: t("us_state"),
+      value: "us_state",
     },
   ];
   const gamemodeOptions: WheelPickerOption[] = [
@@ -153,66 +171,66 @@ function PreTrainingGame({
             />
           </WheelPickerWrapper>
         </fieldset>
-
-        <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-grey-2">
-          <legend className="text-2xl font-bold text-center text-white">
-            {t("append_tags")}
-          </legend>
-          <div className="flex flex-col gap-3 items-start max-h-60 overflow-y-auto">
-            {possibleTags.map((tag) => {
-              const checked = selectedTags.includes(tag);
-              return (
-                <label
-                  key={tag}
-                  className="flex items-center gap-2 cursor-pointer select-none"
-                >
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={() => {
-                      setSelectedTags((prev) => {
-                        const updated = prev.includes(tag)
-                          ? prev.filter((t) => t !== tag)
-                          : [...prev, tag];
-                        return updated;
-                      });
-                    }}
-                    className="sr-only"
-                  />
-                  <div
-                    className={`
+        {/* {selectedCategory == "country" && (
+          <fieldset className="w-full max-w-md px-4 py-2 bg-background rounded-md border border-grey-2">
+            <legend className="text-2xl font-bold text-center text-white">
+              {t("append_tags")}
+            </legend>c x x-60 overflow-y-auto">
+              {possibleTags.map((tag) => {
+                const checked = selectedTags.includes(tag);
+                return (
+                  <label
+                    key={tag}
+                    className="flex items-center gap-2 cursor-pointer select-none"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => {
+                        setSelectedTags((prev) => {
+                          const updated = prev.includes(tag)
+                            ? prev.filter((t) => t !== tag)
+                            : [...prev, tag];
+                          return updated;
+                        });
+                      }}
+                      className="sr-only"
+                    />
+                    <div
+                      className={`
                     w-5 h-5 flex items-center justify-center border-2 rounded 
                     ${checked ? "bg-primary/10" : "border-grey"}
                     transition-colors
                     hover:border-green-400
-                  `}
-                    aria-hidden="true"
-                  >
-                    {checked && (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-4 h-4 text-primary"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={3}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 6v12m6-6H6"
-                        />
-                      </svg>
-                    )}
-                  </div>
-                  <span className="text-sm text-white select-none">
-                    {t(tag)}
-                  </span>
-                </label>
-              );
-            })}
-          </div>
-        </fieldset>
+                    `}
+                      aria-hidden="true"
+                    >
+                      {checked && (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-4 h-4 text-primary"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={3}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 6v12m6-6H6"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="text-sm text-white select-none">
+                      {t(tag)}
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
+        )} */}
         <div id="note" className="py-3 px-4 bg-grey-2/10 backdrop-blur-md">
           <h1 className="text-grey text-left text-xs">{t("note")}</h1>
           <p className="text-white text-xs text-justify">

@@ -76,6 +76,7 @@ TORTOISE_ORM = {
                 "db.models.match",
                 "db.models.tournament",
                 "db.models.season",
+                "db.models.achievement",
                 "aerich.models",
             ],
             "default_connection": "default",

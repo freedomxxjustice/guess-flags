@@ -1,0 +1,371 @@
+id,name,description,difficulty,image,emoji,created_at,total_shown,total_correct,category
+1,Afghanistan,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_the_Taliban.svg/250px-Flag_of_the_Taliban.svg.png,,2025-09-07 18:54:29+03,0,0,country
+2,Albania,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Albania.svg/250px-Flag_of_Albania.svg.png,,2025-09-07 18:54:29+03,0,0,country
+3,Algeria,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Algeria.svg/250px-Flag_of_Algeria.svg.png,,2025-09-07 18:54:29+03,0,0,country
+4,Andorra,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Andorra.svg/250px-Flag_of_Andorra.svg.png,,2025-09-07 18:54:29+03,0,0,country
+5,Angola,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Angola.svg/250px-Flag_of_Angola.svg.png,,2025-09-07 18:54:29+03,0,0,country
+6,Antigua and Barbuda,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Antigua_and_Barbuda.svg/250px-Flag_of_Antigua_and_Barbuda.svg.png,,2025-09-07 18:54:29+03,1,0,country
+7,Argentina,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/250px-Flag_of_Argentina.svg.png,,2025-09-07 18:54:29+03,0,0,country
+8,Armenia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Armenia.svg/250px-Flag_of_Armenia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+9,Australia,UN,0.6666666666666667,https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_Australia_%28converted%29.svg/250px-Flag_of_Australia_%28converted%29.svg.png,,2025-09-07 18:54:29+03,3,1,country
+10,Austria,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Austria.svg/250px-Flag_of_Austria.svg.png,,2025-09-07 18:54:29+03,0,0,country
+11,Azerbaijan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Azerbaijan.svg/250px-Flag_of_Azerbaijan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+12,The Bahamas,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Flag_of_the_Bahamas.svg/250px-Flag_of_the_Bahamas.svg.png,,2025-09-07 18:54:29+03,0,0,country
+13,Bahrain,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Bahrain.svg/250px-Flag_of_Bahrain.svg.png,,2025-09-07 18:54:29+03,0,0,country
+14,Bangladesh,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/250px-Flag_of_Bangladesh.svg.png,,2025-09-07 18:54:29+03,1,1,country
+15,Barbados,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Barbados.svg/250px-Flag_of_Barbados.svg.png,,2025-09-07 18:54:29+03,0,0,country
+16,Belarus,UN,0.3333333333333333,https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Belarus.svg/250px-Flag_of_Belarus.svg.png,,2025-09-07 18:54:29+03,3,2,country
+17,Belgium,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Belgium.svg/250px-Flag_of_Belgium.svg.png,,2025-09-07 18:54:29+03,0,0,country
+18,Belize,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Flag_of_Belize.svg/250px-Flag_of_Belize.svg.png,,2025-09-07 18:54:29+03,0,0,country
+19,Benin,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Benin.svg/250px-Flag_of_Benin.svg.png,,2025-09-07 18:54:29+03,0,0,country
+20,Bhutan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Flag_of_Bhutan.svg/250px-Flag_of_Bhutan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+21,Bolivia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Bolivia.svg/250px-Flag_of_Bolivia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+22,Bosnia and Herzegovina,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Flag_of_Bosnia_and_Herzegovina.svg/250px-Flag_of_Bosnia_and_Herzegovina.svg.png,,2025-09-07 18:54:29+03,0,0,country
+23,Botswana,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Botswana.svg/250px-Flag_of_Botswana.svg.png,,2025-09-07 18:54:29+03,0,0,country
+24,Brazil,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Flag_of_Brazil.svg/250px-Flag_of_Brazil.svg.png,,2025-09-07 18:54:29+03,0,0,country
+25,Brunei,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Brunei.svg/250px-Flag_of_Brunei.svg.png,,2025-09-07 18:54:29+03,0,0,country
+26,Bulgaria,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Bulgaria.svg/250px-Flag_of_Bulgaria.svg.png,,2025-09-07 18:54:29+03,0,0,country
+27,Burkina Faso,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Burkina_Faso.svg/250px-Flag_of_Burkina_Faso.svg.png,,2025-09-07 18:54:29+03,0,0,country
+28,Burundi,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Burundi.svg/250px-Flag_of_Burundi.svg.png,,2025-09-07 18:54:29+03,0,0,country
+29,Cambodia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_Cambodia.svg/250px-Flag_of_Cambodia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+30,Cameroon,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Cameroon.svg/250px-Flag_of_Cameroon.svg.png,,2025-09-07 18:54:29+03,0,0,country
+31,Canada,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/250px-Flag_of_Canada_%28Pantone%29.svg.png,,2025-09-07 18:54:29+03,1,1,country
+32,Cape Verde,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Cape_Verde.svg/250px-Flag_of_Cape_Verde.svg.png,,2025-09-07 18:54:29+03,0,0,country
+33,Central African Republic,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Central_African_Republic.svg/250px-Flag_of_the_Central_African_Republic.svg.png,,2025-09-07 18:54:29+03,0,0,country
+34,Chad,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Chad.svg/250px-Flag_of_Chad.svg.png,,2025-09-07 18:54:29+03,0,0,country
+35,Chile,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Flag_of_Chile.svg/250px-Flag_of_Chile.svg.png,,2025-09-07 18:54:29+03,0,0,country
+36,China,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/250px-Flag_of_the_People%27s_Republic_of_China.svg.png,,2025-09-07 18:54:29+03,0,0,country
+37,Colombia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Colombia.svg/250px-Flag_of_Colombia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+38,Comoros,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Flag_of_the_Comoros.svg/250px-Flag_of_the_Comoros.svg.png,,2025-09-07 18:54:29+03,0,0,country
+39,Democratic Republic of the Congo,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg/250px-Flag_of_the_Democratic_Republic_of_the_Congo.svg.png,,2025-09-07 18:54:29+03,0,0,country
+40,Republic of the Congo,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_the_Republic_of_the_Congo.svg/250px-Flag_of_the_Republic_of_the_Congo.svg.png,,2025-09-07 18:54:29+03,0,0,country
+41,Costa Rica,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Costa_Rica.svg/250px-Flag_of_Costa_Rica.svg.png,,2025-09-07 18:54:29+03,0,0,country
+42,Croatia,UN,0.3333333333333333,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Croatia.svg/250px-Flag_of_Croatia.svg.png,,2025-09-07 18:54:29+03,3,2,country
+43,Cuba,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Flag_of_Cuba.svg/250px-Flag_of_Cuba.svg.png,,2025-09-07 18:54:29+03,0,0,country
+44,Cyprus,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Cyprus.svg/250px-Flag_of_Cyprus.svg.png,,2025-09-07 18:54:29+03,0,0,country
+45,Czech Republic,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/250px-Flag_of_the_Czech_Republic.svg.png,,2025-09-07 18:54:29+03,0,0,country
+46,Denmark,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Flag_of_Denmark.svg/250px-Flag_of_Denmark.svg.png,,2025-09-07 18:54:29+03,0,0,country
+47,Djibouti,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_Djibouti.svg/250px-Flag_of_Djibouti.svg.png,,2025-09-07 18:54:29+03,0,0,country
+48,Dominica,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Flag_of_Dominica.svg/250px-Flag_of_Dominica.svg.png,,2025-09-07 18:54:29+03,0,0,country
+49,Dominican Republic,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_the_Dominican_Republic.svg/250px-Flag_of_the_Dominican_Republic.svg.png,,2025-09-07 18:54:29+03,1,1,country
+50,Ecuador,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Flag_of_Ecuador.svg/250px-Flag_of_Ecuador.svg.png,,2025-09-07 18:54:29+03,0,0,country
+51,Egypt,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/250px-Flag_of_Egypt.svg.png,,2025-09-07 18:54:29+03,0,0,country
+52,El Salvador,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Flag_of_El_Salvador.svg/250px-Flag_of_El_Salvador.svg.png,,2025-09-07 18:54:29+03,0,0,country
+53,Equatorial Guinea,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Equatorial_Guinea.svg/250px-Flag_of_Equatorial_Guinea.svg.png,,2025-09-07 18:54:29+03,0,0,country
+54,Eritrea,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Eritrea.svg/250px-Flag_of_Eritrea.svg.png,,2025-09-07 18:54:29+03,0,0,country
+55,Estonia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flag_of_Estonia.svg/250px-Flag_of_Estonia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+56,Eswatini,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Flag_of_Eswatini.svg/250px-Flag_of_Eswatini.svg.png,,2025-09-07 18:54:29+03,0,0,country
+57,Ethiopia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Flag_of_Ethiopia.svg/250px-Flag_of_Ethiopia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+58,Fiji,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Fiji.svg/250px-Flag_of_Fiji.svg.png,,2025-09-07 18:54:29+03,0,0,country
+59,Finland,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Finland.svg/250px-Flag_of_Finland.svg.png,,2025-09-07 18:54:29+03,0,0,country
+60,France,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/250px-Flag_of_France.svg.png,,2025-09-07 18:54:29+03,0,0,country
+61,Gabon,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Flag_of_Gabon.svg/250px-Flag_of_Gabon.svg.png,,2025-09-07 18:54:29+03,0,0,country
+62,The Gambia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_The_Gambia.svg/250px-Flag_of_The_Gambia.svg.png,,2025-09-07 18:54:29+03,1,1,country
+63,Georgia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Georgia.svg/250px-Flag_of_Georgia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+64,Germany,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/250px-Flag_of_Germany.svg.png,,2025-09-07 18:54:29+03,0,0,country
+65,Ghana,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Ghana.svg/250px-Flag_of_Ghana.svg.png,,2025-09-07 18:54:29+03,1,0,country
+66,Greece,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Greece.svg/250px-Flag_of_Greece.svg.png,,2025-09-07 18:54:29+03,0,0,country
+67,Grenada,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Grenada.svg/250px-Flag_of_Grenada.svg.png,,2025-09-07 18:54:29+03,0,0,country
+68,Guatemala,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Guatemala.svg/250px-Flag_of_Guatemala.svg.png,,2025-09-07 18:54:29+03,0,0,country
+69,Guinea,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_Guinea.svg/250px-Flag_of_Guinea.svg.png,,2025-09-07 18:54:29+03,0,0,country
+70,Guinea-Bissau,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Guinea-Bissau.svg/250px-Flag_of_Guinea-Bissau.svg.png,,2025-09-07 18:54:29+03,0,0,country
+71,Guyana,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_Guyana.svg/250px-Flag_of_Guyana.svg.png,,2025-09-07 18:54:29+03,0,0,country
+72,Haiti,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Haiti.svg/250px-Flag_of_Haiti.svg.png,,2025-09-07 18:54:29+03,0,0,country
+73,Honduras,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Honduras_%282022%E2%80%93present%29.svg/250px-Flag_of_Honduras_%282022%E2%80%93present%29.svg.png,,2025-09-07 18:54:29+03,0,0,country
+74,Hungary,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Flag_of_Hungary.svg/250px-Flag_of_Hungary.svg.png,,2025-09-07 18:54:29+03,0,0,country
+75,Iceland,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Iceland.svg/250px-Flag_of_Iceland.svg.png,,2025-09-07 18:54:29+03,0,0,country
+76,India,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/250px-Flag_of_India.svg.png,,2025-09-07 18:54:29+03,0,0,country
+77,Indonesia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Indonesia.svg/250px-Flag_of_Indonesia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+78,Iran,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Iran.svg/250px-Flag_of_Iran.svg.png,,2025-09-07 18:54:29+03,0,0,country
+79,Iraq,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Iraq.svg/250px-Flag_of_Iraq.svg.png,,2025-09-07 18:54:29+03,0,0,country
+80,Ireland,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_Ireland.svg/250px-Flag_of_Ireland.svg.png,,2025-09-07 18:54:29+03,0,0,country
+81,Israel,UN,0.5,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Flag_of_Israel.svg/250px-Flag_of_Israel.svg.png,,2025-09-07 18:54:29+03,2,1,country
+82,Italy,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/0/03/Flag_of_Italy.svg/250px-Flag_of_Italy.svg.png,,2025-09-07 18:54:29+03,0,0,country
+83,Ivory Coast,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/250px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png,,2025-09-07 18:54:29+03,0,0,country
+84,Jamaica,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_Jamaica.svg/250px-Flag_of_Jamaica.svg.png,,2025-09-07 18:54:29+03,0,0,country
+85,Japan,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/250px-Flag_of_Japan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+86,Jordan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Flag_of_Jordan.svg/250px-Flag_of_Jordan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+87,Kazakhstan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kazakhstan.svg/250px-Flag_of_Kazakhstan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+88,Kenya,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/250px-Flag_of_Kenya.svg.png,,2025-09-07 18:54:29+03,0,0,country
+89,Kiribati,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Kiribati.svg/250px-Flag_of_Kiribati.svg.png,,2025-09-07 18:54:29+03,0,0,country
+90,Kuwait,UN,0.3333333333333333,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Kuwait.svg/250px-Flag_of_Kuwait.svg.png,,2025-09-07 18:54:29+03,3,2,country
+91,Kyrgyzstan,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Kyrgyzstan.svg/250px-Flag_of_Kyrgyzstan.svg.png,,2025-09-07 18:54:29+03,1,0,country
+92,Laos,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Flag_of_Laos.svg/250px-Flag_of_Laos.svg.png,,2025-09-07 18:54:29+03,1,0,country
+93,Latvia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Latvia.svg/250px-Flag_of_Latvia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+94,Lebanon,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Lebanon.svg/250px-Flag_of_Lebanon.svg.png,,2025-09-07 18:54:29+03,0,0,country
+95,Lesotho,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Flag_of_Lesotho.svg/250px-Flag_of_Lesotho.svg.png,,2025-09-07 18:54:29+03,0,0,country
+96,Liberia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Liberia.svg/250px-Flag_of_Liberia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+97,Libya,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Libya.svg/250px-Flag_of_Libya.svg.png,,2025-09-07 18:54:29+03,0,0,country
+98,Liechtenstein,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Flag_of_Liechtenstein.svg/250px-Flag_of_Liechtenstein.svg.png,,2025-09-07 18:54:29+03,0,0,country
+99,Lithuania,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Lithuania.svg/250px-Flag_of_Lithuania.svg.png,,2025-09-07 18:54:29+03,0,0,country
+100,Luxembourg,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Luxembourg.svg/250px-Flag_of_Luxembourg.svg.png,,2025-09-07 18:54:29+03,0,0,country
+101,Madagascar,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Madagascar.svg/250px-Flag_of_Madagascar.svg.png,,2025-09-07 18:54:29+03,0,0,country
+102,Malawi,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Flag_of_Malawi.svg/250px-Flag_of_Malawi.svg.png,,2025-09-07 18:54:29+03,1,0,country
+103,Malaysia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Malaysia.svg/250px-Flag_of_Malaysia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+104,Maldives,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Flag_of_Maldives.svg/250px-Flag_of_Maldives.svg.png,,2025-09-07 18:54:29+03,0,0,country
+105,Mali,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Mali.svg/250px-Flag_of_Mali.svg.png,,2025-09-07 18:54:29+03,0,0,country
+106,Malta,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Malta.svg/250px-Flag_of_Malta.svg.png,,2025-09-07 18:54:29+03,0,0,country
+107,Marshall Islands,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_the_Marshall_Islands.svg/250px-Flag_of_the_Marshall_Islands.svg.png,,2025-09-07 18:54:29+03,0,0,country
+108,Mauritania,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Flag_of_Mauritania.svg/250px-Flag_of_Mauritania.svg.png,,2025-09-07 18:54:29+03,0,0,country
+109,Mauritius,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Mauritius.svg/250px-Flag_of_Mauritius.svg.png,,2025-09-07 18:54:29+03,0,0,country
+110,Mexico,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/250px-Flag_of_Mexico.svg.png,,2025-09-07 18:54:29+03,0,0,country
+111,Micronesia,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg/250px-Flag_of_the_Federated_States_of_Micronesia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+112,Moldova,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Moldova.svg/250px-Flag_of_Moldova.svg.png,,2025-09-07 18:54:29+03,0,0,country
+113,Monaco,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Monaco.svg/250px-Flag_of_Monaco.svg.png,,2025-09-07 18:54:29+03,1,1,country
+114,Mongolia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Mongolia.svg/250px-Flag_of_Mongolia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+115,Montenegro,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Montenegro.svg/250px-Flag_of_Montenegro.svg.png,,2025-09-07 18:54:29+03,0,0,country
+116,Morocco,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Morocco.svg/250px-Flag_of_Morocco.svg.png,,2025-09-07 18:54:29+03,0,0,country
+117,Mozambique,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Mozambique.svg/250px-Flag_of_Mozambique.svg.png,,2025-09-07 18:54:29+03,0,0,country
+118,Myanmar,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Myanmar.svg/250px-Flag_of_Myanmar.svg.png,,2025-09-07 18:54:29+03,0,0,country
+119,Namibia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Namibia.svg/250px-Flag_of_Namibia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+120,Nauru,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Flag_of_Nauru.svg/250px-Flag_of_Nauru.svg.png,,2025-09-07 18:54:29+03,0,0,country
+121,Nepal,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Flag_of_Nepal.svg/250px-Flag_of_Nepal.svg.png,,2025-09-07 18:54:29+03,0,0,country
+122,Netherlands,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Flag_of_the_Netherlands.svg/250px-Flag_of_the_Netherlands.svg.png,,2025-09-07 18:54:29+03,0,0,country
+123,New Zealand,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Flag_of_New_Zealand.svg/250px-Flag_of_New_Zealand.svg.png,,2025-09-07 18:54:29+03,2,2,country
+124,Nicaragua,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Flag_of_Nicaragua.svg/250px-Flag_of_Nicaragua.svg.png,,2025-09-07 18:54:29+03,0,0,country
+125,Niger,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Flag_of_Niger.svg/250px-Flag_of_Niger.svg.png,,2025-09-07 18:54:29+03,1,1,country
+126,Nigeria,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/250px-Flag_of_Nigeria.svg.png,,2025-09-07 18:54:29+03,0,0,country
+127,North Korea,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Flag_of_North_Korea.svg/250px-Flag_of_North_Korea.svg.png,,2025-09-07 18:54:29+03,0,0,country
+128,North Macedonia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_North_Macedonia.svg/250px-Flag_of_North_Macedonia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+129,Norway,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Norway.svg/250px-Flag_of_Norway.svg.png,,2025-09-07 18:54:29+03,0,0,country
+130,Oman,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Flag_of_Oman.svg/250px-Flag_of_Oman.svg.png,,2025-09-07 18:54:29+03,0,0,country
+131,Pakistan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Flag_of_Pakistan.svg/250px-Flag_of_Pakistan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+132,Palau,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Palau.svg/250px-Flag_of_Palau.svg.png,,2025-09-07 18:54:29+03,0,0,country
+133,Palestine,partial-recognition,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Palestine.svg/250px-Flag_of_Palestine.svg.png,,2025-09-07 18:54:29+03,0,0,country
+134,Panama,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Flag_of_Panama.svg/250px-Flag_of_Panama.svg.png,,2025-09-07 18:54:29+03,2,2,country
+135,Papua New Guinea,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Papua_New_Guinea.svg/250px-Flag_of_Papua_New_Guinea.svg.png,,2025-09-07 18:54:29+03,0,0,country
+136,Paraguay,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Flag_of_Paraguay.svg/250px-Flag_of_Paraguay.svg.png,,2025-09-07 18:54:29+03,0,0,country
+137,Peru,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Peru.svg/250px-Flag_of_Peru.svg.png,,2025-09-07 18:54:29+03,0,0,country
+138,Philippines,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/250px-Flag_of_the_Philippines.svg.png,,2025-09-07 18:54:29+03,0,0,country
+139,Poland,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/250px-Flag_of_Poland.svg.png,,2025-09-07 18:54:29+03,0,0,country
+140,Portugal,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Flag_of_Portugal_%28official%29.svg/250px-Flag_of_Portugal_%28official%29.svg.png,,2025-09-07 18:54:29+03,0,0,country
+141,Qatar,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Flag_of_Qatar.svg/250px-Flag_of_Qatar.svg.png,,2025-09-07 18:54:29+03,2,2,country
+142,Romania,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flag_of_Romania.svg/250px-Flag_of_Romania.svg.png,,2025-09-07 18:54:29+03,0,0,country
+143,Russia,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/f/f3/Flag_of_Russia.svg/250px-Flag_of_Russia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+144,Rwanda,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Rwanda.svg/250px-Flag_of_Rwanda.svg.png,,2025-09-07 18:54:29+03,1,0,country
+145,Saint Kitts and Nevis,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Saint_Kitts_and_Nevis.svg/250px-Flag_of_Saint_Kitts_and_Nevis.svg.png,,2025-09-07 18:54:29+03,0,0,country
+146,Saint Lucia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Saint_Lucia.svg/250px-Flag_of_Saint_Lucia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+147,Saint Vincent and the Grenadines,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg/250px-Flag_of_Saint_Vincent_and_the_Grenadines.svg.png,,2025-09-07 18:54:29+03,0,0,country
+148,Samoa,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Samoa.svg/250px-Flag_of_Samoa.svg.png,,2025-09-07 18:54:29+03,0,0,country
+149,San Marino,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Flag_of_San_Marino.svg/250px-Flag_of_San_Marino.svg.png,,2025-09-07 18:54:29+03,0,0,country
+150,São Tomé and Príncipe,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Flag_of_S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe.svg/250px-Flag_of_S%C3%A3o_Tom%C3%A9_and_Pr%C3%ADncipe.svg.png,,2025-09-07 18:54:29+03,0,0,country
+151,Saudi Arabia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/250px-Flag_of_Saudi_Arabia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+152,Senegal,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Flag_of_Senegal.svg/250px-Flag_of_Senegal.svg.png,,2025-09-07 18:54:29+03,0,0,country
+153,Serbia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Serbia.svg/250px-Flag_of_Serbia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+154,Seychelles,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Seychelles.svg/250px-Flag_of_Seychelles.svg.png,,2025-09-07 18:54:29+03,0,0,country
+155,Sierra Leone,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Flag_of_Sierra_Leone.svg/250px-Flag_of_Sierra_Leone.svg.png,,2025-09-07 18:54:29+03,0,0,country
+156,Singapore,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Singapore.svg/250px-Flag_of_Singapore.svg.png,,2025-09-07 18:54:29+03,0,0,country
+157,Slovakia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Slovakia.svg/250px-Flag_of_Slovakia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+158,Slovenia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Flag_of_Slovenia.svg/250px-Flag_of_Slovenia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+159,Solomon Islands,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Flag_of_the_Solomon_Islands.svg/250px-Flag_of_the_Solomon_Islands.svg.png,,2025-09-07 18:54:29+03,0,0,country
+160,Somalia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Somalia.svg/250px-Flag_of_Somalia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+161,South Africa,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_South_Africa.svg/250px-Flag_of_South_Africa.svg.png,,2025-09-07 18:54:29+03,1,1,country
+162,South Korea,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/250px-Flag_of_South_Korea.svg.png,,2025-09-07 18:54:29+03,0,0,country
+163,South Sudan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_South_Sudan.svg/250px-Flag_of_South_Sudan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+164,Spain,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Flag_of_Spain.svg/250px-Flag_of_Spain.svg.png,,2025-09-07 18:54:29+03,0,0,country
+165,Sri Lanka,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Flag_of_Sri_Lanka.svg/250px-Flag_of_Sri_Lanka.svg.png,,2025-09-07 18:54:29+03,0,0,country
+166,Sudan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Sudan.svg/250px-Flag_of_Sudan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+167,Suriname,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Suriname.svg/250px-Flag_of_Suriname.svg.png,,2025-09-07 18:54:29+03,0,0,country
+168,Sweden,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/250px-Flag_of_Sweden.svg.png,,2025-09-07 18:54:29+03,0,0,country
+169,Switzerland,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/250px-Flag_of_Switzerland.svg.png,,2025-09-07 18:54:29+03,0,0,country
+170,Syria,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Syria_%282025-%29.svg/250px-Flag_of_Syria_%282025-%29.svg.png,,2025-09-07 18:54:29+03,0,0,country
+171,Tajikistan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Flag_of_Tajikistan.svg/250px-Flag_of_Tajikistan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+172,Tanzania,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tanzania.svg/250px-Flag_of_Tanzania.svg.png,,2025-09-07 18:54:29+03,0,0,country
+173,Thailand,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/250px-Flag_of_Thailand.svg.png,,2025-09-07 18:54:29+03,0,0,country
+174,Timor-Leste,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_East_Timor.svg/250px-Flag_of_East_Timor.svg.png,,2025-09-07 18:54:29+03,0,0,country
+175,Togo,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_Togo_%283-2%29.svg/250px-Flag_of_Togo_%283-2%29.svg.png,,2025-09-07 18:54:29+03,0,0,country
+176,Tonga,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Tonga.svg/250px-Flag_of_Tonga.svg.png,,2025-09-07 18:54:29+03,0,0,country
+177,Trinidad and Tobago,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Trinidad_and_Tobago.svg/250px-Flag_of_Trinidad_and_Tobago.svg.png,,2025-09-07 18:54:29+03,0,0,country
+178,Tunisia,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/250px-Flag_of_Tunisia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+179,Turkey,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Turkey.svg/250px-Flag_of_Turkey.svg.png,,2025-09-07 18:54:29+03,0,0,country
+180,Turkmenistan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Flag_of_Turkmenistan.svg/250px-Flag_of_Turkmenistan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+181,Tuvalu,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Tuvalu.svg/250px-Flag_of_Tuvalu.svg.png,,2025-09-07 18:54:29+03,0,0,country
+182,Uganda,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Uganda.svg/250px-Flag_of_Uganda.svg.png,,2025-09-07 18:54:29+03,0,0,country
+183,Ukraine,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/250px-Flag_of_Ukraine.svg.png,,2025-09-07 18:54:29+03,0,0,country
+184,United Arab Emirates,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/250px-Flag_of_the_United_Arab_Emirates.svg.png,,2025-09-07 18:54:29+03,1,1,country
+185,United Kingdom,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Flag_of_the_United_Kingdom.svg/250px-Flag_of_the_United_Kingdom.svg.png,,2025-09-07 18:54:29+03,0,0,country
+186,United States,UN,0.0,https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/Flag_of_the_United_States.svg/250px-Flag_of_the_United_States.svg.png,,2025-09-07 18:54:29+03,0,0,country
+187,Uruguay,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Uruguay.svg/250px-Flag_of_Uruguay.svg.png,,2025-09-07 18:54:29+03,0,0,country
+188,Uzbekistan,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Uzbekistan.svg/250px-Flag_of_Uzbekistan.svg.png,,2025-09-07 18:54:29+03,0,0,country
+189,Vanuatu,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Vanuatu.svg/250px-Flag_of_Vanuatu.svg.png,,2025-09-07 18:54:29+03,0,0,country
+190,Vatican City,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Flag_of_Vatican_City_%282023%E2%80%93present%29.svg/250px-Flag_of_Vatican_City_%282023%E2%80%93present%29.svg.png,,2025-09-07 18:54:29+03,0,0,country
+191,Venezuela,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Venezuela.svg/250px-Flag_of_Venezuela.svg.png,,2025-09-07 18:54:29+03,0,0,country
+192,Vietnam,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/250px-Flag_of_Vietnam.svg.png,,2025-09-07 18:54:29+03,0,0,country
+193,Yemen,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Flag_of_Yemen.svg/250px-Flag_of_Yemen.svg.png,,2025-09-07 18:54:29+03,0,0,country
+194,Zambia,UN,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Flag_of_Zambia.svg/250px-Flag_of_Zambia.svg.png,,2025-09-07 18:54:29+03,1,0,country
+195,Zimbabwe,UN,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Flag_of_Zimbabwe.svg/250px-Flag_of_Zimbabwe.svg.png,,2025-09-07 18:54:29+03,1,1,country
+196,Abkhazia,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_the_Republic_of_Abkhazia.svg/250px-Flag_of_the_Republic_of_Abkhazia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+197,Kosovo,partial-recognition,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Flag_of_Kosovo.svg/250px-Flag_of_Kosovo.svg.png,,2025-09-07 18:54:29+03,0,0,country
+198,Northern Cyprus,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg/250px-Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg.png,,2025-09-07 18:54:29+03,0,0,country
+199,Sahrawi Arab Democratic Republic,partial-recognition,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg/250px-Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg.png,,2025-09-07 18:54:29+03,1,1,country
+200,Somaliland,,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Flag_of_Somaliland.svg/250px-Flag_of_Somaliland.svg.png,,2025-09-07 18:54:29+03,1,0,country
+201,South Ossetia,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Flag_of_South_Ossetia.svg/250px-Flag_of_South_Ossetia.svg.png,,2025-09-07 18:54:29+03,0,0,country
+202,Taiwan,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Flag_of_the_Republic_of_China.svg/250px-Flag_of_the_Republic_of_China.svg.png,,2025-09-07 18:54:29+03,0,0,country
+203,Transnistria,,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Transnistria_%28state%29.svg/250px-Flag_of_Transnistria_%28state%29.svg.png,,2025-09-07 18:54:29+03,0,0,country
+204,Alabama,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Flag_of_Alabama.svg/250px-Flag_of_Alabama.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+205,Alaska,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Flag_of_Alaska.svg/250px-Flag_of_Alaska.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+206,Arizona,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Arizona.svg/250px-Flag_of_Arizona.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+207,Arkansas,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Flag_of_Arkansas.svg/250px-Flag_of_Arkansas.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+208,California,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_California.svg/250px-Flag_of_California.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+209,Colorado,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Flag_of_Colorado.svg/250px-Flag_of_Colorado.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+210,Connecticut,US State,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Flag_of_Connecticut.svg/250px-Flag_of_Connecticut.svg.png,,2025-09-07 15:34:02.402776+03,1,0,us_state
+211,Delaware,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Flag_of_Delaware.svg/250px-Flag_of_Delaware.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+212,Florida,US State,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Florida.svg/250px-Flag_of_Florida.svg.png,,2025-09-07 15:34:02.402776+03,1,0,us_state
+213,Georgia (USA),US State,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Flag_of_the_State_of_Georgia.svg/250px-Flag_of_the_State_of_Georgia.svg.png,,2025-09-07 15:34:02.402776+03,1,0,us_state
+214,Hawaii,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Hawaii.svg/250px-Flag_of_Hawaii.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+215,Idaho,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_Idaho.svg/250px-Flag_of_Idaho.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+216,Illinois,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_Illinois.svg/250px-Flag_of_Illinois.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+217,Indiana,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Flag_of_Indiana.svg/250px-Flag_of_Indiana.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+218,Iowa,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Iowa.svg/250px-Flag_of_Iowa.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+219,Kansas,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Kansas.svg/250px-Flag_of_Kansas.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+220,Kentucky,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Flag_of_Kentucky.svg/250px-Flag_of_Kentucky.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+221,Louisiana,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Flag_of_Louisiana.svg/250px-Flag_of_Louisiana.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+222,Maine,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Flag_of_the_State_of_Maine.svg/250px-Flag_of_the_State_of_Maine.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+223,Maryland,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Maryland.svg/250px-Flag_of_Maryland.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+224,Massachusetts,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Flag_of_Massachusetts.svg/250px-Flag_of_Massachusetts.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+225,Michigan,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Flag_of_Michigan.svg/250px-Flag_of_Michigan.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+226,Minnesota,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Minnesota.svg/250px-Flag_of_Minnesota.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+227,Mississippi,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Flag_of_Mississippi.svg/250px-Flag_of_Mississippi.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+228,Missouri,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Flag_of_Missouri.svg/250px-Flag_of_Missouri.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+229,Montana,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_Montana.svg/250px-Flag_of_Montana.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+230,Nebraska,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Flag_of_Nebraska.svg/250px-Flag_of_Nebraska.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+231,Nevada,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Flag_of_Nevada.svg/250px-Flag_of_Nevada.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+232,New Hampshire,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_New_Hampshire.svg/250px-Flag_of_New_Hampshire.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+233,New Jersey,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_New_Jersey.svg/250px-Flag_of_New_Jersey.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+234,New Mexico,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_New_Mexico.svg/250px-Flag_of_New_Mexico.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+235,New York,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_New_York.svg/250px-Flag_of_New_York.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+236,North Carolina,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Flag_of_North_Carolina.svg/250px-Flag_of_North_Carolina.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+237,North Dakota,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Flag_of_North_Dakota.svg/250px-Flag_of_North_Dakota.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+238,Ohio,US State,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Flag_of_Ohio.svg/250px-Flag_of_Ohio.svg.png,,2025-09-07 15:34:02.402776+03,1,0,us_state
+239,Oklahoma,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Flag_of_Oklahoma.svg/250px-Flag_of_Oklahoma.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+240,Oregon,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Oregon.svg/250px-Flag_of_Oregon.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+241,Pennsylvania,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Pennsylvania.svg/250px-Flag_of_Pennsylvania.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+242,Rhode Island,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Rhode_Island.svg/120px-Flag_of_Rhode_Island.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+243,South Carolina,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_South_Carolina.svg/250px-Flag_of_South_Carolina.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+244,South Dakota,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_South_Dakota.svg/250px-Flag_of_South_Dakota.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+245,Tennessee,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Tennessee.svg/250px-Flag_of_Tennessee.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+246,Texas,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Texas.svg/250px-Flag_of_Texas.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+247,Utah,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Flag_of_Utah.svg/250px-Flag_of_Utah.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+248,Vermont,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Vermont.svg/250px-Flag_of_Vermont.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+249,Virginia,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Flag_of_Virginia.svg/250px-Flag_of_Virginia.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+250,Washington,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Washington.svg/250px-Flag_of_Washington.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+251,West Virginia,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Flag_of_West_Virginia.svg/250px-Flag_of_West_Virginia.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+252,Wisconsin,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Flag_of_Wisconsin.svg/250px-Flag_of_Wisconsin.svg.png,,2025-09-07 15:34:02.402776+03,0,0,us_state
+253,Wyoming,US State,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Flag_of_Wyoming.svg/250px-Flag_of_Wyoming.svg.png,,2025-09-07 15:34:02.402776+03,1,1,us_state
+254,Adygea,republic,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_Adygea.svg/250px-Flag_of_Adygea.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+255,Altai Republic,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Flag_of_Altai_Republic.svg/250px-Flag_of_Altai_Republic.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+256,Bashkortostan,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Flag_of_Bashkortostan.svg/250px-Flag_of_Bashkortostan.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+257,Buryatia,republic,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Flag_of_Buryatia.svg/250px-Flag_of_Buryatia.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+258,Chechnya,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Flag_of_the_Chechen_Republic.svg/250px-Flag_of_the_Chechen_Republic.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+259,Chuvashia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Flag_of_Chuvashia.svg/250px-Flag_of_Chuvashia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+260,Dagestan,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_Dagestan.svg/250px-Flag_of_Dagestan.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+261,Ingushetia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Flag_of_Ingushetia.svg/250px-Flag_of_Ingushetia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+262,Kabardino-Balkaria,republic,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Flag_of_Kabardino-Balkaria.svg/250px-Flag_of_Kabardino-Balkaria.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+263,Kalmykia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Kalmykia.svg/250px-Flag_of_Kalmykia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+264,Karachay-Cherkessia,republic,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Flag_of_Karachay-Cherkessia.svg/250px-Flag_of_Karachay-Cherkessia.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+265,Karelia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_Karelia.svg/250px-Flag_of_Karelia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+266,Khakassia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Khakassia.svg/250px-Flag_of_Khakassia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+267,Komi Republic,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Flag_of_Komi.svg/250px-Flag_of_Komi.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+268,Mari El,republic,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Flag_of_Mari_El.svg/250px-Flag_of_Mari_El.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+269,Mordovia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Flag_of_Mordovia.svg/250px-Flag_of_Mordovia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+270,North Ossetia–Alania,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Flag_of_North_Ossetia.svg/250px-Flag_of_North_Ossetia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+271,Sakha,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Flag_of_Sakha.svg/250px-Flag_of_Sakha.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+272,Tatarstan,republic,0.3333333333333333,https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Flag_of_Tatarstan.svg/250px-Flag_of_Tatarstan.svg.png,,2025-09-07 19:11:52.898619+03,3,2,ru_regions
+273,Tuva,republic,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Tuva.svg/250px-Flag_of_Tuva.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+274,Udmurtia,republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Udmurtia.svg/250px-Flag_of_Udmurtia.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+275,Altai Krai,krai,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Flag_of_Altai_Krai.svg/250px-Flag_of_Altai_Krai.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+276,Kamchatka Krai,krai,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Flag_of_Kamchatka_Krai.svg/250px-Flag_of_Kamchatka_Krai.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+277,Khabarovsk Krai,krai,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Flag_of_Khabarovsk_Krai.svg/250px-Flag_of_Khabarovsk_Krai.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+278,Krasnodar Krai,krai,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Flag_of_Krasnodar_Krai.svg/250px-Flag_of_Krasnodar_Krai.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+279,Krasnoyarsk Krai,krai,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Flag_of_Krasnoyarsk_Krai.svg/250px-Flag_of_Krasnoyarsk_Krai.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+280,Perm Krai,krai,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Flag_of_Perm_Krai.svg/250px-Flag_of_Perm_Krai.svg.png,,2025-09-07 19:11:52.898619+03,1,1,ru_regions
+281,Primorsky Krai,krai,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Flag_of_Primorsky_Krai.svg/250px-Flag_of_Primorsky_Krai.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+282,Stavropol Krai,krai,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Flag_of_Stavropol_Krai.svg/250px-Flag_of_Stavropol_Krai.svg.png,,2025-09-07 19:11:52.898619+03,1,1,ru_regions
+283,Zabaykalsky Krai,krai,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Zabaykalsky_Krai.svg/250px-Flag_of_Zabaykalsky_Krai.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+284,Amur Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Flag_of_Amur_Oblast.svg/250px-Flag_of_Amur_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+285,Arkhangelsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Flag_of_Arkhangelsk_Oblast.svg/250px-Flag_of_Arkhangelsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+286,Astrakhan Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Flag_of_Astrakhan_Oblast.svg/250px-Flag_of_Astrakhan_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,3,0,ru_regions
+287,Belgorod Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Flag_of_Belgorod_Oblast.svg/250px-Flag_of_Belgorod_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,2,0,ru_regions
+288,Bryansk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Flag_of_Bryansk_Oblast.svg/250px-Flag_of_Bryansk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+289,Chelyabinsk Oblast,oblast,0.6666666666666667,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Chelyabinsk_Oblast.svg/250px-Flag_of_Chelyabinsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,3,1,ru_regions
+290,Irkutsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Flag_of_Irkutsk_Oblast.svg/250px-Flag_of_Irkutsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+291,Ivanovo Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Flag_of_Ivanovo_Oblast.svg/250px-Flag_of_Ivanovo_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+292,Kaliningrad Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Flag_of_Kaliningrad_Oblast.svg/250px-Flag_of_Kaliningrad_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+293,Kaluga Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Flag_of_Kaluga_Oblast.svg/250px-Flag_of_Kaluga_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+294,Kemerovo Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Flag_of_Kemerovo_Oblast.svg/250px-Flag_of_Kemerovo_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+295,Kirov Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Kirov_Oblast.svg/250px-Flag_of_Kirov_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+296,Kostroma Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Flag_of_Kostroma_Oblast.svg/250px-Flag_of_Kostroma_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+297,Kurgan Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Flag_of_Kurgan_Oblast.svg/250px-Flag_of_Kurgan_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+298,Kursk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Flag_of_Kursk_Oblast.svg/250px-Flag_of_Kursk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+299,Leningrad Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Flag_of_Leningrad_Oblast.svg/250px-Flag_of_Leningrad_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+300,Lipetsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Flag_of_Lipetsk_Oblast.svg/250px-Flag_of_Lipetsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+301,Magadan Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_Magadan_Oblast.svg/250px-Flag_of_Magadan_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+302,Moscow Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Flag_of_Moscow_oblast.svg/250px-Flag_of_Moscow_oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+303,Murmansk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Flag_of_Murmansk_Oblast.svg/250px-Flag_of_Murmansk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+304,Nizhny Novgorod Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Flag_of_Nizhny_Novgorod_Region.svg/250px-Flag_of_Nizhny_Novgorod_Region.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+305,Novgorod Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Flag_of_Novgorod_Oblast.svg/250px-Flag_of_Novgorod_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+306,Novosibirsk Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Flag_of_Novosibirsk_Oblast.svg/250px-Flag_of_Novosibirsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,2,0,ru_regions
+307,Omsk Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Omsk_Oblast.svg/250px-Flag_of_Omsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+308,Orenburg Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Flag_of_Orenburg_Oblast.svg/250px-Flag_of_Orenburg_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+309,Oryol Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Oryol_Oblast.svg/250px-Flag_of_Oryol_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+310,Penza Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Flag_of_Penza_Oblast.svg/250px-Flag_of_Penza_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+311,Pskov Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Pskov_Oblast.svg/250px-Flag_of_Pskov_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+312,Rostov Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Rostov_Oblast.svg/250px-Flag_of_Rostov_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+313,Ryazan Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Flag_of_Ryazan_Oblast.svg/250px-Flag_of_Ryazan_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+314,Sakhalin Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Flag_of_Sakhalin_Oblast.svg/250px-Flag_of_Sakhalin_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+315,Samara Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Flag_of_Samara_Oblast.svg/250px-Flag_of_Samara_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+316,Saratov Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Flag_of_Saratov_Oblast.svg/250px-Flag_of_Saratov_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+317,Smolensk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_Smolensk_Oblast.svg/250px-Flag_of_Smolensk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+318,Sverdlovsk Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Flag_of_Sverdlovsk_Oblast.svg/250px-Flag_of_Sverdlovsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+319,Tambov Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Flag_of_Tambov_Oblast.svg/250px-Flag_of_Tambov_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+320,Tomsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Flag_of_Tomsk_Oblast.svg/250px-Flag_of_Tomsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+321,Tula Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_Tula_Oblast.svg/250px-Flag_of_Tula_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+322,Tver Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Flag_of_Tver_Oblast.svg/250px-Flag_of_Tver_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+323,Tyumen Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Flag_of_Tyumen_Oblast.svg/250px-Flag_of_Tyumen_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+324,Ulyanovsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Flag_of_Ulyanovsk_Oblast.svg/250px-Flag_of_Ulyanovsk_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+325,Vladimir Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Flag_of_Vladimir_Oblast.svg/250px-Flag_of_Vladimir_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,3,0,ru_regions
+326,Volgograd Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Flag_of_Volgograd_Oblast.svg/250px-Flag_of_Volgograd_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,2,0,ru_regions
+327,Vologda Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_Vologda_oblast.svg/250px-Flag_of_Vologda_oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+328,Voronezh Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Flag_of_Voronezh_Oblast.svg/250px-Flag_of_Voronezh_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+329,Yaroslavl Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Yaroslavl_Oblast.svg/250px-Flag_of_Yaroslavl_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,1,0,ru_regions
+330,Moscow,city with special status,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Moscow%2C_Russia.svg/250px-Flag_of_Moscow%2C_Russia.svg.png,,2025-09-07 19:11:52.898619+03,1,1,ru_regions
+331,Saint Petersburg,city with special status,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Flag_of_Saint_Petersburg.svg/250px-Flag_of_Saint_Petersburg.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+332,Jewish Autonomous Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Flag_of_the_Jewish_Autonomous_Oblast.svg/250px-Flag_of_the_Jewish_Autonomous_Oblast.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+333,Chukotka Autonomous Okrug,autonomous okrug,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Flag_of_Chukotka.svg/250px-Flag_of_Chukotka.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+334,Khanty–Mansi Autonomous Okrug,autonomous okrug,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Flag_of_Yugra.svg/250px-Flag_of_Yugra.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+335,NenetsAutonomous Okrug,autonomous okrug,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Flag_of_Nenets_Autonomous_District.svg/250px-Flag_of_Nenets_Autonomous_District.svg.png,,2025-09-07 19:11:52.898619+03,0,0,ru_regions
+336,Yamalo-Nenets Autonomous Okrug,autonomous okrug,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Flag_of_Yamal-Nenets_Autonomous_District.svg/250px-Flag_of_Yamal-Nenets_Autonomous_District.svg.png,,2025-09-07 19:11:52.898619+03,2,0,ru_regions
+337,Cherkasy Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Flag_of_Cherkasy_Oblast.svg/250px-Flag_of_Cherkasy_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+338,Chernivtsi Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Flag_of_Chernivtsi_Oblast.svg/250px-Flag_of_Chernivtsi_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+339,Chernihiv Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Flag_of_Chernihiv_Oblast.svg/250px-Flag_of_Chernihiv_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+340,Dnipropetrovsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Dnipropetrovsk_Oblast.svg/250px-Flag_of_Dnipropetrovsk_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+341,Donetsk Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Flag_of_Donetsk_Oblast.svg/250px-Flag_of_Donetsk_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,1,0,ua_regions
+342,Ivano-Frankivsk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Flag_of_Ivano-Frankivsk_Oblast.svg/250px-Flag_of_Ivano-Frankivsk_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,1,1,ua_regions
+343,Kharkiv Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_Kharkiv_Oblast.svg/250px-Flag_of_Kharkiv_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+344,Kherson Oblast,oblast,0.5,https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_Kherson_Oblast.svg/250px-Flag_of_Kherson_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,2,1,ua_regions
+345,Khmelnytskyi Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Flag_of_Khmelnytskyi_Oblast.svg/250px-Flag_of_Khmelnytskyi_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+346,Kirovohrad Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_Kirovohrad_Oblast.svg/250px-Flag_of_Kirovohrad_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+347,Kyiv Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Flag_of_Kyiv_Oblast.svg/250px-Flag_of_Kyiv_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,1,0,ua_regions
+348,Luhansk Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Flag_of_Luhansk_Oblast.svg/250px-Flag_of_Luhansk_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+349,Lviv Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Flag_of_Lviv_Oblast.svg/250px-Flag_of_Lviv_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+350,Mykolaiv Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Flag_of_Mykolaiv_Oblast.svg/250px-Flag_of_Mykolaiv_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+351,Odesa Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Odesa_Oblast.svg/250px-Flag_of_Odesa_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+352,Poltava Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Flag_of_Poltava_Oblast.svg/250px-Flag_of_Poltava_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+353,Rivne Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_Rivne_Oblast.svg/250px-Flag_of_Rivne_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,1,0,ua_regions
+354,Sumy Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Sumy_Oblast.svg/250px-Flag_of_Sumy_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+355,Ternopil Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Flag_of_Ternopil_Oblast.svg/250px-Flag_of_Ternopil_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+356,Vinnytsia Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Vinnytsia_Oblast.svg/250px-Flag_of_Vinnytsia_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+357,Volyn Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Flag_of_Volhynian_Oblast.svg/250px-Flag_of_Volhynian_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+358,Zaporizhia Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Flag_of_Zaporizhia_Oblast.svg/250px-Flag_of_Zaporizhia_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+359,Zakarpattia Oblast,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flag_of_Transcarpathian_Oblast.svg/250px-Flag_of_Transcarpathian_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+360,Zhytomyr Oblast,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_Zhytomyr_Oblast.svg/250px-Flag_of_Zhytomyr_Oblast.svg.png,,2025-09-08 11:16:22.305546+03,1,0,ua_regions
+361,Crimea,autonomous republic,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Flag_of_Crimea.svg/250px-Flag_of_Crimea.svg.png,,2025-09-08 11:16:22.305546+03,1,1,ua_regions
+362,Kyiv,city with special status,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_Kiev.svg/250px-Flag_of_Kiev.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+363,Sevastopol,city with special status,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Flag_of_Sevastopol.svg/250px-Flag_of_Sevastopol.svg.png,,2025-09-08 11:16:22.305546+03,0,0,ua_regions
+364,Minsk City,city with special status,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_Minsk%2C_Belarus.svg/250px-Flag_of_Minsk%2C_Belarus.svg.png,,2025-09-08 11:38:17.907587+03,0,0,by_regions
+365,Brest Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Brest_Voblast%2C_Belarus.svg/250px-Flag_of_Brest_Voblast%2C_Belarus.svg.png,,2025-09-08 11:38:17.907587+03,0,0,by_regions
+366,Gomel Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Homyel_Voblast.svg/250px-Flag_of_Homyel_Voblast.svg.png,,2025-09-08 11:38:17.907587+03,0,0,by_regions
+367,Grodno Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_Hrodna_Voblasts.svg/250px-Flag_of_Hrodna_Voblasts.svg.png,,2025-09-08 11:38:17.907587+03,0,0,by_regions
+368,Mogilev Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Mahilyow_Voblast.svg/250px-Flag_of_Mahilyow_Voblast.svg.png,,2025-09-08 11:38:17.907587+03,0,0,by_regions
+369,Minsk Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_Minsk_Voblast.svg/250px-Flag_of_Minsk_Voblast.svg.png,,2025-09-08 11:38:17.907587+03,0,0,by_regions
+370,Vitebsk Region,oblast,1.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Flag_of_Vitsebsk_region.svg/250px-Flag_of_Vitsebsk_region.svg.png,,2025-09-08 11:38:17.907587+03,1,0,by_regions

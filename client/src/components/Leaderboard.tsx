@@ -320,109 +320,160 @@ export default function Leaderboard({
             </div>
           )}
         </div>
-        {/* Season */}
-        <motion.div
-          className=""
-          style={{ transformOrigin: "center" }}
-          animate={{
-            y: [0, -3, 0, 3, 0],
-            scale: [1, 1.05, 1, 1.05, 1],
-            rotate: [0, -2, 0, 2, 0],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <div className="w-full px-4">
-            <div className="bg-grey-2 rounded-xl p-4 max-w-2xl mx-auto shadow text-white flex flex-col items-center text-center gap-2">
-              <h2 className="text-3xl font-bold text-white">
-                {season ? season.title : t("pre_season")}
-              </h2>
-              <p className="text-grey text-sm">{t("leaderboards_note")}</p>
+        {period == "Season" && (
+          <motion.div
+            className=""
+            style={{ transformOrigin: "center" }}
+            animate={{
+              y: [0, -3, 0, 3, 0],
+              scale: [1, 1.05, 1, 1.05, 1],
+              rotate: [0, -2, 0, 2, 0],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <div className="w-full px-4">
+              <div className="bg-grey-2 rounded-xl p-4 max-w-2xl mx-auto shadow text-white flex flex-col items-center text-center gap-2">
+                <h2 className="text-3xl font-bold text-white">
+                  {season ? season.title : t("pre_season")}
+                </h2>
+                <p className="text-grey text-sm">{t("leaderboards_note")}</p>
 
-              {isSeasonLoading && (
-                <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
-                  {t("loading")}...
-                </div>
-              )}
+                {isSeasonLoading && (
+                  <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
+                    {t("loading")}...
+                  </div>
+                )}
 
-              {seasonError && (
-                <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-red-500">
-                  {t("failed_to_load")}
-                </div>
-              )}
+                {seasonError && (
+                  <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-red-500">
+                    {t("failed_to_load")}
+                  </div>
+                )}
 
-              <div className="flex justify-center items-center gap-6 mt-4">
-                {season?.prizes
-                  .sort((a, b) => a.place - b.place)
-                  .slice(0, 3)
-                  .map((prize) => {
-                    const crownColor =
-                      prize.place === 1
-                        ? "text-yellow-400"
-                        : prize.place === 2
-                        ? "text-gray-300"
-                        : "text-amber-600";
+                <div className="flex justify-center items-center gap-6 mt-4">
+                  {season?.prizes
+                    .sort((a, b) => a.place - b.place)
+                    .slice(0, 3)
+                    .map((prize) => {
+                      const crownColor =
+                        prize.place === 1
+                          ? "text-yellow-400"
+                          : prize.place === 2
+                          ? "text-gray-300"
+                          : "text-amber-600";
 
-                    return (
-                      <div
-                        key={prize.id}
-                        className="flex flex-col items-center"
-                      >
-                        <FaCrown className={`${crownColor} text-xl mb-1`} />
-
-                        {/* Заглушка GIF вместо реального NFT */}
-                        <a
-                          href={prize.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      return (
+                        <div
+                          key={prize.id}
+                          className="flex flex-col items-center"
                         >
-                          <img
-                            src="/loading.gif" // твоя заглушка GIF
-                            alt={prize.title}
-                            className="w-12 h-12 object-contain rounded cursor-pointer hover:scale-105 transition-transform"
-                          />
-                        </a>
+                          <FaCrown className={`${crownColor} text-xl mb-1`} />
 
-                        <span className="text-xs text-white mt-1">
-                          {prize.place === 1
-                            ? t("1st")
-                            : prize.place === 2
-                            ? t("2nd")
-                            : t("3rd")}
-                        </span>
+                          {/* Заглушка GIF вместо реального NFT */}
+                          <a
+                            href={prize.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <img
+                              src="/nft.png" // твоя заглушка GIF
+                              alt={prize.title}
+                              className="w-12 h-12 object-contain rounded cursor-pointer hover:scale-105 transition-transform"
+                            />
+                          </a>
 
-                        {prize.quantity > 1 && (
-                          <span className="text-xs text-gray-300">
-                            x{prize.quantity}
+                          <span className="text-xs text-white mt-1">
+                            {prize.place === 1
+                              ? t("1st")
+                              : prize.place === 2
+                              ? t("2nd")
+                              : t("3rd")}
                           </span>
-                        )}
-                      </div>
-                    );
-                  })}
-              </div>
 
-              <div className="text-xs text-white mt-1">
-                {season && (
-                  <>
-                    {t("season_start")}: {season.start_date} | {t("season_end")}
-                    : {season.end_date}
-                    <br />
-                    {t("time_left")}: {timeLeft}
-                  </>
+                          {prize.quantity > 1 && (
+                            <span className="text-xs text-gray-300">
+                              x{prize.quantity}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+
+                <div className="text-xs text-white mt-1">
+                  {season && (
+                    <>
+                      {t("season_start")}: {season.start_date} |{" "}
+                      {t("season_end")}: {season.end_date}
+                      <br />
+                      {t("time_left")}: {timeLeft}
+                    </>
+                  )}
+                </div>
+
+                {!season && !isSeasonLoading && (
+                  <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
+                    {t("not_started_yet")}
+                  </div>
                 )}
               </div>
-
-              {!season && !isSeasonLoading && (
-                <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
-                  {t("not_started_yet")}
-                </div>
-              )}
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        )}
+        {period === "Today" && (
+          <motion.div
+            className=""
+            style={{ transformOrigin: "center" }}
+            animate={{
+              y: [0, -3, 0, 3, 0],
+              scale: [1, 1.05, 1, 1.05, 1],
+              rotate: [0, -2, 0, 2, 0],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <div className="w-full px-4 mt-4">
+              <div className="bg-grey-2 rounded-xl p-4 max-w-2xl mx-auto shadow text-white flex flex-col items-center text-center gap-2">
+                <h2 className="text-2xl font-bold text-white">
+                  {t("today_rewards")}
+                </h2>
+
+                <div className="flex justify-center items-center gap-6 mt-4">
+                  {[9, 6, 3].map((attempts, index) => (
+                    <div key={index} className="flex flex-col items-center">
+                      <FaMedal
+                        className={`${
+                          index === 0
+                            ? "text-yellow-400"
+                            : index === 1
+                            ? "text-gray-300"
+                            : "text-amber-600"
+                        } text-xl mb-1`}
+                      />
+                      <span className="text-xs text-white mt-1">
+                        {index === 0
+                          ? t("1st")
+                          : index === 1
+                          ? t("2nd")
+                          : t("3rd")}
+                      </span>
+                      <span className="text-xs text-gray-300 mt-1">
+                        x{attempts} <FaBolt className="text-primary text-xl mb-1" />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );

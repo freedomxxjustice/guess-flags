@@ -122,6 +122,20 @@ CREATE TABLE IF NOT EXISTS "season_prizes" (
     "quantity" INT NOT NULL DEFAULT 1,
     "season_id" INT NOT NULL REFERENCES "seasons" ("id") ON DELETE CASCADE
 );
+CREATE TABLE IF NOT EXISTS "achievements" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "title" VARCHAR(100) NOT NULL,
+    "description" TEXT NOT NULL,
+    "category" VARCHAR(50),
+    "target" INT NOT NULL,
+    "image" VARCHAR(255)
+);
+CREATE TABLE IF NOT EXISTS "user_achievements" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "earned_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "achievement_id" INT NOT NULL REFERENCES "achievements" ("id") ON DELETE CASCADE,
+    "user_id" BIGINT NOT NULL REFERENCES "users" ("id") ON DELETE CASCADE
+);
 CREATE TABLE IF NOT EXISTS "aerich" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "version" VARCHAR(255) NOT NULL,

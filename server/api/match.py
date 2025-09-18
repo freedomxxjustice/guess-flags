@@ -1,13 +1,20 @@
-from datetime import datetime, timezone
-from random import shuffle, sample
 from typing import List
-from db import Flag, Match, MatchAnswer, TournamentParticipant
+from datetime import datetime, timezone
+from math import ceil
+from random import shuffle, sample
+from fuzzywuzzy import process
+from db import (
+    Flag,
+    Match,
+    MatchAnswer,
+    TournamentParticipant,
+    Achievement,
+    UserAchievement,
+)
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 from aiogram.utils.web_app import WebAppInitData
-from .utils import auth, check_user, calculate_multiplier, answer_map
-from fuzzywuzzy import process
-from math import ceil
+from .utils import auth, check_user, answer_map
 
 router = APIRouter(prefix="/api/games", dependencies=[Depends(auth)])
 
@@ -25,8 +32,13 @@ async def casual_start(
         raise HTTPException(status_code=403, detail="No tries left")
 
     question_list = await create_casual_questions(num_questions, category, gamemode)
-    difficulty_multiplier = 1 if gamemode == "choose" else 1.5
-    print(question_list)
+    difficulty_multiplier = 1
+
+    if gamemode == "enter":
+        difficulty_multiplier = 1.5
+    elif category == "frenzy":
+        difficulty_multiplier = 0.75
+
     match = await Match.create(
         user=user,
         num_questions=num_questions,
@@ -69,7 +81,7 @@ async def create_casual_questions(
         all_flags = await Flag.filter(category=category)
     else:
         all_flags = await Flag.all()
-        
+
     if len(all_flags) < list_length:
         raise HTTPException(
             status_code=400, detail="Not enough flags to create questions"
@@ -271,7 +283,7 @@ async def answer(
 
     if is_correct:
         difficulty = question.get("difficulty", 0.33)
-        points = ceil(difficulty * 3)  # 1–3 очка
+        points = max(1, ceil(difficulty * 3))
     else:
         points = 0
 
@@ -325,7 +337,6 @@ async def get_summary(
     if not match.completed_at:
         raise HTTPException(status_code=400, detail="Match not completed yet")
 
-    # Get all submitted answers
     answers = (
         await MatchAnswer.filter(match_id=match.id)
         .order_by("question_idx")
@@ -338,16 +349,39 @@ async def get_summary(
         )
     )
 
-    # Make a lookup dict for questions by index
     question_lookup = {idx: q for idx, q in enumerate(match.questions)}
 
-    # Attach image to each answer
+    enriched_answers = []
     for a in answers:
-        if a["answered_at"]:
-            a["answered_at"] = a["answered_at"].isoformat()
-
         q = question_lookup.get(a["question_idx"])
-        a["image"] = q["image"] if q else None
+        if not q:
+            continue
+
+        difficulty = q.get("difficulty", 0.33)
+        points = max(1, ceil(difficulty * 3)) if a["is_correct"] else 0
+
+        enriched_answers.append(
+            {
+                **a,
+                "image": q.get("image"),
+                "correct_answer": q.get("answer"),
+                "points": points,
+                "answered_at": (
+                    a["answered_at"].isoformat() if a["answered_at"] else None
+                ),
+            }
+        )
+
+    total_questions = match.num_questions
+
+    max_mistakes = {10: 0, 15: 1, 20: 2}.get(total_questions, 0)
+    wrong_answers_count = sum(1 for a in enriched_answers if not a["is_correct"])
+
+    # Возврат попытки только если матч доигран полностью и ошибок не больше лимита
+    if len(enriched_answers) == total_questions and wrong_answers_count <= max_mistakes:
+        returned_attempt = True
+    else:
+        returned_attempt = False
 
     return JSONResponse(
         {
@@ -357,7 +391,8 @@ async def get_summary(
             "difficulty_multiplier": match.difficulty_multiplier,
             "num_questions": match.num_questions,
             "completed_at": str(match.completed_at.isoformat()),
-            "answers": answers,
+            "answers": enriched_answers,
+            "returned_attempt": returned_attempt,
         }
     )
 
@@ -374,35 +409,66 @@ async def submit_casual_match(
         raise HTTPException(400, "Match already completed")
 
     await complete_match(match, user)
-
+    await check_achievements(user, match)
     return JSONResponse({"message": "Match submitted successfully"})
 
 
-async def complete_match(match: Match, user) -> None:
+async def complete_match(match: Match, user) -> bool:
     match.completed_at = datetime.now(timezone.utc)
 
-    # Store base score and apply multiplier
     match.base_score = match.score
-    multiplier = calculate_multiplier(match.gamemode, match.tags)
-    match.difficulty_multiplier = multiplier
-    match.score = int(match.base_score * multiplier)
+    match.score = int(match.base_score * match.difficulty_multiplier)
 
-    # Tournament logic
+    returned_attempt = False
+
     if match.match_type == "tournament" and match.participant_id:
         participant = await TournamentParticipant.get(id=match.participant_id)
         participant.score += match.score
         await participant.save()
     else:
-        # Casual logic
         user.casual_score += match.score
         user.today_casual_score += match.score
 
-        if match.score < match.num_questions / 2:
+        total_questions = match.num_questions
+        max_mistakes = {10: 0, 15: 1, 20: 2}.get(total_questions, 0)
+
+        wrong_answers_count = await MatchAnswer.filter(
+            match_id=match.id, is_correct=False
+        ).count()
+
+        answered_count = await MatchAnswer.filter(match_id=match.id).count()
+
+        if answered_count >= total_questions:
+            if wrong_answers_count > max_mistakes:
+                user.tries_left -= 1
+                returned_attempt = False
+            else:
+                returned_attempt = True
+        else:
             user.tries_left -= 1
+            returned_attempt = False
 
         await user.save()
 
     await match.save()
+    return returned_attempt
+
+
+async def check_achievements(user, match):
+    answers = await MatchAnswer.filter(match_id=match.id, is_correct=True)
+
+    counts = {}
+    for a in answers:
+        flag = await Flag.get(id=a.flag_id)  
+        category = flag.category  
+        counts[category] = counts.get(category, 0) + 1
+
+    achievements = await Achievement.all()
+    for ach in achievements:
+        if counts.get(ach.category, 0) >= ach.target:
+            already = await UserAchievement.filter(user=user, achievement=ach).exists()
+            if not already:
+                await UserAchievement.create(user=user, achievement=ach)
 
 
 async def update_flag_stats(flag_id: int, is_correct: bool):

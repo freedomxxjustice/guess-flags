@@ -21,6 +21,8 @@ import GameScreen from "./GameScreen";
 import GameOverScreen from "./GameOverScreen";
 import { useTranslation } from "react-i18next";
 import HomeScreen from "./HomeScreen";
+import type { IUserAchievement } from "../interfaces/IUserAchievment";
+import type { IAchievement } from "../interfaces/IAchievement";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -109,6 +111,16 @@ const MainWrapper = () => {
       }
     },
   });
+
+  const { data: achievements, isLoading: isAchievementsLoading } = useQuery({
+    queryKey: ["achievements"],
+    queryFn: async () => {
+      const response = await request("users/achievements");
+      return response.data.achievements as IAchievement[];
+    },
+    refetchOnWindowFocus: false,
+  });
+
 
   useEffect(() => {
     if (activeCasualMatch) {
@@ -581,6 +593,7 @@ const MainWrapper = () => {
         isFullscreen={isFullscreenState}
         headerStyle={headerStyle}
         headerStyleFullscreen={headerStyleFullscreen}
+        achievements={achievements}
       />
     );
   };
@@ -769,6 +782,7 @@ const MainWrapper = () => {
         difficultyMultiplier={casualSummary.difficulty_multiplier}
         numQuestions={casualSummary.num_questions}
         answers={casualSummary.answers}
+        returnedAttempt={casualSummary.returned_attempt}
         onBack={() => {
           setCasualSummary(null);
           setCasualGame(null);
