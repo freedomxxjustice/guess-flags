@@ -168,6 +168,8 @@ function PreCasualGame({
           <p className="text-white text-xs text-justify">
             {t("casual_mode_rules")}
           </p>
+          <span className="hidden">{t(note)}</span>
+
         </div>
       
         {/* Modals */}

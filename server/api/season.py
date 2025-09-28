@@ -22,8 +22,16 @@ async def get_current_season() -> JSONResponse:
     )
 
     if not season:
-        raise HTTPException(status_code=404, detail="No active season")
+        season = (
+            await Season.filter(start_date__gt=now)
+            .order_by("start_date")
+            .prefetch_related("prizes")
+            .first()
+        )
 
+    if not season:
+        raise HTTPException(status_code=404, detail="No active or upcoming season")
+    
     prizes_list = [
         {
             "id": prize.id,

@@ -17,8 +17,10 @@ ROOT_DIR = Path(__file__).parent.parent
 # ==================== Logging ====================
 logging.root.setLevel(logging.NOTSET)
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("uvicorn.access").setLevel(logging.INFO)
+logging.getLogger("uvicorn.error").setLevel(logging.INFO)
+logging.getLogger("fastapi").setLevel(logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 # ==================== Config ====================
 class Config(BaseSettings):
