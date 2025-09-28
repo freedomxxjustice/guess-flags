@@ -1,6 +1,6 @@
 # 🌍 Guess Flags
 
-A fun and educational **flag guessing game** built for Telegram, where you can test your geography skills, collect scores, and climb the leaderboard.
+A fun and educational **flag guessing game** built for Telegram, where you can test your geography skills, collect scores, climb the leaderboard and win prizes.
 
 ---
 
