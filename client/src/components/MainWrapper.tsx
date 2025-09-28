@@ -21,7 +21,6 @@ import GameScreen from "./GameScreen";
 import GameOverScreen from "./GameOverScreen";
 import { useTranslation } from "react-i18next";
 import HomeScreen from "./HomeScreen";
-import type { IUserAchievement } from "../interfaces/IUserAchievment";
 import type { IAchievement } from "../interfaces/IAchievement";
 
 const TRANSITION_DURATION = 0.2;
@@ -81,6 +80,8 @@ const MainWrapper = () => {
   } = useQuery({
     queryKey: ["user"],
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
     queryFn: async () => {
       const response = await request("users/get");
       return response.data;
@@ -112,7 +113,7 @@ const MainWrapper = () => {
     },
   });
 
-  const { data: achievements, isLoading: isAchievementsLoading } = useQuery({
+  const { data: achievements } = useQuery({
     queryKey: ["achievements"],
     queryFn: async () => {
       const response = await request("users/achievements");
@@ -120,7 +121,6 @@ const MainWrapper = () => {
     },
     refetchOnWindowFocus: false,
   });
-
 
   useEffect(() => {
     if (activeCasualMatch) {
@@ -159,7 +159,6 @@ const MainWrapper = () => {
   const {
     data: seasonData,
     isLoading: isSeasonLoading,
-    refetch: refetchSeason,
     error: seasonError,
   } = useQuery({
     queryKey: ["currentSeason"],

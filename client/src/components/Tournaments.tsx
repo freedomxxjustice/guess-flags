@@ -4,7 +4,7 @@ import request from "../utils/api";
 import type {
   ITournament,
   ITournamentParticipant,
-  ITournamentPrize,
+  
 } from "../interfaces/ITournament";
 import { backButton, invoice } from "@telegram-apps/sdk";
 import Header from "./Header";
@@ -12,7 +12,6 @@ import TournamentParticipantsModal from "./TournamentParticipantsModal";
 import BottomModal from "./BottomModal";
 import { FaCrown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import GiftPreview from "./GiftPreview"; // Make sure the path is correct
 
 interface TournamentsProps {
   isFullscreen: boolean;

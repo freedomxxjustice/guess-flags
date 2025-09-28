@@ -3,7 +3,6 @@ import BottomModal from "./BottomModal";
 import { useTranslation } from "react-i18next";
 import { useState, useRef, useEffect } from "react";
 import Toast from "./Toast";
-import { useCallback } from "react";
 import confetti from "canvas-confetti";
 
 interface GameScreenProps {

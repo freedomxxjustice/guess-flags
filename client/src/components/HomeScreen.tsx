@@ -4,7 +4,7 @@ import BottomModal from "./BottomModal";
 import type { IUser } from "../interfaces/IUser";
 import { FaBolt } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import WelcomeScreen from "./WelcomeScreen";
 
 interface HomeScreenProps {

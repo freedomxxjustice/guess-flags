@@ -1,0 +1,18 @@
+# ===== Stage 1: base =====
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Копируем requirements и ставим зависимости
+COPY server/requirements.txt .
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Копируем весь код бэка
+COPY server/ .
+
+# Экспорт переменных окружения
+ENV PYTHONUNBUFFERED=1
+
+# Запуск Gunicorn + Uvicorn
+CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--workers", "4", "--bind", "0.0.0.0:8000", "--timeout", "120", "--keep-alive", "30"]

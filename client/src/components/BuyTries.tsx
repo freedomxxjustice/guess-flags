@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import CountUp from "react-countup";
+import { useState } from "react";
 import { faStar, faBolt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 

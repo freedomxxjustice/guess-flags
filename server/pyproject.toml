@@ -2,3 +2,4 @@
 tortoise_orm = "config_reader.TORTOISE_ORM"
 location = "./db/migrations"
 src_folder = "./."
+

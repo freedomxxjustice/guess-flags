@@ -1,39 +1,29 @@
-version: "3.9"
-
 services:
-  db:
-    image: postgres:17
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: flagsguess
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
   backend:
-    build: ./server
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
     env_file:
-      - ./server/.env
-    depends_on:
-      - db
+      - server/.env
     ports:
       - "8000:8000"
-    volumes:
-      - ./server:/app
-    # optional if you want logs
-    tty: true
+    depends_on:
+      - db
 
   frontend:
-    build: ./client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     ports:
       - "3000:80"
     depends_on:
       - backend
-    env_file:
-      - ./client/.env
 
-volumes:
-  postgres_data:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: flags
+      POSTGRES_PASSWORD: flags123
+      POSTGRES_DB: guessflags
+    ports:
+      - "5432:5432"

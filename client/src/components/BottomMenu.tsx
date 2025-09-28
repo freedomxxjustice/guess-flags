@@ -1,4 +1,4 @@
-import { FaHome, FaMedal } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 import { MdLeaderboard, MdPerson } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 

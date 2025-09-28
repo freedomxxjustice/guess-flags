@@ -1,4 +1,4 @@
-import { useState,  } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { backButton } from "@telegram-apps/sdk";
 import Header from "./Header";
@@ -237,6 +237,12 @@ function PreTrainingGame({
             {t("casual_mode_rules")}
           </p>
         </div>
+        <div id="note" className="py-3 px-4 bg-grey-2/10 backdrop-blur-md">
+          <h1 className="text-grey text-left text-xs">{t("note")}</h1>
+          <p className="text-white text-xs text-justify">{note}</p>
+        </div>
+      </div>
+      <div className="fixed bottom-0 left-0 w-full bg-background border-t border-grey-2 p-3 flex justify-center z-50 shadow-lg">
         <button
           onClick={() =>
             selectedNumQuestions &&
@@ -248,14 +254,10 @@ function PreTrainingGame({
             )
           }
           disabled={!selectedNumQuestions}
-          className={`btn btn-regular w-80`}
+          className={`btn btn-action w-full max-w-md`}
         >
           {t("start_game")}
         </button>
-        <div id="note" className="py-3 px-4 bg-grey-2/10 backdrop-blur-md">
-          <h1 className="text-grey text-left text-xs">{t("note")}</h1>
-          <p className="text-white text-xs text-justify">{note}</p>
-        </div>
       </div>
     </div>
   );

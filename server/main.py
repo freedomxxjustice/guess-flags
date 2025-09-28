@@ -7,6 +7,9 @@ from aiogram.types import (
     Update,
 )
 from aiogram.utils.i18n import I18n, FSMI18nMiddleware
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from api import setup_routers as setup_api_routers
 from bot.handlers import setup_routers as setup_bot_routers
@@ -14,11 +17,27 @@ from bot.handlers import setup_routers as setup_bot_routers
 from config_reader import config, dp, bot, app
 
 i18n = I18n(
-    path="locales", 
-    default_locale="en", 
-    domain="messages", 
+    path="locales",
+    default_locale="en",
+    domain="messages",
 )
 dp.message.middleware(FSMI18nMiddleware(i18n))
+limiter = Limiter(key_func=get_remote_address)
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
+# @app.middleware("http")
+# async def global_rate_limiter(request: Request, call_next):
+#     response = await limiter.limit("1000/minute")(call_next)(request)
+#     return response
+
+
+@app.get("/ping")
+async def ping():
+    return {"msg": "pong"}
+
 
 app.add_middleware(
     CORSMiddleware,
