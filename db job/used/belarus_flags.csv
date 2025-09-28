@@ -1,8 +1,0 @@
-id,name,description,difficulty,image,emoji,created_at,total_shown,total_correct,category
-364,Minsk City,city with special status,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Flag_of_Minsk%2C_Belarus.svg/250px-Flag_of_Minsk%2C_Belarus.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
-365,Brest Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Flag_of_Brest_Voblast%2C_Belarus.svg/250px-Flag_of_Brest_Voblast%2C_Belarus.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
-366,Gomel Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Homyel_Voblast.svg/250px-Flag_of_Homyel_Voblast.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
-367,Grodno Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Flag_of_Hrodna_Voblasts.svg/250px-Flag_of_Hrodna_Voblasts.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
-368,Mogilev Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Mahilyow_Voblast.svg/250px-Flag_of_Mahilyow_Voblast.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
-369,Minsk Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Flag_of_Minsk_Voblast.svg/250px-Flag_of_Minsk_Voblast.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
-370,Vitebsk Region,oblast,0.0,https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Flag_of_Vitsebsk_region.svg/250px-Flag_of_Vitsebsk_region.svg.png,,2025-09-08T11:38:17.907587,0,0,by_regions
