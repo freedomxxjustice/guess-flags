@@ -1,6 +1,6 @@
 test/
 useful_commands.txt
 docker-compose.yml
-docker
-db job
-.vscode
+docker/
+db job/
+.vscode/
