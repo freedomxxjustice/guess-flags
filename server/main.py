@@ -41,7 +41,7 @@ async def ping():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://app.guessflags.space"],
+    allow_origins=["https://devapp.guessflags.space"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

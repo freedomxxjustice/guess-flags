@@ -31,7 +31,7 @@ async def get_current_season() -> JSONResponse:
 
     if not season:
         raise HTTPException(status_code=404, detail="No active or upcoming season")
-    
+
     prizes_list = [
         {
             "id": prize.id,
@@ -52,4 +52,3 @@ async def get_current_season() -> JSONResponse:
             "prizes": prizes_list,
         }
     )
-

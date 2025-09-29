@@ -14,16 +14,13 @@ async def get_user(
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
     today = date.today()
-    if user.last_reset_date != today and user.tries_left <= 9:
+    if user.last_reset_date != today and user.tries_left <= 5:
         user.tries_left += 3
         user.last_reset_date = today
         await user.save()
     user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
 
     return JSONResponse({"user": user_obj})
-
-
-from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 @router.get("/achievements")
@@ -56,7 +53,7 @@ async def get_user_achievements(
                 "achieved": bool(ua),
             }
         )
-    
+
     return JSONResponse({"achievements": result})
 
 
@@ -89,7 +86,6 @@ async def get_casual_leaders(
 
     # Get the current user
     user = await User.get(id=user_id)
-    user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
 
     # Compute user's global rank (1-based)
     user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
@@ -125,7 +121,6 @@ async def get_training_leaders(
 
     # Get the current user
     user = await User.get(id=user_id)
-    user_obj = (await UserSchema.from_tortoise_orm(user)).model_dump(mode="json")
 
     # Compute user's global rank (1-based)
     user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1

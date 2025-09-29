@@ -322,7 +322,6 @@ export default function Leaderboard({
         </div>
         {period == "Season" && (
           <motion.div
-            className=""
             style={{ transformOrigin: "center" }}
             animate={{
               y: [0, -3, 0, 3, 0],
@@ -354,66 +353,81 @@ export default function Leaderboard({
                   </div>
                 )}
 
-                <div className="flex justify-center items-center gap-6 mt-4">
-                  {season?.prizes
-                    .sort((a, b) => a.place - b.place)
-                    .slice(0, 3)
-                    .map((prize) => {
-                      const crownColor =
-                        prize.place === 1
-                          ? "text-yellow-400"
-                          : prize.place === 2
-                          ? "text-gray-300"
-                          : "text-amber-600";
-
-                      return (
-                        <div
-                          key={prize.id}
-                          className="flex flex-col items-center"
-                        >
-                          <FaCrown className={`${crownColor} text-xl mb-1`} />
-
-                          {/* Заглушка GIF вместо реального NFT */}
-                          <a
-                            href={prize.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <img
-                              src="/nft.png" // твоя заглушка GIF
-                              alt={prize.title}
-                              className="w-12 h-12 object-contain rounded cursor-pointer hover:scale-105 transition-transform"
-                            />
-                          </a>
-
-                          <span className="text-xs text-white mt-1">
-                            {prize.place === 1
-                              ? t("1st")
-                              : prize.place === 2
-                              ? t("2nd")
-                              : t("3rd")}
-                          </span>
-
-                          {prize.quantity > 1 && (
-                            <span className="text-xs text-gray-300">
-                              x{prize.quantity}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                </div>
-
-                <div className="text-xs text-white mt-1">
-                  {season && (
+                {season && new Date(season.start_date) > new Date() ? (
+                  // === Будущий сезон ===
+                  <div className="mt-4 text-center">
+                    <div className="text-lg font-semibold text-white">
+                      {t("next_season_in")}: {timeLeft}
+                    </div>
+                    <div className="text-sm text-gray-300 mt-1">
+                      {t("season_start")}: {season.start_date}
+                    </div>
+                  </div>
+                ) : (
+                  // === Текущий сезон ===
+                  season && (
                     <>
-                      {t("season_start")}: {season.start_date} |{" "}
-                      {t("season_end")}: {season.end_date}
-                      <br />
-                      {t("time_left")}: {timeLeft}
+                      <div className="flex justify-center items-center gap-6 mt-4">
+                        {season.prizes
+                          .sort((a, b) => a.place - b.place)
+                          .slice(0, 3)
+                          .map((prize) => {
+                            const crownColor =
+                              prize.place === 1
+                                ? "text-yellow-400"
+                                : prize.place === 2
+                                ? "text-gray-300"
+                                : "text-amber-600";
+
+                            return (
+                              <div
+                                key={prize.id}
+                                className="flex flex-col items-center"
+                              >
+                                <FaCrown
+                                  className={`${crownColor} text-xl mb-1`}
+                                />
+
+                                {/* Заглушка GIF вместо реального NFT */}
+                                <a
+                                  href={prize.link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <img
+                                    src="/nft.png"
+                                    alt={prize.title}
+                                    className="w-12 h-12 object-contain rounded cursor-pointer hover:scale-105 transition-transform"
+                                  />
+                                </a>
+
+                                <span className="text-xs text-white mt-1">
+                                  {prize.place === 1
+                                    ? t("1st")
+                                    : prize.place === 2
+                                    ? t("2nd")
+                                    : t("3rd")}
+                                </span>
+
+                                {prize.quantity > 1 && (
+                                  <span className="text-xs text-gray-300">
+                                    x{prize.quantity}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                      </div>
+
+                      <div className="text-xs text-white mt-1">
+                        {t("season_start")}: {season.start_date} |{" "}
+                        {t("season_end")}: {season.end_date}
+                        <br />
+                        {t("time_left")}: {timeLeft}
+                      </div>
                     </>
-                  )}
-                </div>
+                  )
+                )}
 
                 {!season && !isSeasonLoading && (
                   <div className="rounded-lg py-1 px-4 mt-1 text-lg font-semibold text-white">
@@ -424,6 +438,7 @@ export default function Leaderboard({
             </div>
           </motion.div>
         )}
+
         {period === "Today" && (
           <motion.div
             className=""
@@ -465,7 +480,8 @@ export default function Leaderboard({
                           : t("3rd")}
                       </span>
                       <span className="text-xs text-gray-300 mt-1">
-                        x{attempts} <FaBolt className="text-primary text-xl mb-1" />
+                        x{attempts}{" "}
+                        <FaBolt className="text-primary text-xl mb-1" />
                       </span>
                     </div>
                   ))}

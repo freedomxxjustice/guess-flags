@@ -50,6 +50,8 @@
     "tries_left": "Попыток осталось",
     "welcome": "добро пожаловать в",
     "guess_flags": "GuessFlags",
+    "failed_to_load": "Отсутствуют Сезоны для отображения!",
+    "next_season_in": "Следующий сезон через",
     "community": "Сообщество",
     "early_access": "Ранний доступ",
     "not_enough_tries": "Недостаточно попыток!",

@@ -116,6 +116,8 @@
     "season_end": "End",
     "ru_regions": "Regions of Russia",
     "cis": "Regions of CIS (beta)",
+    "next_season_in": "Next Season in",
+
     "us_state": "States of USA",
     "correct_answer": "Correct answer",
     "correct_answers": "Correct answers",
@@ -126,7 +128,7 @@
     "achievements": "Achievements",
     "locked": "Locked",
     "buy_now": "Buy now!",
-
+    "failed_to_load": "No Season to show!",
     "welcome_title": "Welcome!",
     "welcome_text_line1": "Welcome to the game \"Guess Flags\"!",
     "welcome_text_line2": "Here you will guess country, states, regions and improve your knowledge in the field.",
