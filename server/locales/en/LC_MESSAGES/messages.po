@@ -6,7 +6,7 @@
 msgid "welcome"
 msgstr ""
 "🌍 Welcome to GuessFlags! 🏳️  \n"
-"Test your knowledge of country flags, climb the leaderboard, and take part in daily tournaments to win prizes: Gifts & Stars! 🌟\n"
+"Test your knowledge of country, state and region flags, climb the leaderboard and win prizes every Season! 🌟\n"
 "\n"
 "✅ Community: @GuessFlags  \n"
 "❓ Support: @chasingamy\n"
