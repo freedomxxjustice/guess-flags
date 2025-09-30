@@ -15,6 +15,6 @@ async def start(message: Message) -> None:
         await User.create(id=message.from_user.id, name=message.from_user.first_name)
 
     await message.answer(
-        _("welcome"),  # ← Translated string
+        _("welcome"),
         reply_markup=main_markup,
     )

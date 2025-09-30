@@ -156,7 +156,7 @@ const GameScreen = ({
     hasSubmitted
       ? isCorrect
         ? "border-green-600"
-        : "border-red-600 animate-shake"
+        : "animate-shake"
       : "border-gray-300"
   }`}
               placeholder={t("type_your_answer") || "Type your answer..."}

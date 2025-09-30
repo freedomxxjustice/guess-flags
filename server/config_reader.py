@@ -36,7 +36,7 @@ class Config(BaseSettings):
 
     APP_HOST: str
     APP_PORT: int
-
+    ADMIN_ID: int
     model_config = SettingsConfigDict(
         env_file=ROOT_DIR / "server" / ".env", env_file_encoding="utf-8"
     )

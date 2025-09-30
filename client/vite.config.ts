@@ -8,4 +8,5 @@ export default defineConfig({
     allowedHosts: true,
   },
   plugins: [react(), tailwindcss()],
+  logLevel: "info",
 });

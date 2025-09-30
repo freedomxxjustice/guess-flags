@@ -51,6 +51,7 @@ export default function Leaderboard({
 
   const { t } = useTranslation();
   const [timeLeft, setTimeLeft] = useState("");
+  const [timeToStartLeft, setTimeToStartLeft] = useState("");
 
   useEffect(() => {
     if (!season) return;
@@ -76,6 +77,32 @@ export default function Leaderboard({
 
     return () => clearInterval(interval);
   }, [season]);
+
+  useEffect(() => {
+    if (!season) return;
+
+    const interval = setInterval(() => {
+      const now = dayjs();
+      const end = dayjs(season.start_date);
+      const diff = end.diff(now);
+
+      if (diff <= 0) {
+        setTimeToStartLeft("0d 0h 0m 0s");
+        clearInterval(interval);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      setTimeToStartLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [season]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsUserVisible(entry.isIntersecting),
@@ -357,7 +384,7 @@ export default function Leaderboard({
                   // === Будущий сезон ===
                   <div className="mt-4 text-center">
                     <div className="text-lg font-semibold text-white">
-                      {t("next_season_in")}: {timeLeft}
+                      {t("next_season_in")}: {timeToStartLeft}
                     </div>
                     <div className="text-sm text-gray-300 mt-1">
                       {t("season_start")}: {season.start_date}

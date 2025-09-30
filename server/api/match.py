@@ -459,8 +459,8 @@ async def check_achievements(user, match):
 
     counts = {}
     for a in answers:
-        flag = await Flag.get(id=a.flag_id)  
-        category = flag.category  
+        flag = await Flag.get(id=a.flag_id)
+        category = flag.category
         counts[category] = counts.get(category, 0) + 1
 
     achievements = await Achievement.all()

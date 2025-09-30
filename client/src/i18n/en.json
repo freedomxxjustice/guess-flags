@@ -117,7 +117,13 @@
     "ru_regions": "Regions of Russia",
     "cis": "Regions of CIS (beta)",
     "next_season_in": "Next Season in",
-
+    
+      "non_tma_title": "Open in Telegram",
+      "non_tma_text": "This app works only inside",
+      "non_tma_continue": "Please open it there to continue.",
+      "non_tma_button": "Open Telegram",
+    
+    
     "us_state": "States of USA",
     "correct_answer": "Correct answer",
     "correct_answers": "Correct answers",

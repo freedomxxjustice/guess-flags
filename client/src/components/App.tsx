@@ -12,37 +12,40 @@ import {
   mainButton,
   hapticFeedback,
 } from "@telegram-apps/sdk";
+import { isTMA } from "@telegram-apps/bridge";
 import "@ncdai/react-wheel-picker/style.css";
 import WelcomeScreen from "./WelcomeScreen";
+import NonTMA from "./NonTMA";
 
 // TELEGRAM INITIATION
-init();
-initData.restore();
+if (isTMA()) {
+  init();
+  initData.restore();
 
-if (viewport.bindCssVars.isAvailable()) {
-  viewport.bindCssVars();
+  if (viewport.bindCssVars.isAvailable()) {
+    viewport.bindCssVars();
+  }
+
+  if (viewport.mount.isAvailable()) {
+    viewport.mount();
+  }
+
+  themeParams.mountSync();
+  mainButton.mount();
+  backButton.mount();
+  mainButton.setParams({
+    text: "CHECKOUT",
+    isEnabled: true,
+    isVisible: false,
+    hasShineEffect: true,
+    isLoaderVisible: false,
+    textColor: "#FFFFFF",
+  });
+
+  if (viewport.expand.isAvailable()) {
+    viewport.expand();
+  }
 }
-
-if (viewport.mount.isAvailable()) {
-  viewport.mount();
-}
-
-themeParams.mountSync();
-mainButton.mount();
-backButton.mount();
-mainButton.setParams({
-  text: "CHECKOUT",
-  isEnabled: true,
-  isVisible: false,
-  hasShineEffect: true,
-  isLoaderVisible: false,
-  textColor: "#FFFFFF",
-});
-
-if (viewport.expand.isAvailable()) {
-  viewport.expand();
-}
-
 const App = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -58,7 +61,7 @@ const App = () => {
     localStorage.setItem("seenWelcome", "true");
     setShowWelcome(false);
   };
-  
+
   useEffect(() => {
     function handleClick(e: any) {
       if (e.target.tagName === "BUTTON") {
@@ -140,9 +143,16 @@ const App = () => {
         />
 
         {/* Main content */}
-        <div className="relative min-h-screen backdrop-blur-xs z-20 flex justify-center items-center text-white">
-          <MainWrapper />
-        </div>
+        {isTMA() && (
+          <div className="relative min-h-screen backdrop-blur-xs z-20 flex justify-center items-center text-white">
+            <MainWrapper />
+          </div>
+        )}
+        {!isTMA() && (
+          <div>
+            <NonTMA />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -7,9 +7,10 @@ from aiogram.filters import Command
 from config_reader import bot
 from db import Tournament, SeasonPrize, TournamentPrize, Season, Prize
 from tortoise.exceptions import ValidationError
+from config_reader import config
 
 router = Router(name="admin")
-ADMIN_IDS = {938450625}
+ADMIN_IDS = {config.ADMIN_ID}
 
 
 def parse_args_to_dict(args: list[str]) -> dict:
