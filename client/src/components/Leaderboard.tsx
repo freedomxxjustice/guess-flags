@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import ToggleSlider from "./ToggleSlider";
 import type { IUser } from "../interfaces/IUser";
 import Header from "./Header";
-import { FaBolt, FaCrown, FaMedal, FaStar } from "react-icons/fa";
+import { FaBolt, FaCrown, FaMedal } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import type { ISeason } from "../interfaces/ISeason";
 import dayjs from "dayjs"; // для удобной работы с датами
@@ -153,40 +153,18 @@ export default function Leaderboard({
                 >
                   {entries.map(([id, data], index) => {
                     const place = index + 1;
-                    const isCurrentUser = id === user.id.toString();
+                    const isCurrentUser = id === userIdStr;
 
                     let prizeContent: React.ReactNode = null;
-
-                    if (season && place >= 4 && place <= 10) {
-                      // Найти приз для этого места в season.prizes
-                      const prize = season.prizes.find(
-                        (p) => p.place === place
-                      );
-
-                      if (prize) {
-                        prizeContent = (
-                          <div className="flex flex-row items-center ml-4">
-                            <FaStar
-                              className="w-5 h-5 object-contain text-yellow-300"
-                              title={prize.title}
-                            />
-                            {prize.quantity > 1 && (
-                              <span className="text-xs ml-1 text-yellow-300 mt-1">
-                                x{prize.quantity}
-                              </span>
-                            )}
-                          </div>
-                        );
-                      }
-                    } else if (place >= 11 && place <= 50) {
-                      // бесплатные попытки
+                    // Только бесплатные попытки для мест с 4 по 50
+                    if (place >= 4 && place <= 50) {
                       const freeAttempts = Math.max(
                         1,
-                        5 - Math.floor((place - 1) / 10)
+                        6 - Math.floor((place - 1) / 10)
                       );
                       prizeContent = (
                         <div className="flex flex-row items-center ml-4">
-                          <FaBolt className="w-5 h-5 object-contain text-primary" />
+                          <FaBolt className="w-5 h-5 text-primary" />
                           <span className="text-xs text-gray-300 mt-1">
                             x{freeAttempts}
                           </span>

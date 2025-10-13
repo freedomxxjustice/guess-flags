@@ -14,7 +14,7 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "casual_score" INT NOT NULL DEFAULT 0,
     "last_active" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "tries_left" INT NOT NULL DEFAULT 3,
+    "tries_left" INT NOT NULL DEFAULT 5,
     "last_reset_date" DATE,
     "casual_game" JSONB,
     "training_score" INT NOT NULL DEFAULT 0,
@@ -112,7 +112,8 @@ CREATE TABLE IF NOT EXISTS "seasons" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "title" VARCHAR(100) NOT NULL,
     "start_date" DATE NOT NULL,
-    "end_date" DATE NOT NULL
+    "end_date" DATE NOT NULL,
+    "is_active" BOOL NOT NULL DEFAULT True
 );
 CREATE TABLE IF NOT EXISTS "season_prizes" (
     "id" SERIAL NOT NULL PRIMARY KEY,

@@ -37,7 +37,7 @@ const TrainingGameScreen = ({
   if (!game) return null;
   const question = game.questions[currentQuestionIndex];
   if (!question) return null;
-
+  console.log(question.answer);
   return (
     <div className="min-h-screen w-full h-50 overflow-auto py-6 content-center flex justify-center items-center">
       <div className="flex flex-col items-center justify-center text-white px-4 bg-background w-98 py-4 border border-grey-2 rounded">
@@ -109,7 +109,19 @@ const TrainingGameScreen = ({
               {hasSubmitted && isCorrect !== null
                 ? isCorrect
                   ? `✅ ${t("correct")}`
-                  : `❌ ${t("right_answer")}: ${question.answer}`
+                  : `❌ ${t("right_answer")}: ${
+                      question.answer
+                        ? t(
+                            question.answer
+                              .split(" ")
+                              .map(
+                                (word: string) =>
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                              )
+                              .join(" ")
+                          )
+                        : ""
+                    }`
                 : t("submit")}
             </button>
           </div>

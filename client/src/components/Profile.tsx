@@ -117,7 +117,7 @@ export default function Profile({
       </div>
 
       {/* ACHIEVEMENTS */}
-      <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white w-95 mt-6">
+      <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md hidden text-white w-95 mt-6">
         <h2 className="text-lg font-semibold mb-4">{t("achievements")}</h2>
         <div className="grid grid-cols-4 gap-4">
           {achievements?.map((a) => {

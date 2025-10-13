@@ -22,6 +22,7 @@ import GameOverScreen from "./GameOverScreen";
 import { useTranslation } from "react-i18next";
 import HomeScreen from "./HomeScreen";
 import type { IAchievement } from "../interfaces/IAchievement";
+import { answer_map } from "../utils/asnwer_map";
 
 const TRANSITION_DURATION = 0.2;
 
@@ -254,17 +255,20 @@ const MainWrapper = () => {
     setScore(0);
   };
 
+  function normalizeAnswer(raw: string): string {
+    const cleaned = raw.trim().toLowerCase().toString();
+    return answer_map[cleaned] || cleaned;
+  }
+
   const handleTrainingAnswer = (opt: string) => {
     if (selectedOption) return;
 
     const answer = game?.questions[currentQuestionIndex].answer ?? "";
 
-    // Normalize
-    const normalizedOpt = opt.trim().toLowerCase();
-    const normalizedAnswer = answer.trim().toLowerCase();
+    const normalizedUser = normalizeAnswer(opt);
+    const normalizedAnswer = normalizeAnswer(answer);
 
-    // Compute similarity ratio (0 to 100)
-    const similarity = fuzzball.ratio(normalizedOpt, normalizedAnswer);
+    const similarity = fuzzball.ratio(normalizedUser, normalizedAnswer);
 
     const correct = similarity > 75;
 
@@ -742,7 +746,19 @@ const MainWrapper = () => {
                 {selectedOption
                   ? isCorrect
                     ? "✅ Correct!"
-                    : `❌ Right answer: ${game?.questions[currentQuestionIndex].answer}`
+                    : `❌ ${t("right_answer")}: ${
+                        question.answer
+                          ? t(
+                              question.answer
+                                .split(" ")
+                                .map(
+                                  (word: string) =>
+                                    word.charAt(0).toUpperCase() + word.slice(1)
+                                )
+                                .join(" ")
+                            )
+                          : ""
+                      }`
                   : t("submit")}
               </button>
             </div>

@@ -1,16 +1,26 @@
 from datetime import datetime, timezone
 from json import loads as json_loads, JSONDecodeError
 import json
-from aiogram import Router
+from aiogram import Router, types
 from aiogram.types import Message
 from aiogram.filters import Command
 from config_reader import bot
-from db import Tournament, SeasonPrize, TournamentPrize, Season, Prize
+from db import Tournament, SeasonPrize, TournamentPrize, Season, Prize, User
 from tortoise.exceptions import ValidationError
 from config_reader import config
+from tortoise.transactions import in_transaction
 
 router = Router(name="admin")
 ADMIN_IDS = {config.ADMIN_ID}
+
+LEADER_REWARDS = [9, 6, 3]
+BONUS_TRIES = [
+    (1, 10, 6),
+    (11, 20, 5),
+    (21, 30, 4),
+    (31, 40, 3),
+    (41, 50, 2),
+]
 
 
 def parse_args_to_dict(args: list[str]) -> dict:
@@ -332,3 +342,84 @@ async def add_season(message: Message):
         f"End: {season.end_date}\n"
         f"Prizes: {len(prizes)}"
     )
+
+
+@router.message(Command("force_end"))
+async def cmd_force_end(message: types.Message):
+    if message.from_user.id not in ADMIN_IDS:
+        return await message.reply("⛔ У вас нет прав для этой команды.")
+
+    args = message.text.split()
+    if len(args) < 2 or not args[1].isdigit():
+        return await message.reply("Использование: /force_end <season_id>")
+
+    season_id = int(args[1])
+    await force_season_end(season_id)
+    await message.reply(f"✅ Сезон #{season_id} завершён вручную.")
+
+
+async def end_season(season: Season):
+    """Основная логика завершения сезона (общая для авто и форс)."""
+    print(f"Ending season: {season.title}")
+    summary_lines = [f"🏁 Season '{season.title}' ended!"]
+
+    async with in_transaction():
+        top_users = await User.all().order_by("-total_score").limit(50)
+
+        for idx, user in enumerate(top_users, start=1):
+            message_text = ""
+
+            if idx <= 3:
+                # Только топ-3 получают призы
+                prize = await SeasonPrize.filter(season=season, place=idx).first()
+                if prize:
+                    message_text = (
+                        f"🏆 Congratulations {user.name}! You finished #{idx} in season '{season.title}' "
+                        f"and received the prize: {prize.title}"
+                    )
+                    summary_lines.append(f"{idx}. {user.name} → {prize.title}")
+            else:
+                # 4–50 получают бонусные попытки
+                for start, end, tries in BONUS_TRIES:
+                    if start <= idx <= end:
+                        user.tries_left += tries
+                        message_text = (
+                            f"🎁 Hi {user.name}! You finished #{idx} in season '{season.title}' "
+                            f"and received {tries} bonus tries."
+                        )
+                        summary_lines.append(
+                            f"{idx}. {user.name} → {tries} bonus tries"
+                        )
+                        break
+
+            await user.save()
+
+            # Отправляем личное сообщение пользователю
+            if message_text:
+                try:
+                    await bot.send_message(chat_id=user.id, text=message_text)
+                except Exception as e:
+                    print(f"Failed to send message to {user.name}: {e}")
+
+        # Завершаем сезон
+        season.is_active = False
+        await season.save()
+
+    # Отправляем отчёт администраторам
+    summary_text = "\n".join(summary_lines)
+
+    try:
+        await bot.send_message(chat_id=config.ADMIN_ID, text=summary_text)
+    except Exception as e:
+        print(f"Failed to send summary to admin {config.ADMIN_ID}: {e}")
+    print(f"Season '{season.title}' ended and rewards distributed.")
+
+
+async def force_season_end(season_id: int):
+    """Принудительное завершение сезона администратором."""
+    season = await Season.filter(id=season_id, is_active=True).first()
+    if not season:
+        print(f"⚠️ Season {season_id} not found or already inactive.")
+        return
+
+    await end_season(season)

@@ -8,6 +8,7 @@ class Season(Model):
     title = fields.CharField(max_length=100)
     start_date = fields.DateField()
     end_date = fields.DateField()
+    is_active = fields.BooleanField(default=True)  # ← добавляем это
 
     prizes: fields.ReverseRelation["SeasonPrize"]
 
