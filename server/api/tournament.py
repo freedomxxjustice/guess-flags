@@ -181,7 +181,7 @@ async def participate(tournament_id: int, auth_data: WebAppInitData = Depends(au
         invoice_link = await bot(
             CreateInvoiceLink(
                 title="Participation in tournament",
-                description=f"Tournament #{tournament_id}",
+                description=f"Tournament_{tournament_id}",
                 payload=f"tournament_{tournament_id}",
                 currency="XTR",
                 prices=[

@@ -2,7 +2,6 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message
 from typing import Callable, Awaitable, Dict, Any
 
-# You can replace this with your admin IDs
 ADMIN_IDS = {938450625}
 
 

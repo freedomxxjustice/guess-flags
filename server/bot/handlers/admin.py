@@ -103,7 +103,6 @@ async def add_tournament(message: Message):
                     title=prize_entry.get("title"),
                 )
 
-                # If prize doesn't exist, create it (optional behavior)
                 if not prize_obj:
                     prize_obj = await Prize.create(
                         type=prize_entry["type"],
@@ -148,7 +147,6 @@ async def add_tournament_json(message: Message):
         return
 
     try:
-        # Remove the command part and parse JSON
         data = json_loads(
             message.text.strip().removeprefix("/add_tournament_json").strip()
         )
@@ -230,7 +228,6 @@ async def finish_tournament(message: Message):
         await message.answer("⚠️ Tournament ID must be a number.")
         return
 
-    # Load the tournament
     tournament = (
         await Tournament.filter(id=tournament_id, finished_at=None)
         .prefetch_related("participants__user")
@@ -240,11 +237,9 @@ async def finish_tournament(message: Message):
         await message.answer("❌ Tournament not found or already finished.")
         return
 
-    # Sort participants by score descending
     participants = list(tournament.participants)
     participants.sort(key=lambda p: p.score, reverse=True)
 
-    # Assign places and notify participants
     for idx, participant in enumerate(participants, start=1):
         participant.place = idx
         await participant.save()
@@ -359,7 +354,6 @@ async def cmd_force_end(message: types.Message):
 
 
 async def end_season(season: Season):
-    """Основная логика завершения сезона (общая для авто и форс)."""
     print(f"Ending season: {season.title}")
     summary_lines = [f"🏁 Season '{season.title}' ended!"]
 
@@ -370,7 +364,6 @@ async def end_season(season: Season):
             message_text = ""
 
             if idx <= 3:
-                # Только топ-3 получают призы
                 prize = await SeasonPrize.filter(season=season, place=idx).first()
                 if prize:
                     message_text = (
@@ -379,7 +372,6 @@ async def end_season(season: Season):
                     )
                     summary_lines.append(f"{idx}. {user.name} → {prize.title}")
             else:
-                # 4–50 получают бонусные попытки
                 for start, end, tries in BONUS_TRIES:
                     if start <= idx <= end:
                         user.tries_left += tries
@@ -394,18 +386,15 @@ async def end_season(season: Season):
 
             await user.save()
 
-            # Отправляем личное сообщение пользователю
             if message_text:
                 try:
                     await bot.send_message(chat_id=user.id, text=message_text)
                 except Exception as e:
                     print(f"Failed to send message to {user.name}: {e}")
 
-        # Завершаем сезон
         season.is_active = False
         await season.save()
 
-    # Отправляем отчёт администраторам
     summary_text = "\n".join(summary_lines)
 
     try:

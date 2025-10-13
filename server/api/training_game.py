@@ -45,14 +45,14 @@ async def create_questions(num_questions, category, gamemode) -> List:
         correct_name = flag_data["name"]
         image = flag_data["image"]
 
-        # Sample 6 unique incorrect IDs excluding the current one
+        
         incorrect_pool = [i for i in all_ids if i != qid]
         if len(incorrect_pool) < 6:
             raise HTTPException(status_code=400, detail="Not enough flags for options")
 
         incorrect_ids = sample(incorrect_pool, 6)
 
-        # Fetch incorrect option names
+        
         incorrect_names = []
         for iid in incorrect_ids:
             opt = await Flag.get(id=iid)

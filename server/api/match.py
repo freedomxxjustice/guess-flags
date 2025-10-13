@@ -87,21 +87,21 @@ async def create_casual_questions(
             status_code=400, detail="Not enough flags to create questions"
         )
 
-    # Step 2: Разделяем флаги по сложности
+    
     easy_flags = [f for f in all_flags if f.difficulty <= 0.33]
     medium_flags = [f for f in all_flags if 0.34 <= f.difficulty <= 0.66]
     hard_flags = [f for f in all_flags if f.difficulty > 0.66]
 
-    # Step 3: Рассчитываем количество вопросов каждого типа
+    
     num_easy = ceil(list_length * 0.33)
     num_medium = ceil(list_length * 0.33)
-    num_hard = list_length - num_easy - num_medium  # остаток
+    num_hard = list_length - num_easy - num_medium  
 
     def sample_flags(pool, count):
         if len(pool) >= count:
             return sample(pool, count)
         else:
-            # если не хватает, добираем случайными из всех флагов
+            
             needed = count - len(pool)
             extra = sample([f for f in all_flags if f not in pool], needed)
             return pool + extra
@@ -113,7 +113,7 @@ async def create_casual_questions(
 
     shuffle(selected_flags)
 
-    # Step 4: Формируем вопросы
+    
     questions = []
     for flag in selected_flags:
         incorrect_pool = [f for f in all_flags if f.id != flag.id]
@@ -146,7 +146,7 @@ async def get_match(
     if not match:
         return JSONResponse({"status": "Match not found!"})
 
-    # Validate timer
+    
     if match.current_question_started_at:
         elapsed = datetime.now(timezone.utc) - match.current_question_started_at
         if elapsed.total_seconds() > 15:
@@ -167,7 +167,7 @@ async def get_match(
                 match.current_question_started_at = datetime.now(timezone.utc)
                 await match.save()
 
-    # Return current question (could be a new one if time expired)
+    
     idx = match.current_question_idx
     question = match.questions[idx]
 
@@ -203,15 +203,15 @@ async def answer(
     submitted_answer_raw = submitted_answer.strip().lower()
     normalized_answer = answer_map.get(submitted_answer_raw)
 
-    # If not found, apply fuzzy search
+    
     if normalized_answer is None:
         best_match, score = process.extractOne(submitted_answer_raw, answer_map.keys())
-        if score >= 80:  # adjustable threshold
+        if score >= 80:  
             normalized_answer = answer_map[best_match]
         else:
             normalized_answer = submitted_answer_raw
 
-    # Load match
+    
     match = await Match.filter(id=match_id, user_id=user_id).first()
     if not match:
         raise HTTPException(status_code=404, detail="Match not found")
@@ -221,12 +221,12 @@ async def answer(
     question = match.questions[match.current_question_idx]
     correct_answer = question["answer"].strip().lower()
 
-    # Calculate elapsed time
+    
     elapsed = None
     if match.current_question_started_at:
         elapsed = datetime.now(timezone.utc) - match.current_question_started_at
 
-    # Handle timeout either by elapsed time or explicit "time expired" answer
+    
     if (elapsed and elapsed.total_seconds() > 15) or submitted_answer == "time expired":
         await MatchAnswer.create(
             match=match,
@@ -377,7 +377,7 @@ async def get_summary(
     max_mistakes = {10: 0, 15: 1, 20: 2}.get(total_questions, 0)
     wrong_answers_count = sum(1 for a in enriched_answers if not a["is_correct"])
 
-    # Возврат попытки только если матч доигран полностью и ошибок не больше лимита
+    
     if len(enriched_answers) == total_questions and wrong_answers_count <= max_mistakes:
         returned_attempt = True
     else:

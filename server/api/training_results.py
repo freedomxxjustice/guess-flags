@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends
 from aiogram.utils.web_app import WebAppInitData
 from .utils import auth, check_user
 from pydantic import BaseModel
-from datetime import date
 
 
 class ScoreUpdate(BaseModel):

@@ -7,9 +7,7 @@ from config_reader import bot
 
 from db import (
     Tournament,
-    TournamentSchema,
     TournamentParticipant,
-    TournamentParticipantSchema,
 )
 
 router = Router(name="payment")

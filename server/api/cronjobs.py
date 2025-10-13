@@ -4,7 +4,6 @@ from db import User, Season, SeasonPrize
 from config_reader import bot  # импорт вашего Aiogram Bot
 from config_reader import config
 
-# количество попыток для лидеров
 LEADER_REWARDS = [9, 6, 3]
 BONUS_TRIES = [
     (1, 10, 6),
@@ -20,7 +19,6 @@ async def reset_today_casual_score():
     Отправляем отчет администраторам.
     """
     async with in_transaction():
-        # Берём топ-3 по today_casual_score
         top_users = await User.all().order_by("-today_casual_score").limit(3)
 
         summary_lines = [
@@ -41,14 +39,11 @@ async def reset_today_casual_score():
                 f"Awarded {bonus_tries} tries to {user.name} (score={user.today_casual_score})"
             )
 
-        # Сбрасываем today_casual_score у всех пользователей
         await User.all().update(today_casual_score=0, last_reset_date=date.today())
         print("Today casual scores reset completed.")
 
-        # Формируем итоговый текст
         summary_text = "\n".join(summary_lines)
 
-        # Отправляем администраторам
         for admin_id in config.ADMIN_ID:
             try:
                 await bot.send_message(chat_id=admin_id, text=summary_text)
@@ -60,7 +55,6 @@ async def reset_today_casual_score():
 async def end_season_if_needed():
     today = date.today()
 
-    # Берём активный сезон, который закончился
     season = await Season.filter(end_date__lte=today, is_active=True).first()
     if not season:
         print("No season ended today.")
@@ -76,7 +70,6 @@ async def end_season_if_needed():
             message_text = ""
 
             if idx <= 3:
-                # Только топ-3 получают призы
                 prize = await SeasonPrize.filter(season=season, place=idx).first()
                 if prize:
                     message_text = (
@@ -85,7 +78,6 @@ async def end_season_if_needed():
                     )
                     summary_lines.append(f"{idx}. {user.name} → {prize.title}")
             else:
-                # 4–50 получают бонусные попытки
                 for start, end, tries in BONUS_TRIES:
                     if start <= idx <= end:
                         user.tries_left += tries
@@ -100,18 +92,15 @@ async def end_season_if_needed():
 
             await user.save()
 
-            # Отправляем личное сообщение пользователю
             if message_text:
                 try:
                     await bot.send_message(chat_id=user.id, text=message_text)
                 except Exception as e:
                     print(f"Failed to send message to {user.name}: {e}")
 
-        # Завершаем сезон
         season.is_active = False
         await season.save()
 
-    # Отправляем отчёт администраторам
     summary_text = "\n".join(summary_lines)
     for admin_id in config.ADMIN_ID:
         try:
@@ -120,4 +109,5 @@ async def end_season_if_needed():
             print(f"Failed to send summary to admin {admin_id}: {e}")
 
     print(f"Season '{season.title}' ended and rewards distributed.")
+
 

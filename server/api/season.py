@@ -1,9 +1,7 @@
 from datetime import datetime, timezone
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-from typing import List, Optional
-from db import Season, SeasonPrize
-from .utils import auth
+from db import Season
 
 router = APIRouter(prefix="/api/seasons")
 
@@ -15,14 +13,14 @@ async def get_current_season() -> JSONResponse:
     """
     now = datetime.now(timezone.utc)
 
-    # Активный сезон, который сейчас идёт
+    
     season = (
         await Season.filter(start_date__lte=now, end_date__gte=now, is_active=True)
         .prefetch_related("prizes")
         .first()
     )
 
-    # Если активного нет — показать ближайший будущий активный
+    
     if not season:
         season = (
             await Season.filter(start_date__gt=now, is_active=True)

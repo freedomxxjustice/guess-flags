@@ -29,10 +29,10 @@ async def get_user_achievements(
 ) -> JSONResponse:
     user = await check_user(auth_data.user.id)
 
-    # все ачивки
+    
     all_achievements = await Achievement.all()
 
-    # ачивки пользователя
+    
     user_achievements = await UserAchievement.filter(user_id=user.id).prefetch_related(
         "achievement"
     )
@@ -61,7 +61,7 @@ async def get_user_achievements(
 async def get_casual_leaders(
     user_id: int = Query(..., description="ID of the current user")
 ) -> JSONResponse:
-    # Fetch top 50 users by casual_score descending
+    
     top_50 = await User.all().order_by("-casual_score").limit(50)
     top_today_50 = await User.all().order_by("-today_casual_score").limit(50)
 
@@ -84,10 +84,10 @@ async def get_casual_leaders(
             "today_casual_score": leader_obj["today_casual_score"],
         }
 
-    # Get the current user
+    
     user = await User.get(id=user_id)
 
-    # Compute user's global rank (1-based)
+    
     user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
     user_today_rank = (
         await User.filter(today_casual_score__gt=user.today_casual_score).count() + 1
@@ -106,7 +106,7 @@ async def get_casual_leaders(
 async def get_training_leaders(
     user_id: int = Query(..., description="ID of the current user")
 ) -> JSONResponse:
-    # Fetch top 50 users by casual_score descending
+    
     top_50 = await User.all().order_by("-training_score").limit(50)
 
     leaders_dict = {}
@@ -119,10 +119,10 @@ async def get_training_leaders(
             "training_score": leader_obj["training_score"],
         }
 
-    # Get the current user
+    
     user = await User.get(id=user_id)
 
-    # Compute user's global rank (1-based)
+    
     user_rank = await User.filter(casual_score__gt=user.casual_score).count() + 1
 
     return JSONResponse({"leaders": leaders_dict, "user_rank": user_rank})

@@ -24,7 +24,7 @@ class Match(Model):
 
     match_type = fields.CharField(
         max_length=10, default="casual"
-    )  # 'casual' / 'tournament'
+    ) 
     tournament = fields.ForeignKeyField(
         "models.Tournament", related_name="matches", null=True
     )
