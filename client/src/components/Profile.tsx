@@ -71,8 +71,8 @@ export default function Profile({
           <p className="text-sm font-medium">
             {new Date(user.created_at).toLocaleDateString()}
           </p>
-          <p className="text-sm mt-1 text-grey">{t("rating")}</p>
-          <p className="text-base font-semibold">{user.rating}</p>
+          {/* <p className="text-sm mt-1 text-grey">{t("rating")}</p>
+          <p className="text-base font-semibold">{user.rating}</p> */}
         </div>
       </div>
 
@@ -91,7 +91,7 @@ export default function Profile({
       </div>
 
       {/* RATING */}
-      <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">
+      {/* <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">
         <div>
           <h1 className="text-lg font-semibold">{t("rating_mode")}</h1>
           <p className="text-xs text-grey">{t("statistics")}</p>
@@ -102,7 +102,7 @@ export default function Profile({
           <p className="text-sm text-grey">{t("games_won")}</p>
           <p className="text-base font-semibold">{user.rating_games_won}</p>
         </div>
-      </div>
+      </div> */}
 
       {/* TRAINING */}
       <div className="bg-grey-2 rounded-2xl p-4 mx-auto shadow-md text-white flex w-95 justify-between gap-4 mt-6 items-center">

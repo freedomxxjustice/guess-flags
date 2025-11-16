@@ -8,7 +8,7 @@ class Season(Model):
     title = fields.CharField(max_length=100)
     start_date = fields.DateField()
     end_date = fields.DateField()
-    is_active = fields.BooleanField(default=True)  # ← добавляем это
+    is_active = fields.BooleanField(default=True)
 
     prizes: fields.ReverseRelation["SeasonPrize"]
 
@@ -23,13 +23,12 @@ class SeasonPrize(Model):
     )
     title = fields.CharField(max_length=100)
     link = fields.CharField(max_length=255, null=True)
-    place = fields.IntField()  # 1, 2, 3 и т.д.
-    quantity = fields.IntField(default=1)  # количество таких призов
+    place = fields.IntField()
+    quantity = fields.IntField(default=1)
 
     class Meta:
         table = "season_prizes"
 
 
-# Pydantic модели для сериализации
 SeasonSchema = pydantic_model_creator(Season)
 SeasonPrizeSchema = pydantic_model_creator(SeasonPrize)

@@ -156,8 +156,34 @@ export default function Leaderboard({
                     const isCurrentUser = id === userIdStr;
 
                     let prizeContent: React.ReactNode = null;
-                    // Только бесплатные попытки для мест с 4 по 50
-                    if (place >= 4 && place <= 50) {
+                    if (place == 1) {
+                      prizeContent = (
+                        <div className="flex flex-row items-center ml-4">
+                          <FaBolt className="w-5 h-5 text-primary" />
+                          <span className="text-xs text-gray-300 mt-1">
+                            x{15}
+                          </span>
+                        </div>
+                      );
+                    } else if (place == 2) {
+                      prizeContent = (
+                        <div className="flex flex-row items-center ml-4">
+                          <FaBolt className="w-5 h-5 text-primary" />
+                          <span className="text-xs text-gray-300 mt-1">
+                            x{12}
+                          </span>
+                        </div>
+                      );
+                    } else if (place == 3) {
+                      prizeContent = (
+                        <div className="flex flex-row items-center ml-4">
+                          <FaBolt className="w-5 h-5 text-primary" />
+                          <span className="text-xs text-gray-300 mt-1">
+                            x{9}
+                          </span>
+                        </div>
+                      );
+                    } else if (place >= 4 && place <= 50) {
                       const freeAttempts = Math.max(
                         1,
                         6 - Math.floor((place - 1) / 10)
@@ -372,58 +398,6 @@ export default function Leaderboard({
                   // === Текущий сезон ===
                   season && (
                     <>
-                      <div className="flex justify-center items-center gap-6 mt-4">
-                        {season.prizes
-                          .sort((a, b) => a.place - b.place)
-                          .slice(0, 3)
-                          .map((prize) => {
-                            const crownColor =
-                              prize.place === 1
-                                ? "text-yellow-400"
-                                : prize.place === 2
-                                ? "text-gray-300"
-                                : "text-amber-600";
-
-                            return (
-                              <div
-                                key={prize.id}
-                                className="flex flex-col items-center"
-                              >
-                                <FaCrown
-                                  className={`${crownColor} text-xl mb-1`}
-                                />
-
-                                {/* Заглушка GIF вместо реального NFT */}
-                                <a
-                                  href={prize.link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <img
-                                    src="/nft.png"
-                                    alt={prize.title}
-                                    className="w-12 h-12 object-contain rounded cursor-pointer hover:scale-105 transition-transform"
-                                  />
-                                </a>
-
-                                <span className="text-xs text-white mt-1">
-                                  {prize.place === 1
-                                    ? t("1st")
-                                    : prize.place === 2
-                                    ? t("2nd")
-                                    : t("3rd")}
-                                </span>
-
-                                {prize.quantity > 1 && (
-                                  <span className="text-xs text-gray-300">
-                                    x{prize.quantity}
-                                  </span>
-                                )}
-                              </div>
-                            );
-                          })}
-                      </div>
-
                       <div className="text-xs text-white mt-1">
                         {t("season_start")}: {season.start_date} |{" "}
                         {t("season_end")}: {season.end_date}

@@ -15,7 +15,10 @@ ADMIN_IDS = {config.ADMIN_ID}
 
 LEADER_REWARDS = [9, 6, 3]
 BONUS_TRIES = [
-    (1, 10, 6),
+    (1, 1, 15),
+    (2, 2, 12),
+    (3, 3, 9),
+    (4, 10, 6),
     (11, 20, 5),
     (21, 30, 4),
     (31, 40, 3),
@@ -363,26 +366,15 @@ async def end_season(season: Season):
         for idx, user in enumerate(top_users, start=1):
             message_text = ""
 
-            if idx <= 3:
-                prize = await SeasonPrize.filter(season=season, place=idx).first()
-                if prize:
+            for start, end, tries in BONUS_TRIES:
+                if start <= idx <= end:
+                    user.tries_left += tries
                     message_text = (
-                        f"🏆 Congratulations {user.name}! You finished #{idx} in season '{season.title}' "
-                        f"and received the prize: {prize.title}"
+                        f"🎁 Hi {user.name}! You finished #{idx} in season '{season.title}' "
+                        f"and received {tries} bonus tries."
                     )
-                    summary_lines.append(f"{idx}. {user.name} → {prize.title}")
-            else:
-                for start, end, tries in BONUS_TRIES:
-                    if start <= idx <= end:
-                        user.tries_left += tries
-                        message_text = (
-                            f"🎁 Hi {user.name}! You finished #{idx} in season '{season.title}' "
-                            f"and received {tries} bonus tries."
-                        )
-                        summary_lines.append(
-                            f"{idx}. {user.name} → {tries} bonus tries"
-                        )
-                        break
+                    summary_lines.append(f"{idx}. {user.name} → {tries} bonus tries")
+                    break
 
             await user.save()
 

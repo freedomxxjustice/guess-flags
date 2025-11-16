@@ -180,13 +180,13 @@ export default function HomeScreen({
           >
             {t("training")}
           </button>
-          <button
+          {/* <button
             onClick={() => setShowModal("error")}
             type="button"
             className="btn btn-regular w-full btn-disabled"
           >
             {t("rating")}
-          </button>
+          </button> */}
           <button
             type="button"
             className="btn btn-regular w-full"
